@@ -8,18 +8,18 @@
 #######################################
 
 
-DeclareRepresentation( "IsCapCategorySequenceRep",
-                        IsCapCategorySequence and IsAttributeStoringRep,
+DeclareRepresentation( "IsCapCategoryShortSequenceRep",
+                        IsCapCategoryShortSequence and IsAttributeStoringRep,
                         [ ] );
 
-DeclareRepresentation( "IsCapCategoryExactSequenceRep",
+DeclareRepresentation( "IsCapCategoryExactShortSequenceRep",
 
-                        IsCapCategoryExactSequence and IsAttributeStoringRep,
+                        IsCapCategoryExactShortSequence and IsAttributeStoringRep,
                         [ ] );
 
-DeclareRepresentation( "IsCapCategoryMorphismOfSequencesRep",
+DeclareRepresentation( "IsCapCategoryMorphismOfShortSequencesRep",
 
-                        IsCapCategoryMorphismOfSequences and IsAttributeStoringRep, 
+                        IsCapCategoryMorphismOfShortSequences and IsAttributeStoringRep, 
                         [ ] );
 
 
@@ -29,26 +29,26 @@ DeclareRepresentation( "IsCapCategoryMorphismOfSequencesRep",
 ##
 ##############################
 
-BindGlobal( "CapCategorySequencesFamily",
-  NewFamily( "CapCategorySequencesFamily", IsObject ) );
+BindGlobal( "CapCategoryShortSequencesFamily",
+  NewFamily( "CapCategoryShortSequencesFamily", IsObject ) );
 
-BindGlobal( "CapCategoryExactSequencesFamily",
-  NewFamily( "CapCategoryExactSequencesFamily", IsCapCategorySequence ) );
+BindGlobal( "CapCategoryExactShortSequencesFamily",
+  NewFamily( "CapCategoryExactShortSequencesFamily", IsCapCategoryShortSequence ) );
 
-BindGlobal( "CapCategoryMorphismsOfSequencesFamily",
-  NewFamily( "CapCategoryMorphismsOfSequencesFamily", IsObject ) );
+BindGlobal( "CapCategoryMorphismsOfShortSequencesFamily",
+  NewFamily( "CapCategoryMorphismsOfShortSequencesFamily", IsObject ) );
   
-BindGlobal( "TheTypeCapCategorySequence", 
-  NewType( CapCategorySequencesFamily, 
-                      IsCapCategorySequenceRep ) );
+BindGlobal( "TheTypeCapCategoryShortSequence", 
+  NewType( CapCategoryShortSequencesFamily, 
+                      IsCapCategoryShortSequenceRep ) );
                       
-BindGlobal( "TheTypeCapCategoryExactSequence", 
-  NewType( CapCategoryExactSequencesFamily, 
-                      IsCapCategoryExactSequenceRep ) );
+BindGlobal( "TheTypeCapCategoryExactShortSequence", 
+  NewType( CapCategoryExactShortSequencesFamily, 
+                      IsCapCategoryExactShortSequenceRep ) );
                       
-BindGlobal( "TheTypeCapCategoryMorphismOfSequences", 
-  NewType( CapCategoryMorphismsOfSequencesFamily, 
-                      IsCapCategoryMorphismOfSequencesRep ) );
+BindGlobal( "TheTypeCapCategoryMorphismOfShortSequences", 
+  NewType( CapCategoryMorphismsOfShortSequencesFamily, 
+                      IsCapCategoryMorphismOfShortSequencesRep ) );
        
                         
 ########################################
@@ -57,12 +57,24 @@ BindGlobal( "TheTypeCapCategoryMorphismOfSequences",
 ##
 ########################################
 
-InstallMethod( CreateSequence, 
+InstallMethodWithCache( CreateShortSequence, 
                
                [ IsCapCategoryMorphism, IsCapCategoryMorphism ], 
                
    function( alpha, beta )
    local s;
+   
+   if not IsEqualForObjects( Range( alpha ), Source( beta ) ) then 
+   
+     Error( "Range of the first morphism should equal the Source of the second morphism" );
+     
+   fi;
+   
+   if not IsZeroForMorphisms( PreCompose( alpha, beta ) ) then 
+   
+     Error( "The composition of the two morphisms is not Zero" );
+     
+   fi;
    
    s := rec( object1:= Source( alpha ), 
              
@@ -74,7 +86,7 @@ InstallMethod( CreateSequence,
              
              object1 := Range( beta ) );
              
-    ObjectifyWithAttributes( s, TheTypeCapCategorySequence,
+    ObjectifyWithAttributes( s, TheTypeCapCategoryShortSequence,
     
                              CapCategory, CapCategory( alpha ) );
                              
