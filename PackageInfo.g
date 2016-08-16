@@ -28,10 +28,10 @@ Persons := [
 ],
 
 #SourceRepository := rec( Type := "TODO", URL := "URL" ),
-#IssueTrackerURL := "TODO",
+#IssueTrackerURL := "https://github.com/kamalsaleh/FrobeniusCategoriesForCAP",
 #SupportEmail := "TODO",
 
-PackageWWWHome := "http://TODO/",
+PackageWWWHome := "https://github.com/kamalsaleh/FrobeniusCategoriesForCAP",
 
 PackageInfoURL := Concatenation( ~.PackageWWWHome, "PackageInfo.g" ),
 README_URL     := Concatenation( ~.PackageWWWHome, "README.md" ),
@@ -63,7 +63,7 @@ PackageDoc := rec(
 
 Dependencies := rec(
   GAP := ">= 4.8",
-  NeededOtherPackages := [ [ "GAPDoc", ">= 1.5" ] ],
+  NeededOtherPackages := [ [ "GAPDoc", ">= 1.5" ], [ "CAP", ">= 0.1" ] ],
   SuggestedOtherPackages := [ ],
   ExternalConditions := [ ],
 ),
