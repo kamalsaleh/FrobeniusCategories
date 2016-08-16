@@ -12,7 +12,7 @@ DeclareCategory( "IsCapCategorySequence", IsObject );
 
 DeclareCategory( "IsCapCategoryExactSequence", IsCapCategorySequence );
 
-DeclareCategory( "IsCapCategoryMorphismOfExactSequences", IsObject );
+DeclareCategory( "IsCapCategoryMorphismOfSequences", IsObject );
 
 #################################
 ##
@@ -43,3 +43,20 @@ DeclareCategory( "IsCapCategoryMorphismOfExactSequences", IsObject );
  end );
  
  
+#################################
+##
+## Methods 
+##
+#################################
+
+DeclareOperation( "CreateSequence", 
+                      [ IsCapCategoryMorphism, IsCapCategoryMorphism ] );
+
+
+#################################
+##
+##  Attributes
+##
+#################################
+
+DeclareAttribute( "CapCategory", IsCapCategorySequence );
