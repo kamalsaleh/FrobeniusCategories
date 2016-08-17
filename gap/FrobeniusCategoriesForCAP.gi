@@ -72,6 +72,65 @@ InstallValue( CAP_INTERNAL_FROBENIUS_CATEGORIES_BASIC_OPERATIONS, rec( ) );
 
 InstallValue( FROBENIUS_CATEGORIES_METHOD_NAME_RECORD, rec( 
 
+FR3 := rec( 
+
+installation_name := "FR3", 
+filter_list := [ IsCapCategoryConflation, IsCapCategoryConflation ],
+cache_name := "FR3",
+
+pre_function := function( conf1, conf2 )
+                
+                if not IsEqualForObjects( conf2!.object2, conf1!.object3 ) then 
+                
+                  return [ false, "the deflations of the given conflations are not composable" ];
+                  
+                fi;
+                
+                return [ true ];
+                
+                end,
+                
+return_type := [ IsCapCategoryConflation ],
+
+post_function := function( conf1, conf2, return_value )
+                 
+                 if not IsEqualForMorphisms( PreCompose( conf1!.morphism2, conf2!.morphism2 ), return_value!.morphism2 ) then 
+                 
+                     Error( "The deflation of the output computed by your function of FR3 should equal the composition of the deflations of the conflations that are given as input" );
+                  
+                 fi;
+                 
+                 end ),
+                 
+FR4 := rec( 
+
+installation_name := "FR4", 
+filter_list := [ IsCapCategoryConflation, IsCapCategoryConflation ],
+cache_name := "FR4",
+
+pre_function := function( conf1, conf2 )
+                
+                if not IsEqualForObjects( conf2!.object1, conf1!.object2 ) then 
+                
+                  return [ false, "the inflations of the given conflations are not composable" ];
+                  
+                fi;
+                
+                return [ true ];
+                
+                end,
+                
+return_type := [ IsCapCategoryConflation ],
+
+post_function := function( conf1, conf2, return_value )
+                 
+                 if not IsEqualForMorphisms( PreCompose( conf1!.morphism1, conf2!.morphism1 ), return_value!.morphism1 ) then 
+                 
+                     Error( "The inflation of the output computed by your function of FR4 should equal the composition of the inflations of the conflations that are given as input" );
+                  
+                 fi;
+                 
+                 end ),
               
 ) );
 

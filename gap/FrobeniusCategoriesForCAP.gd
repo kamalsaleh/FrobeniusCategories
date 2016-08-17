@@ -22,6 +22,9 @@ DeclareCategory( "IsCapCategoryMorphismOfShortSequences", IsObject );
 ##
 #################################
 
+
+if not IsPackageMarkedForLoading( "TriangulatedCategoriesForCAP", ">0.1" ) then
+
 ##
  DeclareOperation( "DoDeclarationStuff", [ IsString ] );
  
@@ -44,7 +47,19 @@ DeclareCategory( "IsCapCategoryMorphismOfShortSequences", IsObject );
                    [ IsCapCategory, IsList ] );
  end );
  
- 
+fi;
+####################################
+##
+##  Methods Declarations in Records
+##
+####################################
+
+ DeclareOperationWithCache( "FR3", [ IsCapCategoryConflation, IsCapCategoryConflation ] );
+ DoDeclarationStuff( "FR3" );
+
+ DeclareOperationWithCache( "FR4", [ IsCapCategoryConflation, IsCapCategoryConflation ] );
+ DoDeclarationStuff( "FR4" );
+
 #################################
 ##
 ## Methods 
