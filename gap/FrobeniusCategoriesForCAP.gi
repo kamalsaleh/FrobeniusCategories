@@ -12,9 +12,9 @@ DeclareRepresentation( "IsCapCategoryShortSequenceRep",
                         IsCapCategoryShortSequence and IsAttributeStoringRep,
                         [ ] );
 
-DeclareRepresentation( "IsCapCategoryExactShortSequenceRep",
+DeclareRepresentation( "IsCapCategoryShortExactSequenceRep",
 
-                        IsCapCategoryExactShortSequence and IsAttributeStoringRep,
+                        IsCapCategoryShortExactSequence and IsAttributeStoringRep,
                         [ ] );
 
 DeclareRepresentation( "IsCapCategoryConflationRep",
@@ -38,8 +38,8 @@ DeclareRepresentation( "IsCapCategoryMorphismOfShortSequencesRep",
 BindGlobal( "CapCategoryShortSequencesFamily",
   NewFamily( "CapCategoryShortSequencesFamily", IsObject ) );
 
-BindGlobal( "CapCategoryExactShortSequencesFamily",
-  NewFamily( "CapCategoryExactShortSequencesFamily", IsCapCategoryShortSequence ) );
+BindGlobal( "CapCategoryShortExactSequencesFamily",
+  NewFamily( "CapCategoryShortExactSequencesFamily", IsCapCategoryShortSequence ) );
 
 BindGlobal( "CapCategoryConflationsFamily",
   NewFamily( "CapCategoryConflationsFamily", IsCapCategoryConflation ) );
@@ -51,9 +51,9 @@ BindGlobal( "TheTypeCapCategoryShortSequence",
   NewType( CapCategoryShortSequencesFamily, 
                       IsCapCategoryShortSequenceRep ) );
                       
-BindGlobal( "TheTypeCapCategoryExactShortSequence", 
-  NewType( CapCategoryExactShortSequencesFamily, 
-                      IsCapCategoryExactShortSequenceRep ) );
+BindGlobal( "TheTypeCapCategoryShortExactSequence", 
+  NewType( CapCategoryShortExactSequencesFamily, 
+                      IsCapCategoryShortExactSequenceRep ) );
                       
 BindGlobal( "TheTypeCapCategoryConflation", 
   NewType( CapCategoryConflationsFamily, 
@@ -113,7 +113,7 @@ InstallMethodWithCache( CreateShortSequence,
              
              morphism2 := beta,
              
-             object1 := Range( beta ) );
+             object3 := Range( beta ) );
              
     ObjectifyWithAttributes( s, TheTypeCapCategoryShortSequence,
     
@@ -123,7 +123,7 @@ InstallMethodWithCache( CreateShortSequence,
     
 end );
 
-InstallMethodWithCache( CreateExactShortSequence, 
+InstallMethodWithCache( CreateShortExactSequence, 
               
               [ IsCapCategoryMorphism, IsCapCategoryMorphism ], 
                
@@ -179,9 +179,9 @@ InstallMethodWithCache( CreateExactShortSequence,
              
              morphism2 := beta,
              
-             object1 := Range( beta ) );
+             object3 := Range( beta ) );
              
-    ObjectifyWithAttributes( s, TheTypeCapCategoryExactShortSequence,
+    ObjectifyWithAttributes( s, TheTypeCapCategoryShortExactSequence,
     
                              CapCategory, CapCategory( alpha ) );
                              
@@ -244,7 +244,7 @@ InstallMethodWithCache( CreateConflation,
              
              morphism2 := beta,
              
-             object1 := Range( beta ) );
+             object3 := Range( beta ) );
              
     ObjectifyWithAttributes( s, TheTypeCapCategoryConflation,
     
@@ -254,25 +254,96 @@ InstallMethodWithCache( CreateConflation,
     
 end );
     
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
-                       
+    
+##############################
+##
+## View
+##
+##############################   
+    
+InstallMethod( ViewObj,
+               
+               [ IsCapCategoryShortSequence ], 
+               
+  function( seq )
+  
+    if IsCapCategoryConflation( seq ) then 
+    
+       Print( "<A Conflation in ", CapCategory( seq ), ">" );
+    
+    elif IsCapCategoryShortExactSequence( seq ) then 
+    
+       Print( "<A short exact sequence in ", CapCategory( seq ), ">" );
+   
+    else 
+   
+       Print( "<A short sequence in ", CapCategory( seq ), ">" );
+   
+    fi;
+    
+end );
+
+#################################
+##
+## Display
+##
+#################################
+
+InstallMethod( Display, 
+              
+              [ IsCapCategoryShortSequence ], 
+              
+   function( seq )
+   
+   Print( "object1 --(morphism1)--> object2 --(morphism2)--> object3\n" );
+   
+   Print( "\nobject1 is\n" ); Display( seq!.object1 );
+   
+   Print( "\nmorphism1 is\n" ); Display( seq!.morphism1 );
+   
+   Print( "\n\nobject2 is\n" ); Display( seq!.object2 );
+  
+   Print( "\nmorphism2 is\n" ); Display( seq!.morphism2 );
+   
+   Print( "\n\nobject3 is\n" ); Display( seq!.object3 );
+   
+end );
+  
+
+  
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  

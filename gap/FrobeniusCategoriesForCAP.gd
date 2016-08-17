@@ -10,9 +10,9 @@ DeclareGlobalVariable( "FROBENIUS_CATEGORIES_METHOD_NAME_RECORD" );
 
 DeclareCategory( "IsCapCategoryShortSequence", IsObject );
 
-DeclareCategory( "IsCapCategoryExactShortSequence", IsCapCategoryShortSequence );
+DeclareCategory( "IsCapCategoryShortExactSequence", IsCapCategoryShortSequence );
 
-DeclareCategory( "IsCapCategoryConflation", IsCapCategoryExactShortSequence );
+DeclareCategory( "IsCapCategoryConflation", IsCapCategoryShortExactSequence );
 
 DeclareCategory( "IsCapCategoryMorphismOfShortSequences", IsObject );
 
@@ -54,7 +54,7 @@ DeclareCategory( "IsCapCategoryMorphismOfShortSequences", IsObject );
 DeclareOperation( "CreateShortSequence", 
                       [ IsCapCategoryMorphism, IsCapCategoryMorphism ] );
 
-DeclareOperation( "CreateExactShortSequence", 
+DeclareOperation( "CreateShortExactSequence", 
                       [ IsCapCategoryMorphism, IsCapCategoryMorphism ] );
 
 DeclareOperation( "CreateConflation", 
