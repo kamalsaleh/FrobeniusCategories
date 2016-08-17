@@ -12,6 +12,8 @@ DeclareCategory( "IsCapCategoryShortSequence", IsObject );
 
 DeclareCategory( "IsCapCategoryExactShortSequence", IsCapCategoryShortSequence );
 
+DeclareCategory( "IsCapCategoryConflation", IsCapCategoryExactShortSequence );
+
 DeclareCategory( "IsCapCategoryMorphismOfShortSequences", IsObject );
 
 #################################
@@ -52,6 +54,11 @@ DeclareCategory( "IsCapCategoryMorphismOfShortSequences", IsObject );
 DeclareOperation( "CreateShortSequence", 
                       [ IsCapCategoryMorphism, IsCapCategoryMorphism ] );
 
+DeclareOperation( "CreateExactShortSequence", 
+                      [ IsCapCategoryMorphism, IsCapCategoryMorphism ] );
+
+DeclareOperation( "CreateConflation", 
+                      [ IsCapCategoryMorphism, IsCapCategoryMorphism ] );
 
 #################################
 ##
