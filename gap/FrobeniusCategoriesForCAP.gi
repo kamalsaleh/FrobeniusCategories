@@ -82,7 +82,7 @@ pre_function := function( conf1, conf2 )
                 
                 if not IsEqualForObjects( conf2!.object2, conf1!.object3 ) then 
                 
-                  return [ false, "the deflations of the given conflations are not composable" ];
+                  return [ false, "The deflations of the given conflations are not composable" ];
                   
                 fi;
                 
@@ -112,7 +112,7 @@ pre_function := function( conf1, conf2 )
                 
                 if not IsEqualForObjects( conf2!.object1, conf1!.object2 ) then 
                 
-                  return [ false, "the inflations of the given conflations are not composable" ];
+                  return [ false, "The inflations of the given conflations are not composable" ];
                   
                 fi;
                 
@@ -358,11 +358,11 @@ InstallMethod( Display,
    
    Print( "\nobject1 is\n" ); Display( seq!.object1 );
    
-   Print( "\nmorphism1 is\n" ); Display( seq!.morphism1 );
+   Print( "\n\nmorphism1 is\n" ); Display( seq!.morphism1 );
    
    Print( "\n\nobject2 is\n" ); Display( seq!.object2 );
   
-   Print( "\nmorphism2 is\n" ); Display( seq!.morphism2 );
+   Print( "\n\nmorphism2 is\n" ); Display( seq!.morphism2 );
    
    Print( "\n\nobject3 is\n" ); Display( seq!.object3 );
    
