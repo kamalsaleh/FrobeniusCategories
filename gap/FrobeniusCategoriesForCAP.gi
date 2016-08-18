@@ -197,6 +197,13 @@ post_function := function( conf, mor, return_value )
                  end ),                 
 
 
+ProjectionsOfFiberProductByFR5:= rec( 
+
+installation_name := "ProjectionsOfFiberProductByFR5", 
+filter_list := [ IsCapCategoryConflation, "morphism" ],
+cache_name := "ProjectionsOfFiberProductByFR5",
+return_type := [ "morphism", "morphism" ] ),                 
+
 ) );
 
 CAP_INTERNAL_ENHANCE_NAME_RECORD( FROBENIUS_CATEGORIES_METHOD_NAME_RECORD );

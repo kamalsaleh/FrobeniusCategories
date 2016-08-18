@@ -66,6 +66,9 @@ fi;
  DeclareOperationWithCache( "FiberProductByFR5", [ IsCapCategoryConflation, IsCapCategoryMorphism ] );
  DoDeclarationStuff( "FiberProductByFR5" );
 
+ DeclareOperationWithCache( "ProjectionsOfFiberProductByFR5", [ IsCapCategoryConflation, IsCapCategoryMorphism ] );
+ DoDeclarationStuff( "ProjectionsOfFiberProductByFR5" );
+ 
 #################################
 ##
 ## Methods 
