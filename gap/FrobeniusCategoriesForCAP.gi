@@ -132,6 +132,71 @@ post_function := function( conf1, conf2, return_value )
                  
                  end ),
               
+FR5:= rec( 
+
+installation_name := "FR5", 
+filter_list := [ IsCapCategoryConflation, "morphism" ],
+cache_name := "FR5",
+
+pre_function := function( conf, mor )
+                local is_equal_for_objects;
+                
+                is_equal_for_objects := IsEqualForObjects( conf!.object3, Range( mor ) );
+                
+                if is_equal_for_objects = fail then 
+                
+                    return [ false, "Cannot decide if the object3 in the conflation is equal to the range of the given morphism" ];
+                 
+                elif is_equal_for_objects = false then 
+                
+                    return  [ false, "The object3 in the conflation is not equal to the range of the input morphism" ];
+                    
+                else 
+                
+                    return [ true ];
+                    
+                fi;
+                
+                end,
+                
+return_type := [ IsCapCategoryConflation, "morphism" ],
+
+post_function := function( conf, mor, return_value )
+                 
+                 if not IsEqualForObjects( return_value[ 1 ]!.object3, Source( mor ) ) then 
+                 
+                    Error( "Object3 of output conflation is not equal to the source of the input morphism" );
+                 
+                 fi;
+                 
+                 if not IsEqualForObjects( return_value[ 1 ]!.object2, Source( return_value[ 2 ] ) ) then 
+                 
+                    Error( "Object2 of output conflation is not equal to the source of the output morphism" );
+                    
+                 fi;
+                 
+                 
+                 if not IsEqualForMorphisms( PreCompose( return_value[ 2], conf!.morphism2 ), PreCompose( return_value[ 1 ]!.morphism2, mor ) ) then 
+                 
+                    Error( "The function given does not provid a Pullback, since the diagram resulted is not commutative" );
+                    
+                 fi;
+                 
+                 end ),
+FiberProductByFR5:= rec( 
+
+installation_name := "FiberProductByFR5", 
+filter_list := [ IsCapCategoryConflation, "morphism" ],
+cache_name := "FiberProductByFR5",
+return_type := "object",
+
+post_function := function( conf, mor, return_value )
+ 
+                 AddToGenesis( return_value, "FiberProductDiagramByFR5", [ conf, mor ] );
+                 
+                 end ),                 
+
+
 ) );
 
 CAP_INTERNAL_ENHANCE_NAME_RECORD( FROBENIUS_CATEGORIES_METHOD_NAME_RECORD );

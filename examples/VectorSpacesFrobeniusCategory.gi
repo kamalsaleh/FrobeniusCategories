@@ -397,11 +397,31 @@ end;
 
 AddFR4( vecspaces, fr4 );
 
+fr5 := function( conf, mor )
+       local f,g, gamma, beta;
+       
+       f:= conf!.morphism2;
+       g:= mor;
+       
+       f := AsMorphismInMatrixCategory( f );
+       g := AsMorphismInMatrixCategory( g );
+       
+       
+       gamma := ProjectionInFactorOfFiberProduct( [ f, g ], 1 );
+
+       # It can be proved theoriticaly that beta is epi, hence deflation.
+       beta  := ProjectionInFactorOfFiberProduct( [ f, g ], 2 );
+
+       gamma := QVectorSpaceMorphism( gamma );
+       
+       beta  := QVectorSpaceMorphism( beta  );
+       
+       return [ CreateConflation( KernelEmbedding( beta ), beta ), gamma ];
+       
+end;
 
 
-
-
-
+AddFR5( vecspaces, fr5 );
 
 
 
