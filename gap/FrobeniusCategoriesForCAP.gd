@@ -72,6 +72,15 @@ fi;
  DeclareOperationWithCache( "UniversalMorphismIntoFiberProductByFR5", [ IsList, IsList ] );
  DoDeclarationStuff( "UniversalMorphismIntoFiberProductByFR5" );
  
+ DeclareOperationWithCache( "FR6", [ IsCapCategoryConflation, IsCapCategoryMorphism ] );
+ DoDeclarationStuff( "FR6" );
+
+ DeclareOperationWithCache( "PushoutByFR6", [ IsCapCategoryConflation, IsCapCategoryMorphism ] );
+ DoDeclarationStuff( "PushoutByFR6" );
+ 
+ DeclareOperationWithCache( "InjectionsOfPushoutByFR6", [ IsCapCategoryConflation, IsCapCategoryMorphism ] );
+ DoDeclarationStuff( "InjectionsOfPushoutByFR6" );
+
  
 #################################
 ##

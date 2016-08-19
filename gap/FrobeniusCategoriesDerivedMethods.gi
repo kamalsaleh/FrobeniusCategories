@@ -34,3 +34,59 @@ AddDerivationToCAP( ProjectionsOfFiberProductByFR5,
    return l;
    
 end: Description := "returns the projections of the FiberProduct of two morphisms by FR5" );
+
+
+AddDerivationToCAP( PushoutByFR6, 
+                   
+                   [ [ FR6, 1 ] ], 
+                   
+   function( conf, mor )
+   local fr6, obj;
+   
+   fr6 := FR6( conf, mor );
+   
+   obj := fr6[ 1 ]!.object2;
+   
+   AddToGenesis( obj , "PushoutDiagramByFR5", [ conf, mor ] );
+   AddToGenesis( obj , "InjectionsOfPushout", [ fr6[ 2 ], fr6[ 1 ]!.morphism1 ] );
+   
+   return obj;
+   
+end: Description := "returns the pushout of two morphisms by FR6" );
+
+
+
+AddDerivationToCAP( InjectionsOfPushoutByFR6, 
+                   
+                   [ [ FR6, 1 ] ], 
+                   
+   function( conf, mor )
+   local fr6, l;
+   
+   fr6 := FR6( conf, mor );
+   
+   l:= [ fr6[ 2 ], fr6[ 1 ]!.morphism1 ];
+   
+   return l;
+   
+end: Description := "returns the injections of the pushout of two morphisms by FR5" );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -287,6 +287,78 @@ post_function := function( D, tau, return_value )
                  
                  end ),                 
 
+FR6:= rec( 
+
+installation_name := "FR6", 
+filter_list := [ IsCapCategoryConflation, "morphism" ],
+cache_name := "FR6",
+
+pre_function := function( conf, mor )
+                local is_equal_for_objects;
+                
+                is_equal_for_objects := IsEqualForObjects( conf!.object1, Source( mor ) );
+                
+                if is_equal_for_objects = fail then 
+                
+                    return [ false, "Cannot decide if the object1 in the conflation is equal to the source of the given morphism" ];
+                 
+                elif is_equal_for_objects = false then 
+                
+                    return  [ false, "The object1 in the conflation is not equal to the source of the input morphism" ];
+                    
+                else 
+                
+                    return [ true ];
+                    
+                fi;
+                
+                end,
+                
+return_type := [ IsCapCategoryConflation, "morphism" ],
+
+post_function := function( conf, mor, return_value )
+                 
+                 if not IsEqualForObjects( return_value[ 1 ]!.object1, Range( mor ) ) then 
+                 
+                    Error( "Object1 of output conflation is not equal to the range of the input morphism" );
+                 
+                 fi;
+                 
+                 if not IsEqualForObjects( return_value[ 1 ]!.object2, Range( return_value[ 2 ] ) ) then 
+                 
+                    Error( "Object2 of output conflation is not equal to the range of the output morphism" );
+                    
+                 fi;
+                 
+                 
+                 if not IsEqualForMorphisms( PostCompose( return_value[ 2 ], conf!.morphism1 ), PostCompose( return_value[ 1 ]!.morphism1, mor ) ) then 
+                 
+                    Error( "The function given does not provid a pushout, since the diagram resulted is not commutative" );
+                    
+                 fi;
+                 
+                 end ),
+                 
+PushoutByFR6:= rec( 
+
+installation_name := "PushoutByFR6", 
+filter_list := [ IsCapCategoryConflation, "morphism" ],
+cache_name := "PushoutByFR6",
+return_type := "object",
+
+post_function := function( conf, mor, return_value )
+ 
+                 AddToGenesis( return_value, "PushoutDiagramByFR6", [ conf, mor ] );
+                 
+                 end ),
+                 
+InjectionsOfPushoutByFR6:= rec( 
+
+installation_name := "InjectionsOfPushoutByFR6", 
+filter_list := [ IsCapCategoryConflation, "morphism" ],
+cache_name := "InjectionsOfPushoutByFR6",
+return_type := [ "morphism", "morphism" ] ),                 
+
 
 ) );
 
