@@ -214,10 +214,8 @@ InstallMethod( ViewObj,
 
   function( obj )
 
-    Print( "A rational vector space homomorphism with matrix: \n" );
+    Print( "<A rational vector space homomorphism in the category ", vecspaces, ">" );
   
-    Display( obj!.morphism );
-
 end );
 
 ##################################
