@@ -441,3 +441,38 @@ end;
 AddUniversalMorphismIntoFiberProductByFR5( vecspaces, universal_morphism_into_Fiber_product_by_FR5 );
 
 
+#################
+##
+## Demos
+##
+#################
+
+# ReadPackage( "FrobeniusCategoriesForCAP", "examples/VectorSpacesFrobeniusCategory.gi" );
+
+## FR5
+#
+# f := QVectorSpaceMorphism( [ [  2,  4 ], [  3,  5 ], [  1,  6 ], [  2,  7 ], [  3,  8 ], [  1,  9 ] ] );
+# g := QVectorSpaceMorphism( [ [  22,   4 ], [   3,  52 ], [  13,  62 ], [   2,  73 ], [   3,  84 ], [   1,  91 ], [  10,   0 ] ] );
+#
+# conf := CreateConflation( KernelEmbedding( f ), f );
+# Display( conf );
+#
+# F := FiberProductByFR5( conf, g );
+# P := ProjectionsOfFiberProductByFR5( conf, g );
+# Display( P[ 1 ] );
+# Display( P[ 2 ] );
+# t1 := QVectorSpaceMorphism( 13*P[ 1 ]!.morphism );
+# t2 := QVectorSpaceMorphism( 13*P[ 2 ]!.morphism );
+# u  := UniversalMorphismIntoFiberProductByFR5( [ conf, g ], [ t1, t2 ] );
+# Display( u );
+# t3 := QVectorSpaceMorphism( 5*P[ 2 ]!.morphism );
+# UniversalMorphismIntoFiberProductByFR5( [ conf, g ], [ t1, t3 ] );
+
+
+
+
+
+
+
+
+
