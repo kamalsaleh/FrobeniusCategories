@@ -457,6 +457,10 @@ AddUniversalMorphismIntoFiberProductByFR5( vecspaces, universal_morphism_into_Fi
 # conf := CreateConflation( KernelEmbedding( f ), f );
 # Display( conf );
 #
+# fr:= FR5( conf, g ); 
+# Display( fr[ 1 ] );
+# Display( fr[ 2 ] );
+#
 # F := FiberProductByFR5( conf, g );
 # P := ProjectionsOfFiberProductByFR5( conf, g );
 # Display( P[ 1 ] );
