@@ -424,4 +424,22 @@ end;
 AddFR5( vecspaces, fr5 );
 
 
+universal_morphism_into_Fiber_product_by_FR5 := 
+        
+        function( D, tau )
+        local D1, tau1, universal_morphism;
+        
+        D1 := [ AsMorphismInMatrixCategory( D[ 1 ]!.morphism2 ), AsMorphismInMatrixCategory( D[ 2 ] ) ];
+        
+        tau1 := [ AsMorphismInMatrixCategory( tau[ 1 ] ), AsMorphismInMatrixCategory( tau[ 2 ] ) ];
+        
+        
+        universal_morphism := UniversalMorphismIntoFiberProduct( D1, tau1 );
+        
+        return QVectorSpaceMorphism( universal_morphism );
+        
+end;
+
+AddUniversalMorphismIntoFiberProductByFR5( vecspaces, universal_morphism_into_Fiber_product_by_FR5 );
+
 
