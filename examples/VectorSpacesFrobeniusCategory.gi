@@ -493,7 +493,7 @@ AddUniversalMorphismFromPushoutByFR6( vecspaces, universal_morphism_from_pushout
 
 # ReadPackage( "FrobeniusCategoriesForCAP", "examples/VectorSpacesFrobeniusCategory.gi" );
 
-## FR5
+### FR5
 #
 # f := QVectorSpaceMorphism( [ [  2,  4 ], [  3,  5 ], [  1,  6 ], [  2,  7 ], [  3,  8 ], [  1,  9 ] ] );
 # g := QVectorSpaceMorphism( [ [  22,   4 ], [   3,  52 ], [  13,  62 ], [   2,  73 ], [   3,  84 ], [   1,  91 ], [  10,   0 ] ] );
@@ -517,17 +517,39 @@ AddUniversalMorphismFromPushoutByFR6( vecspaces, universal_morphism_from_pushout
 # UniversalMorphismIntoFiberProductByFR5( [ conf, g ], [ t1, t3 ] );
 
 
-## FR6 
-# Candaian aboriginal
-# Lisu
-     
-#                    [ [ 3 ] ]
-#                 Q ------------> Q
-#                 ¦               ¦
-#   g = [ [ 4 ] ] ¦               ?
-#                 ¦               ¦
-#                 ꓦ               ꓦ
-#                 Q ----- ? ----> ? 
+### FR6 
+##
+##                     f:= [ [ 3 ] ]           [  ]
+##                 Q >-----------------> Q ----------->> 0
+##                 ¦                     ¦ 
+##   g = [ [ 4 ] ] ¦                     ?
+##                 ¦                     ¦
+##                 ꓦ                     ꓦ
+##                 Q >-------- ? ------> ? ---- ? ---->> ?
+##                   
+# 
+# f := QVectorSpaceMorphism( [ [ 3 ] ] );
+# conf := CreateConflation( f, CokernelProjection( f ) );
+# g := QVectorSpaceMorphism( [ [ 4 ] ] );
+#
+# fr := FR6( conf, g );
+# Display( fr[ 1 ] );
+# Display( fr[ 2 ] );
+#
+# P:= PushoutByFR6( conf, g );
+# Display( P );
+#
+# I := InjectionsOfPushoutByFR6( conf, g );
+# Display( I[ 1 ] );
+# Display( I[ 2 ] );
+#
+# t1 := QVectorSpaceMorphism( [ [ 8 ] ] );
+# t2 := QVectorSpaceMorphism( [ [ 6 ] ] );
+# u:= UniversalMorphismFromPushoutByFR6( [ conf, g ], [ t1, t2 ]  );
+# Display( u );
+# UniversalMorphismFromPushoutByFR6( [ conf, g ], [ t2, t1 ]  );
+
+
 
 
 
