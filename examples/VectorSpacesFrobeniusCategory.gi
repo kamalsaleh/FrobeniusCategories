@@ -517,6 +517,17 @@ AddUniversalMorphismFromPushoutByFR6( vecspaces, universal_morphism_from_pushout
 # UniversalMorphismIntoFiberProductByFR5( [ conf, g ], [ t1, t3 ] );
 
 
+## FR6 
+# Candaian aboriginal
+# Lisu
+     
+#                    [ [ 3 ] ]
+#                 Q ------------> Q
+#                 ¦               ¦
+#   g = [ [ 4 ] ] ¦               ?
+#                 ¦               ¦
+#                 ꓦ               ꓦ
+#                 Q ----- ? ----> ? 
 
 
 
