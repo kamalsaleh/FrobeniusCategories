@@ -441,6 +441,50 @@ end;
 AddUniversalMorphismIntoFiberProductByFR5( vecspaces, universal_morphism_into_Fiber_product_by_FR5 );
 
 
+fr6 := function( conf, mor )
+       local f,g, gamma, beta;
+       
+       f:= conf!.morphism1;
+       g:= mor;
+       
+       f := AsMorphismInMatrixCategory( f );
+       g := AsMorphismInMatrixCategory( g );
+       
+       
+       gamma := InjectionOfCofactorOfPushout( [ f, g ], 1 );
+
+       beta  := InjectionOfCofactorOfPushout( [ f, g ], 2 );
+
+       gamma := QVectorSpaceMorphism( gamma );
+       
+       beta  := QVectorSpaceMorphism( beta  );
+       
+       return [ CreateConflation( beta, CokernelProjection( beta ) ), gamma ];
+       
+end;
+
+AddFR6( vecspaces, fr6 );
+
+
+universal_morphism_from_pushout_by_FR6 := 
+
+        function( D, tau )
+        local D1, tau1, universal_morphism;
+        
+        D1 := [ AsMorphismInMatrixCategory( D[ 1 ]!.morphism1 ), AsMorphismInMatrixCategory( D[ 2 ] ) ];
+        
+        tau1 := [ AsMorphismInMatrixCategory( tau[ 1 ] ), AsMorphismInMatrixCategory( tau[ 2 ] ) ];
+        
+        
+        universal_morphism := UniversalMorphismFromPushout( D1, tau1 );
+        
+        return QVectorSpaceMorphism( universal_morphism );
+        
+end;
+
+
+AddUniversalMorphismFromPushoutByFR6( vecspaces, universal_morphism_from_pushout_by_FR6 );
+
 #################
 ##
 ## Demos

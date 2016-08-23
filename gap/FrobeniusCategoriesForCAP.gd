@@ -81,6 +81,8 @@ fi;
  DeclareOperationWithCache( "InjectionsOfPushoutByFR6", [ IsCapCategoryConflation, IsCapCategoryMorphism ] );
  DoDeclarationStuff( "InjectionsOfPushoutByFR6" );
 
+ DeclareOperationWithCache( "UniversalMorphismFromPushoutByFR6", [ IsList, IsList ] );
+ DoDeclarationStuff( "UniversalMorphismFromPushoutByFR6" );
  
 #################################
 ##

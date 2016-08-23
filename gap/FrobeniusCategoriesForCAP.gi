@@ -360,6 +360,91 @@ cache_name := "InjectionsOfPushoutByFR6",
 return_type := [ "morphism", "morphism" ] ),                 
 
 
+UniversalMorphismFromPushoutByFR6:= rec( 
+
+installation_name := "UniversalMorphismFromPushoutByFR6", 
+filter_list := [ IsList, IsList ],
+cache_name := "UniversalMorphismFromPushoutByFR6",
+
+pre_function:= function( D, tau )
+               local f,g, is_equal_for_morphisms;
+               
+               if not IsCapCategoryConflation( D[ 1 ] ) then 
+               
+                  return [ false, "The first entry of the first list should be a conflation" ];
+                  
+               fi;
+               
+               if not IsCapCategoryMorphism( D[ 2 ] ) then
+                 
+                  return [ false, "The second entry of the first list should be a morphism" ];
+                  
+               fi;
+               
+               if not IsCapCategoryMorphism( tau[ 1 ] ) or not IsCapCategoryMorphism( tau[ 2 ] ) then
+               
+                  return [ false, "The second list should be list of two morphisms" ];
+                  
+               fi;
+               
+               
+               f := D[ 1 ]!.morphism1;
+               g := D[ 2 ];
+               
+               is_equal_for_morphisms := IsEqualForMorphisms( PostCompose( tau[ 1 ], f ), PostCompose( tau[ 2 ], g ) );
+               
+               if is_equal_for_morphisms = fail then 
+               
+                   return [ false, "Cannot determine if the resulted diagram is commutative" ];
+                   
+               elif is_equal_for_morphisms = false then 
+               
+                   return [ false, "The resulted diagram by the inputs is not commutative" ];
+                   
+               else
+               
+                   return [ true ];
+                   
+               fi;
+               
+               end,
+               
+               
+return_type := "morphism", 
+
+post_function := function( D, tau, return_value )
+                 local p, proj1, proj2, is_equal_for_morphisms;
+                 
+                 p :=InjectionsOfPushoutByFR6( D[ 1 ], D [ 2 ] );
+                 
+                 is_equal_for_morphisms := IsEqualForMorphisms( PostCompose( return_value, p[ 1 ] ), tau[ 1 ] );
+               
+                 if is_equal_for_morphisms = fail then 
+                
+                     Error( "Cannot determine if the resulted diagrams are commutative" );
+                   
+                 elif is_equal_for_morphisms = false then 
+               
+                     Error( "The resulted diagram by the output is not commutative" );
+                   
+                 fi;
+                 
+                 is_equal_for_morphisms := IsEqualForMorphisms( PostCompose( return_value, p[ 2 ] ), tau[ 2 ] );
+               
+                 if is_equal_for_morphisms = fail then 
+                
+                     Error( "Cannot determine if the resulted diagrams are commutative" );
+                   
+                 elif is_equal_for_morphisms = false then 
+               
+                     Error( "The resulted diagram by the output is not commutative" );
+                   
+                 fi;
+                 
+                 end ),                 
+
+
+
 ) );
 
 CAP_INTERNAL_ENHANCE_NAME_RECORD( FROBENIUS_CATEGORIES_METHOD_NAME_RECORD );
