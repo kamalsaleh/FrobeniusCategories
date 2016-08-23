@@ -1,6 +1,6 @@
 ###################################################################################
 ##                                                                               ##
-## Giving rational vector spaces category a structure of a triangulated category ##
+## Giving rational vector spaces category a structure of a Frobenius category    ##
 ##                                                                               ##
 ###################################################################################
 
