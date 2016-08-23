@@ -494,7 +494,16 @@ AddUniversalMorphismFromPushoutByFR6( vecspaces, universal_morphism_from_pushout
 # ReadPackage( "FrobeniusCategoriesForCAP", "examples/VectorSpacesFrobeniusCategory.gi" );
 
 ### FR5
-#
+##                       ?                    ? 
+##            ? >------------------> ? ------------>> Q^7
+##                                   ¦                 ¦ 
+##                                 ? ¦                 ¦ g
+##                                   ¦                 ¦
+##                                   ꓦ                 ꓦ
+##   conf:= Q^4 >-----------------> Q^6 ----------->> Q^2
+##                  kernel( f )               f
+
+
 # gap>  f := QVectorSpaceMorphism( [ [  2,  4 ], [  3,  5 ], [  1,  6 ], [  2,  7 ], [  3,  8 ], [  1,  9 ] ] );                           
 # <A rational vector space homomorphism in the category VectorSpaces>
 # gap>  g := QVectorSpaceMorphism( [ [  22,   4 ], [   3,  52 ], [  13,  62 ], [   2,  73 ], [   3,  84 ], [   1,  91 ], [  10,   0 ] ] ); 
@@ -648,11 +657,11 @@ AddUniversalMorphismFromPushoutByFR6( vecspaces, universal_morphism_from_pushout
 ##                     f:= [ [ 3 ] ]           [  ]
 ##                 Q >-----------------> Q ----------->> 0
 ##                 ¦                     ¦ 
-##   g = [ [ 4 ] ] ¦                     ?
+##   g = [ [ 4 ] ] ¦                     ¦ ?
 ##                 ¦                     ¦
 ##                 ꓦ                     ꓦ
-##                 Q >-------- ? ------> ? ---- ? ---->> ?
-##                   
+##                 Q >-----------------> ? ----------->> ?
+##                            ?                 ?
 # 
 # gap>  f := QVectorSpaceMorphism( [ [ 3 ] ] );                            
 # <A rational vector space homomorphism in the category VectorSpaces>
