@@ -6,7 +6,8 @@ DeclareOperation( "ConstructeFrobeniusCategoryFromAbelianCategory", [ IsCapCateg
 InstallMethod( ConstructeFrobeniusCategoryFromAbelianCategory, 
                 [ IsCapCategory, IsString ], 
    function( cat, name_of_the_new_category )
-   local new_category, name_of_obj_creation_in_new_category, name_of_mor_creation_in_new_category;
+   local new_category, name_of_obj_creation_in_new_category, name_of_mor_creation_in_new_category,
+         name_of_type_of_object_in_new_category, name_of_rep_of_object_in_new_category;
    
    if not IsAbelianCategory( cat ) then 
    
@@ -15,6 +16,19 @@ InstallMethod( ConstructeFrobeniusCategoryFromAbelianCategory,
    fi;
    
    new_category := CreateCapCategory( name_of_the_new_category );
+   
+   
+   name_of_rep_of_object_in_new_category := Concatenation( "IsObjectIn", name_of_the_new_category, "Rep" );
+   
+   DeclareRepresentation( name_of_rep_of_object_in_new_category,
+                        IsCapCategoryObjectRep,
+                        [ ] );
+   name_of_type_of_object_in_new_category := Concatenation( "TheTypeOfObjectsIn", name_of_the_new_category );
+   
+   BindGlobal( name_of_type_of_object_in_new_category,
+        NewType( TheFamilyOfCapCategoryObjects,
+                ValueGlobal( name_of_rep_of_object_in_new_category ) ) );
+
    
    name_of_obj_creation_in_new_category := Concatenation( "AsObjectIn", name_of_the_new_category );
    
@@ -35,7 +49,7 @@ InstallMethod( ConstructeFrobeniusCategoryFromAbelianCategory,
              
              new_ob := rec( object := obj_in_cat );
              
-             ObjectifyWithAttributes( new_ob, TheTypeOfCapCategoryObjects );
+             ObjectifyWithAttributes( new_ob, ValueGlobal( name_of_type_of_object_in_new_category ) );
              
              Add( new_category, new_ob );
              
@@ -72,7 +86,8 @@ InstallMethod( ConstructeFrobeniusCategoryFromAbelianCategory,
              return new_mor;
              
              end );
-   
+             
+
    return new_category;
 
 end );
