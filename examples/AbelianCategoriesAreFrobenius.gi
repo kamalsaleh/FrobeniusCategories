@@ -215,7 +215,7 @@ InstallMethod( ConstructeFrobeniusCategoryFromAbelianCategory,
                                       
                                           end );
    
-    ## 
+    ## CokernelColift
     
     AddCokernelColift( new_category,      function( mor, tau)
     
