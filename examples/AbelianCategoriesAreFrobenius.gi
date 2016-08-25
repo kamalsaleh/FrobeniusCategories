@@ -99,12 +99,33 @@ InstallMethod( ConstructeFrobeniusCategoryFromAbelianCategory,
              return new_mor;
              
              end );
+    
+    InstallMethod( ViewObj, 
+                   [ ValueGlobal( name_of_rep_of_object_in_new_category ) ],
+             function( obj )
              
+             Print( "An object in ", new_category, " with original object in ", cat, ":\n\n" );
+             
+             ViewObj( obj!.object );
+             
+             end );
+             
+    InstallMethod( ViewObj, 
+                   [ ValueGlobal( name_of_rep_of_morphism_in_new_category ) ],
+             function( mor )
+             
+             Print( "A morphism in ", new_category, " with original morphism in ", cat, ":\n\n" );
+             
+             ViewObj( mor!.morphism );
+             
+             end );  
+
+    
     InstallMethod( Display, 
                    [ ValueGlobal( name_of_rep_of_object_in_new_category ) ],
              function( obj )
              
-             Print( "An object in ", new_category, " with original object in ", cat, ":\n" );
+             Print( "An object in ", new_category, " with original object in ", cat, ":\n\n" );
              
              Display( obj!.object );
              
@@ -114,7 +135,7 @@ InstallMethod( ConstructeFrobeniusCategoryFromAbelianCategory,
                    [ ValueGlobal( name_of_rep_of_morphism_in_new_category ) ],
              function( mor )
              
-             Print( "A morphism in ", new_category, " with original morphism in ", cat, ":\n" );
+             Print( "A morphism in ", new_category, " with original morphism in ", cat, ":\n\n" );
              
              Display( mor!.morphism );
              
