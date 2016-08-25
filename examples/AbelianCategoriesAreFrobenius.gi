@@ -140,6 +140,41 @@ InstallMethod( ConstructeFrobeniusCategoryFromAbelianCategory,
              Display( mor!.morphism );
              
              end );  
+    
+    ## Adding additive methods
+    
+    
+    ## IsEqualForObjects
+    
+    AddIsEqualForObjects( new_category, function( obj1, obj2 )
+                                   
+                                        return IsEqualForObjects( obj1!.object, obj2!.object );
+                                        
+                                        end );
+    
+    ## IsEqualForMorphisms
+    
+    AddIsEqualForMorphisms( new_category, function( mor1, mor2 )
+                                   
+                                        return IsEqualForMorphisms( mor1!.morphism, mor2!.morphism );
+                                        
+                                        end );
+    
+    ## identity_morphism
+                         
+    AddIdentityMorphism( new_category, function( obj )
+    
+                                       return ValueGlobal( name_of_mor_creation_in_new_category )( IdentityMorphism( obj!.object ) );
+                                       
+                                       end );
+    ## PreCompose 
+    
+    AddPreCompose( new_category, function( mor1, mor2 )
+    
+                                 return ValueGlobal( name_of_mor_creation_in_new_category )( PreCompose ( mor1!.morphism, mor2!.morphism ) );
+                                 
+                                 end );
+                                 
 
    return new_category;
 
