@@ -206,8 +206,25 @@ InstallMethod( ConstructeFrobeniusCategoryFromAbelianCategory,
                                           return ValueGlobal( name_of_mor_creation_in_new_category )( KernelLift( mor!.morphism, tau!.morphism ) );
                                           
                                           end );
+    
+    ## CokernelProjection
+    
+    AddCokernelProjection( new_category,  function( mor )
+    
+                                          return ValueGlobal( name_of_mor_creation_in_new_category )( CokernelProjection( mor!.morphism ) );
+                                      
+                                          end );
    
-   
+    ## 
+    
+    AddCokernelColift( new_category,      function( mor, tau)
+    
+                                          return ValueGlobal( name_of_mor_creation_in_new_category )( CokernelColift( mor!.morphism, tau!.morphism ) );
+                                          
+                                          end );
+    
+    
+    
    return new_category;
 
 end );
