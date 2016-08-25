@@ -62,9 +62,12 @@ InstallMethod( ConstructeFrobeniusCategoryFromAbelianCategory,
              
              new_mor := rec( morphism := mor_in_cat );
              
-             ObjectifyWithAttributes( new_mor, TheTypeOfCapCategoryMorphisms );
+             ObjectifyWithAttributes( new_mor, TheTypeOfCapCategoryMorphisms,
+                                    Source, ValueGlobal( name_of_obj_creation_in_new_category )( Source( mor_in_cat ) ),
+                                    Range,  ValueGlobal( name_of_obj_creation_in_new_category )( Range( mor_in_cat ) )
+                                    );
              
-#              Add( new_category, new_mor );
+             Add( new_category, new_mor );
              
              return new_mor;
              
