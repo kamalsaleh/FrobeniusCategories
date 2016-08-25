@@ -146,58 +146,58 @@ InstallMethod( ConstructeFrobeniusCategoryFromAbelianCategory,
     
     ## IsEqualForObjects
     
-    AddIsEqualForObjects( new_category, function( obj1, obj2 )
+    AddIsEqualForObjects( new_category,   function( obj1, obj2 )
                                    
-                                        return IsEqualForObjects( obj1!.object, obj2!.object );
+                                          return IsEqualForObjects( obj1!.object, obj2!.object );
                                         
-                                        end );
+                                          end );
     
     ## IsEqualForMorphisms
     
     AddIsEqualForMorphisms( new_category, function( mor1, mor2 )
                                    
-                                        return IsEqualForMorphisms( mor1!.morphism, mor2!.morphism );
+                                          return IsEqualForMorphisms( mor1!.morphism, mor2!.morphism );
                                         
-                                        end );
+                                          end );
     
     ## identity_morphism
                          
-    AddIdentityMorphism( new_category, function( obj )
+    AddIdentityMorphism( new_category,    function( obj )
     
-                                       return ValueGlobal( name_of_mor_creation_in_new_category )( IdentityMorphism( obj!.object ) );
+                                          return ValueGlobal( name_of_mor_creation_in_new_category )( IdentityMorphism( obj!.object ) );
                                        
-                                       end );
+                                          end );
     ## PreCompose 
     
-    AddPreCompose( new_category, function( mor1, mor2 )
+    AddPreCompose( new_category,          function( mor1, mor2 )
     
-                                 return ValueGlobal( name_of_mor_creation_in_new_category )( PreCompose ( mor1!.morphism, mor2!.morphism ) );
+                                          return ValueGlobal( name_of_mor_creation_in_new_category )( PreCompose ( mor1!.morphism, mor2!.morphism ) );
                                  
-                                 end );
+                                          end );
                                  
     ## IsZeroForObjects
    
-    AddIsZeroForObjects( new_category, function( obj )
+    AddIsZeroForObjects( new_category,    function( obj )
     
-                                       return IsZeroForObjects( obj!.object );
-                                       
-                                       end );
-                                       
+                                          return IsZeroForObjects( obj!.object );
+                                          
+                                          end );
+                                          
     ## IsZeroForMorphisms
    
-    AddIsZeroForMorphisms( new_category, function( mor )
-    
-                                         return IsZeroForMorphisms( mor!.morphism );
-                                       
-                                         end );                              
-
+    AddIsZeroForMorphisms( new_category,  function( mor )
+                                          
+                                          return IsZeroForMorphisms( mor!.morphism );
+                                          
+                                          end );
+                                          
     ## KernelEmbedding
     
-    AddKernelEmbedding( new_category, function( mor )
+    AddKernelEmbedding( new_category,     function( mor )
     
-                                      return ValueGlobal( name_of_mor_creation_in_new_category )( KernelEmbedding( mor!.morphism ) );
+                                          return ValueGlobal( name_of_mor_creation_in_new_category )( KernelEmbedding( mor!.morphism ) );
                                       
-                                      end  );
+                                          end  );
    
    return new_category;
 
