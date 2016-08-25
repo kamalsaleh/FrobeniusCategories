@@ -199,6 +199,15 @@ InstallMethod( ConstructeFrobeniusCategoryFromAbelianCategory,
                                       
                                           end  );
    
+    ## KernelLift 
+    
+    AddKernelLift( new_category,          function( mor, tau)
+    
+                                          return ValueGlobal( name_of_mor_creation_in_new_category )( KernelLift( mor!.morphism, tau!.morphism ) );
+                                          
+                                          end );
+   
+   
    return new_category;
 
 end );
