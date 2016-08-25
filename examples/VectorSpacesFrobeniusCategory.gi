@@ -485,6 +485,27 @@ end;
 
 AddUniversalMorphismFromPushoutByFR6( vecspaces, universal_morphism_from_pushout_by_FR6 );
 
+fr8:= function( obj )
+      local id;
+      
+      id:= IdentityMorphism( obj );
+      
+      return CreateConflation( id, CokernelProjection( id ) );
+end;
+
+AddFR8( vecspaces, fr8 );
+
+fr9:= function( obj )
+      local id;
+      
+      id:= IdentityMorphism( obj );
+      
+      return CreateConflation( KernelEmbedding( id ), id );
+end;
+
+AddFR9( vecspaces, fr9 );
+
+      
 #################
 ##
 ## Demos
@@ -504,13 +525,13 @@ AddUniversalMorphismFromPushoutByFR6( vecspaces, universal_morphism_from_pushout
 ##                  kernel( f )               f
 
 
-f := QVectorSpaceMorphism( [ [  2,  4 ], [  3,  5 ], [  1,  6 ], [  2,  7 ], [  3,  8 ], [  1,  9 ] ] );                           
+# f := QVectorSpaceMorphism( [ [  2,  4 ], [  3,  5 ], [  1,  6 ], [  2,  7 ], [  3,  8 ], [  1,  9 ] ] );                           
 #! <A rational vector space homomorphism in the category VectorSpaces>
-g := QVectorSpaceMorphism( [ [  22,   4 ], [   3,  52 ], [  13,  62 ], [   2,  73 ], [   3,  84 ], [   1,  91 ], [  10,   0 ] ] ); 
+# g := QVectorSpaceMorphism( [ [  22,   4 ], [   3,  52 ], [  13,  62 ], [   2,  73 ], [   3,  84 ], [   1,  91 ], [  10,   0 ] ] ); 
 #! <A rational vector space homomorphism in the category VectorSpaces>
-conf := CreateConflation( KernelEmbedding( f ), f ); 
+# conf := CreateConflation( KernelEmbedding( f ), f ); 
 #! <A Conflation in VectorSpaces>
-Display( conf ); 
+# Display( conf ); 
 #! object1 --(morphism1)--> object2 --(morphism2)--> object3
 #! 
 #! object1 is
@@ -539,9 +560,9 @@ Display( conf );
 #! 
 #! object3 is
 #! Q^(1 X 2) as an object in VectorSpaces
-fr:= FR5( conf, g ); 
+# fr:= FR5( conf, g ); 
 #! [ <A Conflation in VectorSpaces>, <A rational vector space homomorphism in the category VectorSpaces> ]
-Display( fr[ 1 ] ); 
+# Display( fr[ 1 ] ); 
 #! object1 --(morphism1)--> object2 --(morphism2)--> object3
 #! 
 #! object1 is
@@ -575,7 +596,7 @@ Display( fr[ 1 ] );
 #! 
 #! object3 is
 #! Q^(1 X 7) as an object in VectorSpaces
-Display( fr[ 2 ] ); 
+# Display( fr[ 2 ] ); 
 #! A rational vector space homomorphism Q^(1 X 11) --> Q^(1 X 6) with matrix: 
 #! [ [  -13/2,      4,      1,      0,      0,      0 ],
 #!   [  -11/2,      3,      0,      1,      0,      0 ],
@@ -588,11 +609,11 @@ Display( fr[ 2 ] );
 #!   [  237/2,    -78,      0,      0,      0,      0 ],
 #!   [    134,    -89,      0,      0,      0,      0 ],
 #!   [    -25,     20,      0,      0,      0,      0 ] ]
-F := FiberProductByFR5( conf, g ); 
+# F := FiberProductByFR5( conf, g ); 
 #! <A rational vector space of dimension 11 as an object in VectorSpaces>
-P := ProjectionsOfFiberProductByFR5( conf, g ); 
+# P := ProjectionsOfFiberProductByFR5( conf, g ); 
 #! [ <A rational vector space homomorphism in the category VectorSpaces>, <A rational vector space homomorphism in the category VectorSpaces> ]
-Display( P[ 1 ] ); 
+# Display( P[ 1 ] ); 
 #! A rational vector space homomorphism Q^(1 X 11) --> Q^(1 X 6) with matrix: 
 #! [ [  -13/2,      4,      1,      0,      0,      0 ],
 #!   [  -11/2,      3,      0,      1,      0,      0 ],
@@ -605,7 +626,7 @@ Display( P[ 1 ] );
 #!   [  237/2,    -78,      0,      0,      0,      0 ],
 #!   [    134,    -89,      0,      0,      0,      0 ],
 #!   [    -25,     20,      0,      0,      0,      0 ] ]
-Display( P[ 2 ] ); 
+# Display( P[ 2 ] ); 
 #! A rational vector space homomorphism Q^(1 X 11) --> Q^(1 X 7) with matrix: 
 #! [ [  0,  0,  0,  0,  0,  0,  0 ],
 #!   [  0,  0,  0,  0,  0,  0,  0 ],
@@ -618,13 +639,13 @@ Display( P[ 2 ] );
 #!   [  0,  0,  0,  0,  1,  0,  0 ],
 #!   [  0,  0,  0,  0,  0,  1,  0 ],
 #!   [  0,  0,  0,  0,  0,  0,  1 ] ]
-t1 := QVectorSpaceMorphism( 13*P[ 1 ]!.morphism ); 
+# t1 := QVectorSpaceMorphism( 13*P[ 1 ]!.morphism ); 
 #! <A rational vector space homomorphism in the category VectorSpaces>
-t2 := QVectorSpaceMorphism( 13*P[ 2 ]!.morphism ); 
+# t2 := QVectorSpaceMorphism( 13*P[ 2 ]!.morphism ); 
 #! <A rational vector space homomorphism in the category VectorSpaces>
-u  := UniversalMorphismIntoFiberProductByFR5( [ conf, g ], [ t1, t2 ] ); 
+# u  := UniversalMorphismIntoFiberProductByFR5( [ conf, g ], [ t1, t2 ] ); 
 #! <A rational vector space homomorphism in the category VectorSpaces>
-Display( u ); 
+# Display( u ); 
 #! A rational vector space homomorphism Q^(1 X 11) --> Q^(1 X 11) with matrix: 
 #! [ [  13,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0 ],
 #!   [   0,  13,   0,   0,   0,   0,   0,   0,   0,   0,   0 ],
@@ -637,7 +658,7 @@ Display( u );
 #!   [   0,   0,   0,   0,   0,   0,   0,   0,  13,   0,   0 ],
 #!   [   0,   0,   0,   0,   0,   0,   0,   0,   0,  13,   0 ],
 #!   [   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  13 ] ]
-t3 := QVectorSpaceMorphism( 5*P[ 2 ]!.morphism ); 
+# t3 := QVectorSpaceMorphism( 5*P[ 2 ]!.morphism ); 
 #! <A rational vector space homomorphism in the category VectorSpaces>
 # gap>  UniversalMorphismIntoFiberProductByFR5( [ conf, g ], [ t1, t3 ] ); 
 # Error, in function UniversalMorphismIntoFiberProductByFR5
@@ -663,15 +684,15 @@ t3 := QVectorSpaceMorphism( 5*P[ 2 ]!.morphism );
 ##                 Q >-----------------> ? ----------->> ?
 ##                            ?                 ?
 # 
-f := QVectorSpaceMorphism( [ [ 3 ] ] );                            
+# f := QVectorSpaceMorphism( [ [ 3 ] ] );                            
 #! <A rational vector space homomorphism in the category VectorSpaces>
-conf := CreateConflation( f, CokernelProjection( f ) ); 
+# conf := CreateConflation( f, CokernelProjection( f ) ); 
 #! <A Conflation in VectorSpaces>
-g := QVectorSpaceMorphism( [ [ 4 ] ] );                
+# g := QVectorSpaceMorphism( [ [ 4 ] ] );                
 #! <A rational vector space homomorphism in the category VectorSpaces>
-fr := FR6( conf, g ); 
+# fr := FR6( conf, g ); 
 #! [ <A Conflation in VectorSpaces>, <A rational vector space homomorphism in the category VectorSpaces> ]
-Display( fr[ 1 ] ); 
+# Display( fr[ 1 ] ); 
 #! object1 --(morphism1)--> object2 --(morphism2)--> object3
 #! 
 #! object1 is
@@ -692,28 +713,28 @@ Display( fr[ 1 ] );
 #! 
 #! object3 is
 #! Q^(1 X 0) as an object in VectorSpaces
-Display( fr[ 2 ] ); 
+# Display( fr[ 2 ] ); 
 #! A rational vector space homomorphism Q^(1 X 1) --> Q^(1 X 1) with matrix: 
 #! [ [  4/3 ] ]
-P:= PushoutByFR6( conf, g ); 
+# P:= PushoutByFR6( conf, g ); 
 #! <A rational vector space of dimension 1 as an object in VectorSpaces>
-Display( P ); 
+# Display( P ); 
 #! Q^(1 X 1) as an object in VectorSpaces
-I := InjectionsOfPushoutByFR6( conf, g ); 
+# I := InjectionsOfPushoutByFR6( conf, g ); 
 #! [ <A rational vector space homomorphism in the category VectorSpaces>, <A rational vector space homomorphism in the category VectorSpaces> ]
-Display( I[ 1 ] ); 
+# Display( I[ 1 ] ); 
 #! A rational vector space homomorphism Q^(1 X 1) --> Q^(1 X 1) with matrix: 
 #! [ [  4/3 ] ]
-Display( I[ 2 ] ); 
+# Display( I[ 2 ] ); 
 #! A rational vector space homomorphism Q^(1 X 1) --> Q^(1 X 1) with matrix: 
 #! [ [  1 ] ]
-t1 := QVectorSpaceMorphism( [ [ 8 ] ] ); 
+# t1 := QVectorSpaceMorphism( [ [ 8 ] ] ); 
 #! <A rational vector space homomorphism in the category VectorSpaces>
-t2 := QVectorSpaceMorphism( [ [ 6 ] ] ); 
+# t2 := QVectorSpaceMorphism( [ [ 6 ] ] ); 
 #! <A rational vector space homomorphism in the category VectorSpaces>
-u:= UniversalMorphismFromPushoutByFR6( [ conf, g ], [ t1, t2 ]  ); 
+# u:= UniversalMorphismFromPushoutByFR6( [ conf, g ], [ t1, t2 ]  ); 
 #! <A rational vector space homomorphism in the category VectorSpaces>
-Display( u ); 
+# Display( u ); 
 #! A rational vector space homomorphism Q^(1 X 1) --> Q^(1 X 1) with matrix: 
 #! [ [  6 ] ]
 
@@ -730,7 +751,70 @@ Display( u );
 # brk>
 
 
-
+### FR8 & FR9 
+#  A:= QVectorSpace( 8 );
+#! <A rational vector space of dimension 8 as an object in VectorSpaces>
+# FR8( A );
+#! <A Conflation in VectorSpaces>
+# gap> Display( last );
+#! object1 --(morphism1)--> object2 --(morphism2)--> object3
+#! 
+#! object1 is
+#! Q^(1 X 8) as an object in VectorSpaces
+#! 
+#! morphism1 is
+#! A rational vector space homomorphism Q^(1 X 8) --> Q^(1 X 8) with matrix: 
+#! [ [  1,  0,  0,  0,  0,  0,  0,  0 ],
+#!   [  0,  1,  0,  0,  0,  0,  0,  0 ],
+#!   [  0,  0,  1,  0,  0,  0,  0,  0 ],
+#!   [  0,  0,  0,  1,  0,  0,  0,  0 ],
+#!   [  0,  0,  0,  0,  1,  0,  0,  0 ],
+#!   [  0,  0,  0,  0,  0,  1,  0,  0 ],
+#!   [  0,  0,  0,  0,  0,  0,  1,  0 ],
+#!   [  0,  0,  0,  0,  0,  0,  0,  1 ] ]
+#! 
+#! 
+#! object2 is
+#! Q^(1 X 8) as an object in VectorSpaces
+#! 
+#! morphism2 is
+#! A rational vector space homomorphism Q^(1 X 8) --> Q^(1 X 0) with matrix: 
+#! (an empty 8 x 0 matrix)
+#! 
+#! 
+#! object3 is
+#! Q^(1 X 0) as an object in VectorSpaces
+#  FR9( A );       
+#! <A Conflation in VectorSpaces>
+#
+#! Display( last );
+#! object1 --(morphism1)--> object2 --(morphism2)--> object3
+#! 
+#! object1 is
+#! Q^(1 X 0) as an object in VectorSpaces
+#! 
+#! morphism1 is
+#! A rational vector space homomorphism Q^(1 X 0) --> Q^(1 X 8) with matrix: 
+#! (an empty 0 x 8 matrix)
+#! 
+#! 
+#! object2 is
+#! Q^(1 X 8) as an object in VectorSpaces
+#! 
+#! morphism2 is
+#! A rational vector space homomorphism Q^(1 X 8) --> Q^(1 X 8) with matrix: 
+#! [ [  1,  0,  0,  0,  0,  0,  0,  0 ],
+#!   [  0,  1,  0,  0,  0,  0,  0,  0 ],
+#!   [  0,  0,  1,  0,  0,  0,  0,  0 ],
+#!   [  0,  0,  0,  1,  0,  0,  0,  0 ],
+#!   [  0,  0,  0,  0,  1,  0,  0,  0 ],
+#!   [  0,  0,  0,  0,  0,  1,  0,  0 ],
+#!   [  0,  0,  0,  0,  0,  0,  1,  0 ],
+#!   [  0,  0,  0,  0,  0,  0,  0,  1 ] ]
+#! 
+#! 
+#! object3 is
+#! Q^(1 X 8) as an object in VectorSpaces
 
 
 

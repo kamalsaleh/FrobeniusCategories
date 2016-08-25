@@ -444,6 +444,19 @@ post_function := function( D, tau, return_value )
                  end ),                 
 
 
+FR8 := rec( 
+
+installation_name := "FR8", 
+filter_list := [ "object" ],
+cache_name := "FR8",
+return_type := [ IsCapCategoryConflation ] ),
+
+FR9 := rec( 
+
+installation_name := "FR9", 
+filter_list := [ "object" ],
+cache_name := "FR9",
+return_type := [ IsCapCategoryConflation ] ),
 
 ) );
 

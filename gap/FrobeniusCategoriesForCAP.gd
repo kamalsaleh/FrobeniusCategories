@@ -84,6 +84,12 @@ fi;
  DeclareOperationWithCache( "UniversalMorphismFromPushoutByFR6", [ IsList, IsList ] );
  DoDeclarationStuff( "UniversalMorphismFromPushoutByFR6" );
  
+ DeclareOperationWithCache( "FR8", [ IsCapCategoryObject ] );
+ DoDeclarationStuff( "FR8" );
+
+ DeclareOperationWithCache( "FR9", [ IsCapCategoryObject ] );
+ DoDeclarationStuff( "FR9" );
+ 
 #################################
 ##
 ## Methods 
