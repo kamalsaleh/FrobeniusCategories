@@ -175,7 +175,30 @@ InstallMethod( ConstructeFrobeniusCategoryFromAbelianCategory,
                                  
                                  end );
                                  
+    ## IsZeroForObjects
+   
+    AddIsZeroForObjects( new_category, function( obj )
+    
+                                       return IsZeroForObjects( obj!.object );
+                                       
+                                       end );
+                                       
+    ## IsZeroForMorphisms
+   
+    AddIsZeroForMorphisms( new_category, function( mor )
+    
+                                         return IsZeroForMorphisms( mor!.morphism );
+                                       
+                                         end );                              
 
+    ## KernelEmbedding
+    
+    AddKernelEmbedding( new_category, function( mor )
+    
+                                      return ValueGlobal( name_of_mor_creation_in_new_category )( KernelEmbedding( mor!.morphism ) );
+                                      
+                                      end  );
+   
    return new_category;
 
 end );
