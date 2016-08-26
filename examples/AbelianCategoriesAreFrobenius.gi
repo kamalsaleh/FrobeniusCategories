@@ -221,8 +221,54 @@ InstallMethod( ConstructeFrobeniusCategoryFromAbelianCategory,
                                           
                                           end );
     
+    ## Addition for morphisms
+    
+    AddAdditionForMorphisms( new_category,  function( mor1, mor2 )
+    
+                                            return ValueGlobal( name_of_mor_creation_in_new_category )( mor1!.morphism + mor2!.morphism );
+                                            
+                                            end );
+                                            
+    ## Additive Inverse for morphisms 
+    
+    AddAdditiveInverseForMorphisms( new_category, function( mor )
+                                                  
+                                                  return ValueGlobal( name_of_mor_creation_in_new_category )( AdditiveInverseForMorphisms( mor!.morphism ) );
+                                                  
+                                                  end );
+   
+    ## IsIsomorphism
+    
+    AddIsIsomorphism( new_category,  function( mor )
+    
+                                     return IsIsomorphism( mor!.morphism );
+                                     
+                                     end );
+
     
     
+    AddFR3( new_category, function( conf1, conf2 )
+                          local alpha, beta;
+       
+                          beta := PreCompose( conf1!.morphism2, conf2!.morphism2 );
+       
+                          alpha := KernelEmbedding( beta );
+       
+                          return CreateConflation( alpha, beta );
+       
+                          end );
+   
+   AddFR4( new_category,  function( conf1, conf2 )
+                          local alpha, beta;
+       
+                          alpha := PreCompose( conf1!.morphism1, conf2!.morphism1 );
+       
+                          beta := CokernelProjection( alpha );
+       
+                          return CreateConflation( alpha, beta );
+       
+                          end );
+   
    return new_category;
 
 end );
