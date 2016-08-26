@@ -43,8 +43,7 @@ InstallMethod( ConstructeFrobeniusCategoryFromAbelianCategory,
              
              if not Name( CapCategory( obj_in_cat ) ) = Name( cat ) then 
              
-                Print( "The given object does not live in ", cat );
-                Error( " " );
+                Error( Concatenation( "The given object does not live in ", Name( cat ) ) );
                 
              fi;
              
@@ -82,8 +81,7 @@ InstallMethod( ConstructeFrobeniusCategoryFromAbelianCategory,
              
              if not Name( CapCategory( mor_in_cat ) ) = Name( cat ) then 
              
-                Print( "The given morphism does not live in ", cat );
-                Error( " " );
+                Error( Concatenation( "The given morphism does not live in ", Name( cat ) ) );
                 
              fi;
              
