@@ -195,7 +195,7 @@ InstallMethod( ConstructeFrobeniusCategoryFromAbelianCategory,
     
                                           return ValueGlobal( name_of_mor_creation_in_new_category )( KernelEmbedding( mor!.morphism ) );
                                       
-                                          end  );
+                                          end );
    
     ## KernelLift 
     
