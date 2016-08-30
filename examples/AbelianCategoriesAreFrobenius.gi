@@ -268,6 +268,29 @@ InstallMethod( ConstructeFrobeniusCategoryFromAbelianCategory,
                           return CreateConflation( alpha, beta );
        
                           end );
+                          
+   AddFR5( new_category,        function( conf, mor )
+                                local f,g, gamma, beta;
+       
+                                f:= conf!.morphism2;
+                                g:= mor;
+       
+                                f := f!.morphism;
+                                g := g!.morphism;
+       
+       
+                                gamma := ProjectionInFactorOfFiberProduct( [ f, g ], 1 );
+
+                                # It can be proved theoriticaly that beta is epi, hence deflation.
+                                beta  := ProjectionInFactorOfFiberProduct( [ f, g ], 2 );
+
+                                gamma := ValueGlobal( name_of_mor_creation_in_new_category )( gamma );
+       
+                                beta  := ValueGlobal( name_of_mor_creation_in_new_category )( beta  );
+       
+                                return [ CreateConflation( KernelEmbedding( beta ), beta ), gamma ];
+        
+                                end );
    
    return new_category;
 
