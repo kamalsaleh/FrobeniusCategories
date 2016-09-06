@@ -17,12 +17,6 @@ InstallMethod( CreateNonFinalizedCopyOfTheCategory,
          convert_arg_from_new_category_to_original, recnames, current_name,add_current_name,
          name_of_the_global_variable_for_current_name;
    
-#    if not HasIsAbelianCategory( cat ) or not IsAbelianCategory( cat ) then 
-#    
-#       Error( "The category in the input should be abelian" );
-#       
-#    fi;
-   
    new_category := CreateCapCategory( name_of_the_new_category );
    
    
@@ -608,7 +602,7 @@ InstallMethod( CreateNonFinalizedCopyOfTheCategory,
                                                            end );
     fi;
     
-     # IsEpimorphism
+    # IsEpimorphism
     
     if CanCompute( cat, "IsEpimorphism" ) then 
     
@@ -644,47 +638,4 @@ A := VectorSpaceObject( 3, Q );
 B := VectorSpaceObject( 3, Q );
 
 new_cat:= CreateNonFinalizedCopyOfTheCategory( cat, "new_cat" );
-
-
-#     This code is a try add the medthods using a loop, but it does not work.....
-#
-#     recnames := RecNames( CAP_INTERNAL_METHOD_NAME_RECORD );
-#     
-#     Print( "Here is a list of installed methods for the category: ", name_of_the_new_category );
-#            
-#     for current_name in recnames do 
-#        
-#         if not IsSubset( current_name, "WithGiven" ) and CanCompute( cat, current_name ) then 
-#                       
-#            add_current_name := Concatenation( "Add", current_name );
-#            
-#            name_of_the_global_variable_for_current_name := Concatenation( "_1_crazy_", current_name );
-#            
-#            DeclareGlobalVariable( name_of_the_global_variable_for_current_name );
-#            Print( add_current_name,"\n" );
-#            InstallValue( name_of_the_global_variable_for_current_name, current_name );
-#                       
-#            ValueGlobal( add_current_name )( new_category, function( arg )
-#                                                           local arg_in_original, result_in_new, result_in_original;
-#                                                           Print( current_name );
-# 
-#                                                           arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
-# 
-#                                                           if not IsList( arg_in_original ) then 
-#                                                                  
-#                                                                  Print( "Hey" );
-#                                                                  arg_in_original:= [ arg_in_original ];
-#                                                                  
-#                                                           fi;
-#                                                          
-#                                                           result_in_original := CallFuncList( ValueGlobal( name_of_the_global_variable_for_current_name ), arg_in_original );
-# 
-#                                                           result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
-# 
-#                                                           return result_in_new;
-#                                                          
-#                                                           end );                                 
-#         fi;
-#         
-#     od;
   
