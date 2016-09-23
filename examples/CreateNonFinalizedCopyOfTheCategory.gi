@@ -15,10 +15,12 @@ InstallMethod( CreateNonFinalizedCopyOfTheCategory,
          name_of_type_of_morphism_in_new_category, name_of_rep_of_morphism_in_new_category,
          name_of_cell_creation_in_new_category, convert_arg_from_original_to_new_category,
          convert_arg_from_new_category_to_original, recnames, current_name,add_current_name,
-         name_of_the_global_variable_for_current_name;
+         name_of_the_global_variable_for_current_name, name, names_of_univeral_objects_morphisms_to_be_installed,
+         NAMES_OF_UNIVERSAL_OBJECTS_AND_MORPHISMS, new_name;
    
    new_category := CreateCapCategory( name_of_the_new_category );
    
+   new_category!.UnderlyingCategory := cat;
    
    name_of_rep_of_object_in_new_category := Concatenation( "IsObjectIn", name_of_the_new_category, "Rep" );
    
@@ -132,8 +134,16 @@ InstallMethod( CreateNonFinalizedCopyOfTheCategory,
     
     InstallGlobalFunction( ValueGlobal( convert_arg_from_original_to_new_category ),
                        function( arg )
-                                                 
-                       if Length( arg )= 1 and IsCapCategoryCell( arg[ 1 ] ) then 
+                       
+                       if Length( arg ) = 0 then 
+                       
+                          return new_category;
+                         
+#                        elif Length( arg ) =1 and IsCapCategory( arg[ 1 ] ) then 
+#                        
+#                           return new_category;
+#                                                  
+                       elif Length( arg )= 1 and IsCapCategoryCell( arg[ 1 ] ) then 
                                    
                           return ValueGlobal( name_of_cell_creation_in_new_category )( arg[ 1 ] );
                        
@@ -163,8 +173,17 @@ InstallMethod( CreateNonFinalizedCopyOfTheCategory,
     
     InstallGlobalFunction( ValueGlobal( convert_arg_from_new_category_to_original ),
                        function( arg )
-                                                 
-                       if Length( arg )= 1 and IsCapCategoryObject( arg[ 1 ] ) then 
+                       
+                       # Make sure that this is always true
+                       if Length( arg ) = 0 then 
+                       
+                          return cat;
+                          
+#                        elif Length( arg )= 1 and IsCapCategory( arg[ 1 ] ) then 
+#                        
+#                           return cat;
+#                                     
+                       elif Length( arg )= 1 and IsCapCategoryObject( arg[ 1 ] ) then 
                                    
                           return arg[ 1 ]!.object;
                        
@@ -235,396 +254,459 @@ InstallMethod( CreateNonFinalizedCopyOfTheCategory,
              end );  
              
     
-    ## Adding additive methods
+    # Adding additive methods
+    
+    recnames := Set( ListPrimitivelyInstalledOperationsOfCategory( cat ) );
     
     
-    ## IsEqualForObjects
+    # First we Install Universal Objects for the category 
     
-    if CanCompute( cat, "IsEqualForObjects" ) then 
+    NAMES_OF_UNIVERSAL_OBJECTS_AND_MORPHISMS := Set ([ "ZeroObject", "IsomorphismFromZeroObjectToInitialObject", "IsomorphismFromInitialObjectToZeroObject",
+"IsomorphismFromZeroObjectToTerminalObject", "IsomorphismFromTerminalObjectToZeroObject", "TerminalObject",
+"TerminalObjectFunctorial", "InitialObject", "InitialObjectFunctorial", "TensorUnit" ] );
+
+    names_of_univeral_objects_morphisms_to_be_installed := Intersection( NAMES_OF_UNIVERSAL_OBJECTS_AND_MORPHISMS, recnames );
     
-    AddIsEqualForObjects( new_category,                    function( arg )
-                                                           local arg_in_original, result_in_new, result_in_original;
+    for name in names_of_univeral_objects_morphisms_to_be_installed do 
+    
+
+    DeclareGlobalVariable( Concatenation( "Auxiliary_Global_Varable_",name ) );
+    InstallValue( ValueGlobal( Concatenation( "Auxiliary_Global_Varable_",name ) ), name );
+    
+    
+    ValueGlobal( Concatenation( "Add", ValueGlobal( Concatenation( "Auxiliary_Global_Varable_",name ) ) ) )( new_category,  function(  )
+                                                       
+                                                            local result_in_new, result_in_original;
+                                                            
+                                                            result_in_original := ValueGlobal( ValueGlobal( Concatenation( "Auxiliary_Global_Varable_",name ) ) )( cat );
+  
+
+                                                            result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
+  
+                                                            return result_in_new;
                                                            
-                                                           arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
- 
-                                                           if not IsList( arg_in_original ) then 
-                                                                  
-                                                                  arg_in_original:= [ arg_in_original ];
-                                                                  
-                                                           fi;
-                                                          
-                                                           result_in_original := CallFuncList( IsEqualForObjects, arg_in_original );
- 
-                                                           result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
- 
-                                                           return result_in_new;
-                                                          
-                                                           end );
-    fi;
+                                                            end );
+    od;
     
-    ## IsEqualForMorphisms
-    
-    if CanCompute( cat, "IsEqualForMorphisms" ) then 
-    
-    AddIsEqualForMorphisms( new_category,                  function( arg )
-                                                           local arg_in_original, result_in_new, result_in_original;
-                                                           
-                                                           arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
- 
-                                                           if not IsList( arg_in_original ) then 
-                                                                  
-                                                                  arg_in_original:= [ arg_in_original ];
-                                                                  
-                                                           fi;
-                                                          
-                                                           result_in_original := CallFuncList( IsEqualForMorphisms, arg_in_original );
- 
-                                                           result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
- 
-                                                           return result_in_new;
-                                                          
-                                                           end );
-    fi;
-    
-    
-    ## IdentityMorphism
-    
-    if CanCompute( cat, "IdentityMorphism" ) then 
-    
-    AddIdentityMorphism( new_category,                  function( arg )
-                                                           local arg_in_original, result_in_new, result_in_original;
-                                                           
-                                                           arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
- 
-                                                           if not IsList( arg_in_original ) then 
-                                                                  
-                                                                  arg_in_original:= [ arg_in_original ];
-                                                                  
-                                                           fi;
-                                                          
-                                                           result_in_original := CallFuncList( IdentityMorphism, arg_in_original );
- 
-                                                           result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
- 
-                                                           return result_in_new;
-                                                          
-                                                           end );
-    fi;
-    
-    ## PreCompose
-    
-    if CanCompute( cat, "PreCompose" ) then 
-    
-    AddPreCompose( new_category,                           function( arg )
-                                                           local arg_in_original, result_in_new, result_in_original;
-                                                           
-                                                           arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
- 
-                                                           if not IsList( arg_in_original ) then 
-                                                                  
-                                                                  arg_in_original:= [ arg_in_original ];
-                                                                  
-                                                           fi;
-                                                          
-                                                           result_in_original := CallFuncList( PreCompose, arg_in_original );
- 
-                                                           result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
- 
-                                                           return result_in_new;
-                                                          
-                                                           end );
-    fi;
-    
-    ## PostCompose
-    
-    if CanCompute( cat, "PostCompose" ) then 
-    
-    AddPostCompose( new_category,                           function( arg )
-                                                           local arg_in_original, result_in_new, result_in_original;
-                                                           
-                                                           arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
- 
-                                                           if not IsList( arg_in_original ) then 
-                                                                  
-                                                                  arg_in_original:= [ arg_in_original ];
-                                                                  
-                                                           fi;
-                                                          
-                                                           result_in_original := CallFuncList( PostCompose, arg_in_original );
- 
-                                                           result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
- 
-                                                           return result_in_new;
-                                                          
-                                                           end );
-    fi;
-    
-    # IsZeroForObjects
-    
-    if CanCompute( cat, "IsZeroForObjects" ) then 
-    
-    AddIsZeroForObjects( new_category,                           function( arg )
-                                                           local arg_in_original, result_in_new, result_in_original;
-                                                           
-                                                           arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
- 
-                                                           if not IsList( arg_in_original ) then 
-                                                                  
-                                                                  arg_in_original:= [ arg_in_original ];
-                                                                  
-                                                           fi;
-                                                          
-                                                           result_in_original := CallFuncList( IsZeroForObjects, arg_in_original );
- 
-                                                           result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
- 
-                                                           return result_in_new;
-                                                          
-                                                           end );
-    fi;
- 
-      # IsZeroForMorphisms
-    
-    if CanCompute( cat, "IsZeroForMorphisms" ) then 
-    
-    AddIsZeroForMorphisms( new_category,                           function( arg )
-                                                           local arg_in_original, result_in_new, result_in_original;
-                                                           
-                                                           arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
- 
-                                                           if not IsList( arg_in_original ) then 
-                                                                  
-                                                                  arg_in_original:= [ arg_in_original ];
-                                                                  
-                                                           fi;
-                                                          
-                                                           result_in_original := CallFuncList( IsZeroForMorphisms, arg_in_original );
- 
-                                                           result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
- 
-                                                           return result_in_new;
-                                                          
-                                                           end );
-    fi;
- 
-   
-    # KernelEmbedding
-    
-    if CanCompute( cat, "KernelEmbedding" ) then 
-    
-    AddKernelEmbedding( new_category,                           function( arg )
-                                                           local arg_in_original, result_in_new, result_in_original;
-                                                           
-                                                           arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
- 
-                                                           if not IsList( arg_in_original ) then 
-                                                                  
-                                                                  arg_in_original:= [ arg_in_original ];
-                                                                  
-                                                           fi;
-                                                          
-                                                           result_in_original := CallFuncList( KernelEmbedding, arg_in_original );
- 
-                                                           result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
- 
-                                                           return result_in_new;
-                                                          
-                                                           end );
-    fi;
-    
-    # KernelLift
-    
-    if CanCompute( cat, "KernelLift" ) then 
-    
-    AddKernelLift( new_category,                           function( arg )
-                                                           local arg_in_original, result_in_new, result_in_original;
-                                                           
-                                                           arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
- 
-                                                           if not IsList( arg_in_original ) then 
-                                                                  
-                                                                  arg_in_original:= [ arg_in_original ];
-                                                                  
-                                                           fi;
-                                                          
-                                                           result_in_original := CallFuncList( KernelLift, arg_in_original );
- 
-                                                           result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
- 
-                                                           return result_in_new;
-                                                          
-                                                           end );
-    fi;
-    
-    
-    # CokernelProjection
-    
-    if CanCompute( cat, "CokernelProjection" ) then 
-    
-    AddCokernelProjection( new_category,                           function( arg )
-                                                           local arg_in_original, result_in_new, result_in_original;
-                                                           
-                                                           arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
- 
-                                                           if not IsList( arg_in_original ) then 
-                                                                  
-                                                                  arg_in_original:= [ arg_in_original ];
-                                                                  
-                                                           fi;
-                                                          
-                                                           result_in_original := CallFuncList( CokernelProjection, arg_in_original );
- 
-                                                           result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
- 
-                                                           return result_in_new;
-                                                          
-                                                           end );
-    fi;
-    
-    # CokernelColift
-    
-    if CanCompute( cat, "CokernelColift" ) then 
-    
-    AddCokernelColift( new_category,                           function( arg )
-                                                           local arg_in_original, result_in_new, result_in_original;
-                                                           
-                                                           arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
- 
-                                                           if not IsList( arg_in_original ) then 
-                                                                  
-                                                                  arg_in_original:= [ arg_in_original ];
-                                                                  
-                                                           fi;
-                                                          
-                                                           result_in_original := CallFuncList( CokernelColift, arg_in_original );
- 
-                                                           result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
- 
-                                                           return result_in_new;
-                                                          
-                                                           end );
-    fi;
-    
-      # AdditionForMorphisms
-    
-    if CanCompute( cat, "AdditionForMorphisms" ) then 
-    
-    AddAdditionForMorphisms( new_category,                           function( arg )
-                                                           local arg_in_original, result_in_new, result_in_original;
-                                                           
-                                                           arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
- 
-                                                           if not IsList( arg_in_original ) then 
-                                                                  
-                                                                  arg_in_original:= [ arg_in_original ];
-                                                                  
-                                                           fi;
-                                                          
-                                                           result_in_original := CallFuncList( AdditionForMorphisms, arg_in_original );
- 
-                                                           result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
- 
-                                                           return result_in_new;
-                                                          
-                                                           end );
-    fi;
-    
-      # AdditiveInverseForMorphisms
-    
-    if CanCompute( cat, "AdditiveInverseForMorphisms" ) then 
-    
-    AddAdditiveInverseForMorphisms( new_category,                           function( arg )
-                                                           local arg_in_original, result_in_new, result_in_original;
-                                                           
-                                                           arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
- 
-                                                           if not IsList( arg_in_original ) then 
-                                                                  
-                                                                  arg_in_original:= [ arg_in_original ];
-                                                                  
-                                                           fi;
-                                                          
-                                                           result_in_original := CallFuncList( AdditiveInverseForMorphisms, arg_in_original );
- 
-                                                           result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
- 
-                                                           return result_in_new;
-                                                          
-                                                           end );
-    fi;
+     SubtractSet( recnames, names_of_univeral_objects_morphisms_to_be_installed );
+     
+     for name in recnames do
+     
+     
+    DeclareGlobalVariable( Concatenation( "Auxiliary_Global_Varable_",name ) );
+    InstallValue( ValueGlobal( Concatenation( "Auxiliary_Global_Varable_",name ) ), name );
     
      
-    # IsIsomorphism
-    
-    if CanCompute( cat, "IsIsomorphism" ) then 
-    
-    AddIsIsomorphism( new_category,                           function( arg )
-                                                           local arg_in_original, result_in_new, result_in_original;
-                                                           
-                                                           arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
+     ValueGlobal( Concatenation( "Add", ValueGlobal( Concatenation( "Auxiliary_Global_Varable_",name ) ) ) )( new_category,  function( arg )
+                                                        
+                                                             local arg_in_original, result_in_new, result_in_original;
+                                                             
+                                                             arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
+   
+                                                             if not IsList( arg_in_original ) then 
+                                                                    
+                                                                    arg_in_original:= [ arg_in_original ];
+                                                                    
+                                                             fi;
+                                                            
+                                                             Display(  ValueGlobal( Concatenation( "Auxiliary_Global_Varable_",name ) ) );
+                                                             result_in_original := CallFuncList( ValueGlobal( ValueGlobal( Concatenation( "Auxiliary_Global_Varable_",name ) ) ), arg_in_original );
+   
  
-                                                           if not IsList( arg_in_original ) then 
-                                                                  
-                                                                  arg_in_original:= [ arg_in_original ];
-                                                                  
-                                                           fi;
-                                                          
-                                                           result_in_original := CallFuncList( IsIsomorphism, arg_in_original );
- 
-                                                           result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
- 
-                                                           return result_in_new;
-                                                          
-                                                           end );
-    fi;
-    
-    # IsMonomorphism
-    
-    if CanCompute( cat, "IsMonomorphism" ) then 
-    
-    AddIsMonomorphism( new_category,                           function( arg )
-                                                           local arg_in_original, result_in_new, result_in_original;
-                                                           
-                                                           arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
- 
-                                                           if not IsList( arg_in_original ) then 
-                                                                  
-                                                                  arg_in_original:= [ arg_in_original ];
-                                                                  
-                                                           fi;
-                                                          
-                                                           result_in_original := CallFuncList( IsMonomorphism, arg_in_original );
- 
-                                                           result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
- 
-                                                           return result_in_new;
-                                                          
-                                                           end );
-    fi;
-    
-    # IsEpimorphism
-    
-    if CanCompute( cat, "IsEpimorphism" ) then 
-    
-    AddIsEpimorphism( new_category,                        function( arg )
-                                                           local arg_in_original, result_in_new, result_in_original;
-                                                           
-                                                           arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
- 
-                                                           if not IsList( arg_in_original ) then 
-                                                                  
-                                                                  arg_in_original:= [ arg_in_original ];
-                                                                  
-                                                           fi;
-                                                          
-                                                           result_in_original := CallFuncList( IsEpimorphism, arg_in_original );
- 
-                                                           result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
- 
-                                                           return result_in_new;
-                                                          
-                                                           end );
-    fi;
+                                                             result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
+   
+                                                             return result_in_new;
+                                                            
+                                                             end );
+     od;
+     
+#     ## IsEqualForObjects
+#     
+#     if CanCompute( cat, "IsEqualForObjects" ) then 
+#     
+#     AddIsEqualForObjects( new_category,                    function( arg )
+#                                                            local arg_in_original, result_in_new, result_in_original;
+#                                                            
+#                                                            arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
+#  
+#                                                            if not IsList( arg_in_original ) then 
+#                                                                   
+#                                                                   arg_in_original:= [ arg_in_original ];
+#                                                                   
+#                                                            fi;
+#                                                           
+#                                                            result_in_original := CallFuncList( IsEqualForObjects, arg_in_original );
+#  
+#                                                            result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
+#  
+#                                                            return result_in_new;
+#                                                           
+#                                                            end );
+#     fi;
+#     
+#     ## IsEqualForMorphisms
+#     
+#     if CanCompute( cat, "IsEqualForMorphisms" ) then 
+#     
+#     AddIsEqualForMorphisms( new_category,                  function( arg )
+#                                                            local arg_in_original, result_in_new, result_in_original;
+#                                                            
+#                                                            arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
+#  
+#                                                            if not IsList( arg_in_original ) then 
+#                                                                   
+#                                                                   arg_in_original:= [ arg_in_original ];
+#                                                                   
+#                                                            fi;
+#                                                           
+#                                                            result_in_original := CallFuncList( IsEqualForMorphisms, arg_in_original );
+#  
+#                                                            result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
+#  
+#                                                            return result_in_new;
+#                                                           
+#                                                            end );
+#     fi;
+#     
+#     
+#     ## IdentityMorphism
+#     
+#     if CanCompute( cat, "IdentityMorphism" ) then 
+#     
+#     AddIdentityMorphism( new_category,                  function( arg )
+#                                                            local arg_in_original, result_in_new, result_in_original;
+#                                                            
+#                                                            arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
+#  
+#                                                            if not IsList( arg_in_original ) then 
+#                                                                   
+#                                                                   arg_in_original:= [ arg_in_original ];
+#                                                                   
+#                                                            fi;
+#                                                           
+#                                                            result_in_original := CallFuncList( IdentityMorphism, arg_in_original );
+#  
+#                                                            result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
+#  
+#                                                            return result_in_new;
+#                                                           
+#                                                            end );
+#     fi;
+#     
+#     ## PreCompose
+#     
+#     if CanCompute( cat, "PreCompose" ) then 
+#     
+#     AddPreCompose( new_category,                           function( arg )
+#                                                            local arg_in_original, result_in_new, result_in_original;
+#                                                            
+#                                                            arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
+#  
+#                                                            if not IsList( arg_in_original ) then 
+#                                                                   
+#                                                                   arg_in_original:= [ arg_in_original ];
+#                                                                   
+#                                                            fi;
+#                                                           
+#                                                            result_in_original := CallFuncList( PreCompose, arg_in_original );
+#  
+#                                                            result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
+#  
+#                                                            return result_in_new;
+#                                                           
+#                                                            end );
+#     fi;
+#     
+#     ## PostCompose
+#     
+#     if CanCompute( cat, "PostCompose" ) then 
+#     
+#     AddPostCompose( new_category,                           function( arg )
+#                                                            local arg_in_original, result_in_new, result_in_original;
+#                                                            
+#                                                            arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
+#  
+#                                                            if not IsList( arg_in_original ) then 
+#                                                                   
+#                                                                   arg_in_original:= [ arg_in_original ];
+#                                                                   
+#                                                            fi;
+#                                                           
+#                                                            result_in_original := CallFuncList( PostCompose, arg_in_original );
+#  
+#                                                            result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
+#  
+#                                                            return result_in_new;
+#                                                           
+#                                                            end );
+#     fi;
+#     
+#     # IsZeroForObjects
+#     
+#     if CanCompute( cat, "IsZeroForObjects" ) then 
+#     
+#     AddIsZeroForObjects( new_category,                           function( arg )
+#                                                            local arg_in_original, result_in_new, result_in_original;
+#                                                            
+#                                                            arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
+#  
+#                                                            if not IsList( arg_in_original ) then 
+#                                                                   
+#                                                                   arg_in_original:= [ arg_in_original ];
+#                                                                   
+#                                                            fi;
+#                                                           
+#                                                            result_in_original := CallFuncList( IsZeroForObjects, arg_in_original );
+#  
+#                                                            result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
+#  
+#                                                            return result_in_new;
+#                                                           
+#                                                            end );
+#     fi;
+#  
+#       # IsZeroForMorphisms
+#     
+#     if CanCompute( cat, "IsZeroForMorphisms" ) then 
+#     
+#     AddIsZeroForMorphisms( new_category,                           function( arg )
+#                                                            local arg_in_original, result_in_new, result_in_original;
+#                                                            
+#                                                            arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
+#  
+#                                                            if not IsList( arg_in_original ) then 
+#                                                                   
+#                                                                   arg_in_original:= [ arg_in_original ];
+#                                                                   
+#                                                            fi;
+#                                                           
+#                                                            result_in_original := CallFuncList( IsZeroForMorphisms, arg_in_original );
+#  
+#                                                            result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
+#  
+#                                                            return result_in_new;
+#                                                           
+#                                                            end );
+#     fi;
+#  
+#    
+#     # KernelEmbedding
+#     
+#     if CanCompute( cat, "KernelEmbedding" ) then 
+#     
+#     AddKernelEmbedding( new_category,                           function( arg )
+#                                                            local arg_in_original, result_in_new, result_in_original;
+#                                                            
+#                                                            arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
+#  
+#                                                            if not IsList( arg_in_original ) then 
+#                                                                   
+#                                                                   arg_in_original:= [ arg_in_original ];
+#                                                                   
+#                                                            fi;
+#                                                           
+#                                                            result_in_original := CallFuncList( KernelEmbedding, arg_in_original );
+#  
+#                                                            result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
+#  
+#                                                            return result_in_new;
+#                                                           
+#                                                            end );
+#     fi;
+#     
+#     # KernelLift
+#     
+#     if CanCompute( cat, "KernelLift" ) then 
+#     
+#     AddKernelLift( new_category,                           function( arg )
+#                                                            local arg_in_original, result_in_new, result_in_original;
+#                                                            
+#                                                            arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
+#  
+#                                                            if not IsList( arg_in_original ) then 
+#                                                                   
+#                                                                   arg_in_original:= [ arg_in_original ];
+#                                                                   
+#                                                            fi;
+#                                                           
+#                                                            result_in_original := CallFuncList( KernelLift, arg_in_original );
+#  
+#                                                            result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
+#  
+#                                                            return result_in_new;
+#                                                           
+#                                                            end );
+#     fi;
+#     
+#     
+#     # CokernelProjection
+#     
+#     if CanCompute( cat, "CokernelProjection" ) then 
+#     
+#     AddCokernelProjection( new_category,                           function( arg )
+#                                                            local arg_in_original, result_in_new, result_in_original;
+#                                                            
+#                                                            arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
+#  
+#                                                            if not IsList( arg_in_original ) then 
+#                                                                   
+#                                                                   arg_in_original:= [ arg_in_original ];
+#                                                                   
+#                                                            fi;
+#                                                           
+#                                                            result_in_original := CallFuncList( CokernelProjection, arg_in_original );
+#  
+#                                                            result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
+#  
+#                                                            return result_in_new;
+#                                                           
+#                                                            end );
+#     fi;
+#     
+#     # CokernelColift
+#     
+#     if CanCompute( cat, "CokernelColift" ) then 
+#     
+#     AddCokernelColift( new_category,                           function( arg )
+#                                                            local arg_in_original, result_in_new, result_in_original;
+#                                                            
+#                                                            arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
+#  
+#                                                            if not IsList( arg_in_original ) then 
+#                                                                   
+#                                                                   arg_in_original:= [ arg_in_original ];
+#                                                                   
+#                                                            fi;
+#                                                           
+#                                                            result_in_original := CallFuncList( CokernelColift, arg_in_original );
+#  
+#                                                            result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
+#  
+#                                                            return result_in_new;
+#                                                           
+#                                                            end );
+#     fi;
+#     
+#       # AdditionForMorphisms
+#     
+#     if CanCompute( cat, "AdditionForMorphisms" ) then 
+#     
+#     AddAdditionForMorphisms( new_category,                           function( arg )
+#                                                            local arg_in_original, result_in_new, result_in_original;
+#                                                            
+#                                                            arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
+#  
+#                                                            if not IsList( arg_in_original ) then 
+#                                                                   
+#                                                                   arg_in_original:= [ arg_in_original ];
+#                                                                   
+#                                                            fi;
+#                                                           
+#                                                            result_in_original := CallFuncList( AdditionForMorphisms, arg_in_original );
+#  
+#                                                            result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
+#  
+#                                                            return result_in_new;
+#                                                           
+#                                                            end );
+#     fi;
+#     
+#       # AdditiveInverseForMorphisms
+#     
+#     if CanCompute( cat, "AdditiveInverseForMorphisms" ) then 
+#     
+#     AddAdditiveInverseForMorphisms( new_category,                           function( arg )
+#                                                            local arg_in_original, result_in_new, result_in_original;
+#                                                            
+#                                                            arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
+#  
+#                                                            if not IsList( arg_in_original ) then 
+#                                                                   
+#                                                                   arg_in_original:= [ arg_in_original ];
+#                                                                   
+#                                                            fi;
+#                                                           
+#                                                            result_in_original := CallFuncList( AdditiveInverseForMorphisms, arg_in_original );
+#  
+#                                                            result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
+#  
+#                                                            return result_in_new;
+#                                                           
+#                                                            end );
+#     fi;
+#     
+#      
+#     # IsIsomorphism
+#     
+#     if CanCompute( cat, "IsIsomorphism" ) then 
+#     
+#     AddIsIsomorphism( new_category,                           function( arg )
+#                                                            local arg_in_original, result_in_new, result_in_original;
+#                                                            
+#                                                            arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
+#  
+#                                                            if not IsList( arg_in_original ) then 
+#                                                                   
+#                                                                   arg_in_original:= [ arg_in_original ];
+#                                                                   
+#                                                            fi;
+#                                                           
+#                                                            result_in_original := CallFuncList( IsIsomorphism, arg_in_original );
+#  
+#                                                            result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
+#  
+#                                                            return result_in_new;
+#                                                           
+#                                                            end );
+#     fi;
+#     
+#     # IsMonomorphism
+#     
+#     if CanCompute( cat, "IsMonomorphism" ) then 
+#     
+#     AddIsMonomorphism( new_category,                           function( arg )
+#                                                            local arg_in_original, result_in_new, result_in_original;
+#                                                            
+#                                                            arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
+#  
+#                                                            if not IsList( arg_in_original ) then 
+#                                                                   
+#                                                                   arg_in_original:= [ arg_in_original ];
+#                                                                   
+#                                                            fi;
+#                                                           
+#                                                            result_in_original := CallFuncList( IsMonomorphism, arg_in_original );
+#  
+#                                                            result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
+#  
+#                                                            return result_in_new;
+#                                                           
+#                                                            end );
+#     fi;
+#     
+#     # IsEpimorphism
+#     
+#     if CanCompute( cat, "IsEpimorphism" ) then 
+#     
+#     AddIsEpimorphism( new_category,                        function( arg )
+#                                                            local arg_in_original, result_in_new, result_in_original;
+#                                                            
+#                                                            arg_in_original := ValueGlobal( convert_arg_from_new_category_to_original )( arg );
+#  
+#                                                            if not IsList( arg_in_original ) then 
+#                                                                   
+#                                                                   arg_in_original:= [ arg_in_original ];
+#                                                                   
+#                                                            fi;
+#                                                           
+#                                                            result_in_original := CallFuncList( IsEpimorphism, arg_in_original );
+#  
+#                                                            result_in_new := ValueGlobal( convert_arg_from_original_to_new_category )( result_in_original );
+#  
+#                                                            return result_in_new;
+#                                                           
+#                                                            end );
+#     fi;
     
     return new_category;
     
@@ -638,4 +720,30 @@ A := VectorSpaceObject( 3, Q );
 B := VectorSpaceObject( 3, Q );
 
 new_cat:= CreateNonFinalizedCopyOfTheCategory( cat, "new_cat" );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
