@@ -84,11 +84,11 @@ fi;
  DeclareOperationWithCache( "UniversalMorphismFromPushoutByFR6", [ IsList, IsList ] );
  DoDeclarationStuff( "UniversalMorphismFromPushoutByFR6" );
  
- DeclareOperationWithCache( "FR8", [ IsCapCategoryObject ] );
- DoDeclarationStuff( "FR8" );
+ DeclareOperationWithCache( "FitIntoConflationUsingInjectiveObject", [ IsCapCategoryObject ] );
+ DoDeclarationStuff( "FitIntoConflationUsingInjectiveObject" );
 
- DeclareOperationWithCache( "FR9", [ IsCapCategoryObject ] );
- DoDeclarationStuff( "FR9" );
+ DeclareOperationWithCache( "FitIntoConflationUsingProjectiveObject", [ IsCapCategoryObject ] );
+ DoDeclarationStuff( "FitIntoConflationUsingProjectiveObject" );
  
 #################################
 ##
@@ -112,3 +112,12 @@ DeclareOperation( "CreateConflation",
 #################################
 
 DeclareAttribute( "CapCategory", IsCapCategoryShortSequence );
+
+#################################
+##
+## Properties
+##
+#################################
+
+DeclareProperty( "IsFrobeniusCategory", IsCapCategory );
+

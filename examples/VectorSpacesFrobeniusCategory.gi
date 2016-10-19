@@ -485,7 +485,7 @@ end;
 
 AddUniversalMorphismFromPushoutByFR6( vecspaces, universal_morphism_from_pushout_by_FR6 );
 
-fr8:= function( obj )
+fit_into_conflation_using_injective_object := function( obj )
       local id;
       
       id:= IdentityMorphism( obj );
@@ -493,9 +493,9 @@ fr8:= function( obj )
       return CreateConflation( id, CokernelProjection( id ) );
 end;
 
-AddFR8( vecspaces, fr8 );
+AddFitIntoConflationUsingInjectiveObject( vecspaces, fit_into_conflation_using_injective_object );
 
-fr9:= function( obj )
+fit_into_conflation_using_projective_object := function( obj )
       local id;
       
       id:= IdentityMorphism( obj );
@@ -503,7 +503,7 @@ fr9:= function( obj )
       return CreateConflation( KernelEmbedding( id ), id );
 end;
 
-AddFR9( vecspaces, fr9 );
+AddFitIntoConflationUsingProjectiveObject( vecspaces, fit_into_conflation_using_projective_object );
 
       
 #################
@@ -751,10 +751,10 @@ AddFR9( vecspaces, fr9 );
 # brk>
 
 
-### FR8 & FR9 
+### FitIntoConflationUsingInjectiveObject & FitIntoConflationUsingProjectiveObject 
 #  A:= QVectorSpace( 8 );
 #! <A rational vector space of dimension 8 as an object in VectorSpaces>
-# FR8( A );
+# FitIntoConflationUsingInjectiveObject( A );
 #! <A Conflation in VectorSpaces>
 # gap> Display( last );
 #! object1 --(morphism1)--> object2 --(morphism2)--> object3
@@ -784,7 +784,7 @@ AddFR9( vecspaces, fr9 );
 #! 
 #! object3 is
 #! Q^(1 X 0) as an object in VectorSpaces
-#  FR9( A );       
+#  FitIntoConflationUsingProjectiveObject( A );       
 #! <A Conflation in VectorSpaces>
 #
 #! Display( last );

@@ -444,18 +444,18 @@ post_function := function( D, tau, return_value )
                  end ),                 
 
 
-FR8 := rec( 
+FitIntoConflationUsingInjectiveObject := rec( 
 
-installation_name := "FR8", 
+installation_name := "FitIntoConflationUsingInjectiveObject", 
 filter_list := [ "object" ],
-cache_name := "FR8",
+cache_name := "FitIntoConflationUsingInjectiveObject",
 return_type := [ IsCapCategoryConflation ] ),
 
-FR9 := rec( 
+FitIntoConflationUsingProjectiveObject := rec( 
 
-installation_name := "FR9", 
+installation_name := "FitIntoConflationUsingProjectiveObject", 
 filter_list := [ "object" ],
-cache_name := "FR9",
+cache_name := "FitIntoConflationUsingProjectiveObject",
 return_type := [ IsCapCategoryConflation ] ),
 
 ) );
@@ -680,7 +680,8 @@ InstallMethod( Display,
               
    function( seq )
    
-   Print( "object1 --(morphism1)--> object2 --(morphism2)--> object3\n" );
+   Print( "           morphism1                  morphism2\n" );
+   Print( "object1 ----------------> object2 -----------------> object3\n" );
    
    Print( "\nobject1 is\n" ); Display( seq!.object1 );
    
@@ -693,42 +694,3 @@ InstallMethod( Display,
    Print( "\n\nobject3 is\n" ); Display( seq!.object3 );
    
 end );
-  
-
-  
-   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  
-  
-  
-  
