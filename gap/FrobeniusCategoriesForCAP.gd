@@ -90,6 +90,12 @@ fi;
  DeclareOperationWithCache( "FitIntoConflationUsingProjectiveObject", [ IsCapCategoryObject ] );
  DoDeclarationStuff( "FitIntoConflationUsingProjectiveObject" );
  
+ DeclareOperationWithCache( "InjectiveColift", [ IsCapCategoryMorphism, IsCapCategoryMorphism ] );
+ DoDeclarationStuff( "InjectiveColift" );
+ 
+ DeclareOperationWithCache( "ProjectiveLift", [ IsCapCategoryMorphism, IsCapCategoryMorphism ] );
+ DoDeclarationStuff( "ProjectiveLift" );
+ 
 #################################
 ##
 ## Methods 

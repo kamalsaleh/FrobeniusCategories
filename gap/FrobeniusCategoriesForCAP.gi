@@ -458,6 +458,49 @@ filter_list := [ "object" ],
 cache_name := "FitIntoConflationUsingProjectiveObject",
 return_type := [ IsCapCategoryConflation ] ),
 
+InjectiveColift := rec( 
+
+installation_name := "InjectiveColift", 
+filter_list := [ "morphism", "morphism" ],
+cache_name := "InjectiveColift",
+pre_function := function( f, g )
+
+                if not IsMonomorphism( f ) then 
+
+                   return [ false, "The first morphism should be mono" ];
+
+                else 
+
+                   return [ true ];
+
+                fi;
+
+                end,
+
+return_type := "morphism" ),
+
+
+ProjectiveLift := rec( 
+
+installation_name := "ProjectiveLift", 
+filter_list := [ "morphism", "morphism" ],
+cache_name := "ProjectiveLift",
+pre_function := function( f, g )
+
+                if not IsEpimorphism( g ) then 
+
+                   return [ false, "The second morphism should be epi" ];
+
+                else 
+
+                   return [ true ];
+
+                fi;
+
+                end,
+return_type := "morphism" ),
+
+
 ) );
 
 CAP_INTERNAL_ENHANCE_NAME_RECORD( FROBENIUS_CATEGORIES_METHOD_NAME_RECORD );
