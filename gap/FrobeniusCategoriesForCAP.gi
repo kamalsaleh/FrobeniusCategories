@@ -465,6 +465,12 @@ filter_list := [ "morphism", "morphism" ],
 cache_name := "InjectiveColift",
 pre_function := function( f, g )
 
+                if not IsEqualForObjects( Source( f ), Source( g ) ) then 
+                
+                   return [ false, "The sources of the both morphisms should be equal" ];
+                   
+                fi;
+                
                 if not IsMonomorphism( f ) then 
 
                    return [ false, "The first morphism should be mono" ];
@@ -486,7 +492,13 @@ installation_name := "ProjectiveLift",
 filter_list := [ "morphism", "morphism" ],
 cache_name := "ProjectiveLift",
 pre_function := function( f, g )
-
+                
+                if not IsEqualForObjects( Range( f ), Range( g ) ) then 
+                
+                   return [ false, "The ranges of the both morphisms should be equal" ];
+                   
+                fi;
+                
                 if not IsEpimorphism( g ) then 
 
                    return [ false, "The second morphism should be epi" ];
