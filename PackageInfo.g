@@ -63,7 +63,7 @@ PackageDoc := rec(
 
 Dependencies := rec(
   GAP := ">= 4.8",
-  NeededOtherPackages := [ [ "GAPDoc", ">= 1.5" ], [ "CAP", ">= 0.1" ] ],
+  NeededOtherPackages := [ [ "GAPDoc", ">= 1.5" ], [ "CAP", ">= 0.1" ], [ "StableCategoriesForCap", ">=0.1"], [ "TriangulatedCategoriesForCap", "0.1" ] ],
   SuggestedOtherPackages := [ ],
   ExternalConditions := [ ],
 ),

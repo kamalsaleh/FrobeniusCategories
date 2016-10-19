@@ -5,3 +5,4 @@
 #
 
 ReadPackage( "FrobeniusCategoriesForCAP", "gap/FrobeniusCategoriesForCAP.gd");
+ReadPackage( "FrobeniusCategoriesForCAP", "gap/FrobeniusToTriangulatedStableCategories.gd");
