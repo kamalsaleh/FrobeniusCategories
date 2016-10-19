@@ -346,6 +346,20 @@ end;
 
 AddIsIsomorphism( vecspaces, is_isomorphism );
 
+is_monomorphism := function( f )
+
+return IsMonomorphism( AsMorphismInMatrixCategory( f ) );
+end;
+
+AddIsMonomorphism( vecspaces, is_monomorphism );
+
+is_epimorphism := function( f )
+
+return IsEpimorphism( AsMorphismInMatrixCategory( f ) );
+end;
+
+AddIsEpimorphism( vecspaces, is_epimorphism );
+
 additive_inverse_for_morphisms := 
 
 function( mor )
@@ -505,7 +519,35 @@ end;
 
 AddFitIntoConflationUsingProjectiveObject( vecspaces, fit_into_conflation_using_projective_object );
 
-      
+
+injective_colift := function( mor1, mor2 )
+                    local A, B, matrix_of_colift;
+                    
+                    A := mor1!.morphism;
+                    B := mor2!.morphism;
+                    
+                    matrix_of_colift := LeftDivide( A, B );
+                    
+                    return QVectorSpaceMorphism( matrix_of_colift );
+                    
+                    end;
+
+AddInjectiveColift( vecspaces, injective_colift );
+
+projective_lift := function( mor1, mor2 )
+                    local A, B, matrix_of_lift;
+                    
+                    A := mor1!.morphism;
+                    B := mor2!.morphism;
+                    
+                    matrix_of_lift := RightDivide( A, B );
+                    
+                    return QVectorSpaceMorphism( matrix_of_lift );
+                    
+                    end;
+
+AddProjectiveLift( vecspaces, projective_lift );
+
 #################
 ##
 ## Demos
