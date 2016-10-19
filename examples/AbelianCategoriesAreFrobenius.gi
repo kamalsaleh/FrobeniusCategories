@@ -1,9 +1,9 @@
 ## Hey Kamal, 
 
 
-DeclareOperation( "ConstructeFrobeniusCategoryFromAbelianCategory", [ IsCapCategory, IsString ] );
+DeclareOperation( "ConstructeExactCategoryFromAbelianCategory", [ IsCapCategory, IsString ] );
 
-InstallMethod( ConstructeFrobeniusCategoryFromAbelianCategory, 
+InstallMethod( ConstructeExactCategoryFromAbelianCategory, 
                 [ IsCapCategory, IsString ], 
    function( cat, name_of_the_new_category )
    local new_category, name_of_obj_creation_in_new_category, name_of_mor_creation_in_new_category,

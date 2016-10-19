@@ -817,5 +817,21 @@ AddFitIntoConflationUsingProjectiveObject( vecspaces, fit_into_conflation_using_
 #! Q^(1 X 8) as an object in VectorSpaces
 
 
+# LoadPackage( "ModulePresentationsForCAP" );
+# LoadPackage( "IntrinsicCategories" );
+# LoadPackage( "HomologicalAlgebraForCAP" );
+# LoadPackage( "RingsForHomalg" );
+
+# QQ := HomalgFieldOfRationalsInSingular( );;
+# R := QQ * "x,y";
+# R_gmod := LeftPresentations( R );
+# category := IntrinsicCategory( R_gmod );
+# Id_in_R_gmod := IdentityFunctor( R_gmod );
+# M_in_R_mod := AsLeftPresentation( HomalgMatrix( [ [ 1, 1 ], [ 1, 2 ] ], R ) );
+# ApplyFunctor( Id_in_R_gmod, M_in_R_mod );
+
+
+
+
 
 
