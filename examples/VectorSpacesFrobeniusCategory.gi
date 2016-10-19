@@ -310,6 +310,14 @@ end;
 
 AddIsZeroForMorphisms( vecspaces, is_zero_for_mors );
 
+zero_morphism := function( obj1, obj2 )
+                 local O;
+                 O := HomalgZeroMatrix( Dimension( obj1 ), Dimension( obj2 ), Q );
+                 return QVectorSpaceMorphism( O );
+                 end;
+
+AddZeroMorphism( vecspaces, zero_morphism );
+
 kernel_embedding := function( mor )
                     return QVectorSpaceMorphism( KernelEmbedding( AsMorphismInMatrixCategory( mor ) ) );
 end;
