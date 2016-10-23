@@ -117,7 +117,7 @@ BindGlobal( "COMPUTE_TRIANGULATED_STRUCTURE_OF_A_STABLE_CATEGORY_OF_A_FROBENIUS_
   
   
    AddTR1( stable_category, function( mor )
-                            local underlying_mor, A, B, conf_A, resulted_conf, fr;
+                            local underlying_mor, A, B, conf_A, g, u;
                             
                             underlying_mor := UnderlyingMorphismOfTheStableMorphism( mor );
                             
@@ -151,17 +151,17 @@ BindGlobal( "COMPUTE_TRIANGULATED_STRUCTURE_OF_A_STABLE_CATEGORY_OF_A_FROBENIUS_
   #
   # Output is w: C ---> C' such that the diagram is commutative
 
-    AddTR3( stable_category, function( tr_f, tr_g, u, v )
-                             local 
-                             
-                             f1 := tr_f!.morphism1;
-                             
-                             g1 := tr_g!.morphism1;
-                             
-                             standard_tr_f := CompleteMorphismToExactTriangleByTR1( f1 );
-                             
-                             Standard_tr_g := CompleteMorphismToExactTriangleByTR1( g1 );
-                             
+#     AddTR3( stable_category, function( tr_f, tr_g, u, v )
+#                              local 
+#                              
+#                              f1 := tr_f!.morphism1;
+#                              
+#                              g1 := tr_g!.morphism1;
+#                              
+#                              standard_tr_f := CompleteMorphismToExactTriangleByTR1( f1 );
+#                              
+#                              Standard_tr_g := CompleteMorphismToExactTriangleByTR1( g1 );
+#                              
                              
                             
    
