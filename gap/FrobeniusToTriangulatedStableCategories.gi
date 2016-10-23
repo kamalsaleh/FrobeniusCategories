@@ -112,31 +112,58 @@ BindGlobal( "COMPUTE_TRIANGULATED_STRUCTURE_OF_A_STABLE_CATEGORY_OF_A_FROBENIUS_
   #       A -------> B -------> C ----------> T( A )
   # where  C = PushoutObject( B, I ) where A ----> I ----> T( A ) is a conflation.
   
-  # Adding method for TR1, it states that every morphism f: A ---> B can be completed to an exact triangle.
+  # Adding TR1, 
+  # It states that every morphism f: A ---> B can be completed to an exact triangle.
   
   
-  AddTR1( stable_category, function( mor )
-                           local underlying_mor, A, B, conf_A, resulted_conf, fr;
-                           
-                           underlying_mor := UnderlyingMorphismOfTheStableMorphism( mor );
-                           
-                           A := Source( underlying_mor );
-                           
-                           B := Range( underlying_mor );
-                           
-                           conf_A := FitIntoConflationUsingInjectiveObject( A );
-                           
-                           fr := FR6( conf_A, underlying_mor );
-                           
-                           resulted_conf := fr[ 1 ];
-                           
-                           return [ AsStableCategoryMorphism( stable_category,resulted_conf!.morphism1 ), 
-                                    AsStableCategoryObject( stable_category, resulted_conf!.object2 ), 
-                                    AsStableCategoryMorphism( stable_category, resulted_conf!.morphism2 ) ];
-                           
-                           end );
+   AddTR1( stable_category, function( mor )
+                            local underlying_mor, A, B, conf_A, resulted_conf, fr;
+                            
+                            underlying_mor := UnderlyingMorphismOfTheStableMorphism( mor );
+                            
+                            A := Source( underlying_mor );
+                            
+                            B := Range( underlying_mor );
+                            
+                            conf_A := FitIntoConflationUsingInjectiveObject( A );
+                            
+                            g := FR6( conf_A, underlying_mor )[ 1 ]!.morphism1;
+                            
+                            u := UniversalMorphismFromPushoutByFR6( [ conf_A, underlying_mor ], 
+                                                                    [ conf_A!.morphism2, ZeroMorphism( B, Range( conf_A!.morphism2 ) ) ] );
+                            
+                            return [ AsStableCategoryMorphism( stable_category, g ),
+                                     AsStableCategoryObject( stable_category, Range( g ) ),
+                                     AsStableCategoryMorphism( stable_category, u ) ];
+                            
+                            end );
    
-   
+  # Adding TR3
+  # Input is two triangles tr_f, tr_g and two morphisms u, v such that vf1 = g1u.
+  #
+  #             f1          f2              f3
+  # tr_f:  A ---------> B ----------> C ------------> A[ 1 ]
+  #        |            |             |                |
+  #      u |          v |             | ?              | u[ 1 ]
+  #        V            V             V                V
+  # tr_g:  A' --------> B'----------> C'------------> A'[ 1 ]
+  #              g1            g2            g3
+  #
+  # Output is w: C ---> C' such that the diagram is commutative
+
+    AddTR3( stable_category, function( tr_f, tr_g, u, v )
+                             local 
+                             
+                             f1 := tr_f!.morphism1;
+                             
+                             g1 := tr_g!.morphism1;
+                             
+                             standard_tr_f := CompleteMorphismToExactTriangleByTR1( f1 );
+                             
+                             Standard_tr_g := CompleteMorphismToExactTriangleByTR1( g1 );
+                             
+                             
+                            
    
     return stable_category;
     
