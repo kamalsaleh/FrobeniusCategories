@@ -54,6 +54,10 @@ fi;
 ##
 ####################################
 
+ 
+ DeclareOperationWithCache( "IsConflation", [ IsCapCategoryShortSequence ] );
+ DoDeclarationStuff( "IsConflation" );
+
  DeclareOperationWithCache( "FR3", [ IsCapCategoryConflation, IsCapCategoryConflation ] );
  DoDeclarationStuff( "FR3" );
 

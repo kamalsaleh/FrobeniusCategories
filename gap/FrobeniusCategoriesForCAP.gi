@@ -62,15 +62,33 @@ BindGlobal( "TheTypeCapCategoryConflation",
 BindGlobal( "TheTypeCapCategoryMorphismOfShortSequences", 
   NewType( CapCategoryMorphismsOfShortSequencesFamily, 
                       IsCapCategoryMorphismOfShortSequencesRep ) );
+                      
 ###############################
 ##
-##  
+##  Records and methods
 ##
 ###############################
 
 InstallValue( CAP_INTERNAL_FROBENIUS_CATEGORIES_BASIC_OPERATIONS, rec( ) );
 
 InstallValue( FROBENIUS_CATEGORIES_METHOD_NAME_RECORD, rec( 
+
+IsConflation := rec( 
+
+installation_name := "IsConflation", 
+filter_list := [ IsCapCategoryShortSequence ],
+cache_name := "IsConflation",
+return_type := "bool",
+post_function := function( seq, return_value )
+                 
+                 if return_value = true then 
+                 
+                    SetFilterObj( seq, IsCapCategoryConflation );
+                    
+                 fi;
+                 
+                 end ),
+
 
 FR3 := rec( 
 
