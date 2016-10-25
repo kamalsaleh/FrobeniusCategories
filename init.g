@@ -6,3 +6,4 @@
 
 ReadPackage( "FrobeniusCategoriesForCAP", "gap/FrobeniusCategoriesForCAP.gd");
 ReadPackage( "FrobeniusCategoriesForCAP", "gap/FrobeniusToTriangulatedStableCategories.gd");
+ReadPackage( "FrobeniusCategoriesForCAP", "gap/AbelianToExactCategories.gd");
