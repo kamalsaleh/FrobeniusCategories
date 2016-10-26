@@ -62,10 +62,10 @@ fi;
  DeclareOperationWithCache( "IsConflation", [ IsCapCategoryShortSequence ] );
  DoDeclarationStuff( "IsConflation" );
 
- DeclareOperationWithCache( "IsInflation", [ IsCapCategoryMorphism ] );
+ DeclareProperty( "IsInflation", IsCapCategoryMorphism );
  DoDeclarationStuff( "IsInflation" );
 
- DeclareOperationWithCache( "IsDeflation", [ IsCapCategoryMorphism ] );
+ DeclareProperty( "IsDeflation", IsCapCategoryMorphism );
  DoDeclarationStuff( "IsDeflation" );
 
  DeclareOperationWithCache( "FR3", [ IsCapCategoryConflation, IsCapCategoryConflation ] );
@@ -133,9 +133,17 @@ DeclareOperation( "CreateConflation",
 
 DeclareAttribute( "CapCategory", IsCapCategoryShortSequence );
 
+DeclareAttribute( "AsInflation", IsCapCategoryMorphism );
+
+DeclareAttribute( "AsDeflation", IsCapCategoryMorphism );
+
+DeclareAttribute( "ConflationOfInflation", IsCapCategoryInflation );
+
+DeclareAttribute( "ConflationOfDeflation", IsCapCategoryDeflation );
+
 DeclareAttribute( "INSTALL_LOGICAL_IMPLICATIONS_FOR_FROBENIUS_CATEGORY",
                   IsCapCategory );
-
+                  
 #################################
 ##
 ## Properties

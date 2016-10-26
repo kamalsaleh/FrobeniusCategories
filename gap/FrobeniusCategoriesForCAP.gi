@@ -91,7 +91,7 @@ post_function := function( morphism, return_value )
 
 IsDeflation := rec( 
 
-installation_name := "Isdeflation", 
+installation_name := "IsDeflation", 
 filter_list := [ "morphism" ],
 cache_name := "IsDeflation",
 return_type := "bool",
@@ -803,7 +803,7 @@ end );
 
 ################################
 ##
-## Immediate Methods 
+## Immediate Methods and Attributes 
 ##
 ################################
 
@@ -813,8 +813,6 @@ InstallImmediateMethod( INSTALL_LOGICAL_IMPLICATIONS_FOR_FROBENIUS_CATEGORY,
                
    function( category )
    
-   Print( "test" );
-   
    AddPredicateImplicationFileToCategory( category,
       Filename(
         DirectoriesPackageLibrary( "FrobeniusCategoriesForCAP", "LogicForFrobeniusCategories" ),
@@ -822,3 +820,80 @@ InstallImmediateMethod( INSTALL_LOGICAL_IMPLICATIONS_FOR_FROBENIUS_CATEGORY,
      
 end );
 
+InstallMethod( AsInflation, 
+                  [ IsCapCategoryMorphism ],
+                  
+    function( alpha )
+    
+    if IsCapCategoryInflation( alpha ) then 
+    
+       return alpha;
+       
+    elif HasIsInflation( alpha ) and IsInflation( alpha ) then 
+    
+       SetFilterObj( alpha, IsCapCategoryInflation );
+       
+    elif not CanCompute( CapCategory( alpha ), "IsInflation" ) then 
+    
+       Error( "There is no method to decide if the morphism is an inflation or not" );
+       
+    elif not IsInflation( alpha ) then 
+    
+       Error( "The morphism is not inflation" );
+     
+    else
+    
+       SetFilterObj( alpha, IsCapCategoryInflation );
+    
+    fi;
+    
+    return alpha;
+    
+end );
+
+InstallMethod( AsDeflation, 
+                  [ IsCapCategoryMorphism ],
+                  
+    function( alpha )
+    
+    if IsCapCategoryDeflation( alpha ) then 
+    
+       return alpha;
+       
+    elif HasIsDeflation( alpha ) and IsDeflation( alpha ) then 
+    
+      SetFilterObj( alpha, IsCapCategoryDeflation );
+       
+    elif not CanCompute( CapCategory( alpha ), "IsDeflation" ) then 
+    
+       Error( "There is no method to decide if the morphism is an deflationor not" );
+       
+    elif not IsDeflation( alpha ) then 
+    
+       Error( "The morphism is not deflation" );
+     
+    else
+    
+    SetFilterObj( alpha, IsCapCategoryDeflation );
+    
+    fi;
+    
+    return alpha;
+    
+end );
+
+InstallMethod( ConflationOfInflation, 
+               [ IsCapCategoryInflation ], 
+   function( alpha )
+   
+   return CreateConflation( alpha, CokernelProjection( alpha ) );
+   
+end );
+
+InstallMethod( ConflationOfDeflation, 
+               [ IsCapCategoryDeflation ], 
+   function( alpha )
+   
+   return CreateConflation( KernelEmbedding( alpha ), alpha );
+   
+end );
