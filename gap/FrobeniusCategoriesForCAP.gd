@@ -133,6 +133,9 @@ DeclareOperation( "CreateConflation",
 
 DeclareAttribute( "CapCategory", IsCapCategoryShortSequence );
 
+DeclareAttribute( "INSTALL_LOGICAL_IMPLICATIONS_FOR_FROBENIUS_CATEGORY",
+                  IsCapCategory );
+
 #################################
 ##
 ## Properties

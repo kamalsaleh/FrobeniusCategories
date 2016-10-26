@@ -799,3 +799,26 @@ InstallMethod( Display,
    Print( "\n\nobject3 is\n" ); Display( seq!.object3 );
    
 end );
+
+
+################################
+##
+## Immediate Methods 
+##
+################################
+
+InstallImmediateMethod( INSTALL_LOGICAL_IMPLICATIONS_FOR_FROBENIUS_CATEGORY,
+               IsCapCategory and IsFrobeniusCategory, 
+               0,
+               
+   function( category )
+   
+   Print( "test" );
+   
+   AddPredicateImplicationFileToCategory( category,
+      Filename(
+        DirectoriesPackageLibrary( "FrobeniusCategoriesForCAP", "LogicForFrobeniusCategories" ),
+        "PredicateImplicationsForGeneralFrobeniusCategories.tex" ) );
+     
+end );
+
