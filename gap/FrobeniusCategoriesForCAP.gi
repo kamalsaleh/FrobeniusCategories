@@ -73,6 +73,38 @@ InstallValue( CAP_INTERNAL_FROBENIUS_CATEGORIES_BASIC_OPERATIONS, rec( ) );
 
 InstallValue( FROBENIUS_CATEGORIES_METHOD_NAME_RECORD, rec( 
 
+IsInflation := rec( 
+
+installation_name := "IsInflation", 
+filter_list := [ "morphism" ],
+cache_name := "IsInflation",
+return_type := "bool",
+post_function := function( morphism, return_value )
+                 
+                 if return_value = true then 
+                 
+                    SetFilterObj( morphism, IsCapCategoryInflation );
+                    
+                 fi;
+                 
+                 end ),
+
+IsDeflation := rec( 
+
+installation_name := "Isdeflation", 
+filter_list := [ "morphism" ],
+cache_name := "IsDeflation",
+return_type := "bool",
+post_function := function( morphism, return_value )
+                 
+                 if return_value = true then 
+                 
+                    SetFilterObj( morphism, IsCapCategoryDeflation );
+                    
+                 fi;
+                 
+                 end ),
+                 
 IsConflation := rec( 
 
 installation_name := "IsConflation", 

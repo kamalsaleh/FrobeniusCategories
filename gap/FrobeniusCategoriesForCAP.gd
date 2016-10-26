@@ -12,6 +12,10 @@ DeclareCategory( "IsCapCategoryShortSequence", IsObject );
 
 DeclareCategory( "IsCapCategoryShortExactSequence", IsCapCategoryShortSequence );
 
+DeclareCategory( "IsCapCategoryInflation", IsCapCategoryMorphism );
+
+DeclareCategory( "IsCapCategoryDeflation", IsCapCategoryMorphism );
+
 DeclareCategory( "IsCapCategoryConflation", IsCapCategoryShortExactSequence );
 
 DeclareCategory( "IsCapCategoryMorphismOfShortSequences", IsObject );
@@ -57,6 +61,12 @@ fi;
  
  DeclareOperationWithCache( "IsConflation", [ IsCapCategoryShortSequence ] );
  DoDeclarationStuff( "IsConflation" );
+
+ DeclareOperationWithCache( "IsInflation", [ IsCapCategoryMorphism ] );
+ DoDeclarationStuff( "IsInflation" );
+
+ DeclareOperationWithCache( "IsDeflation", [ IsCapCategoryMorphism ] );
+ DoDeclarationStuff( "IsDeflation" );
 
  DeclareOperationWithCache( "FR3", [ IsCapCategoryConflation, IsCapCategoryConflation ] );
  DoDeclarationStuff( "FR3" );
