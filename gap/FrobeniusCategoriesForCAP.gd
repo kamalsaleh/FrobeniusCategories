@@ -68,35 +68,23 @@ fi;
  DeclareProperty( "IsDeflation", IsCapCategoryMorphism );
  DoDeclarationStuff( "IsDeflation" );
 
- DeclareOperationWithCache( "FR3", [ IsCapCategoryConflation, IsCapCategoryConflation ] );
- DoDeclarationStuff( "FR3" );
+ DeclareOperationWithCache( "FiberProductObjectInducedByStructureOfExactCategory", [ IsCapCategoryDeflation, IsCapCategoryMorphism ] );
+ DoDeclarationStuff( "FiberProductObjectInducedByStructureOfExactCategory" );
 
- DeclareOperationWithCache( "FR4", [ IsCapCategoryConflation, IsCapCategoryConflation ] );
- DoDeclarationStuff( "FR4" );
-
- DeclareOperationWithCache( "FR5", [ IsCapCategoryConflation, IsCapCategoryMorphism ] );
- DoDeclarationStuff( "FR5" );
-
- DeclareOperationWithCache( "FiberProductByFR5", [ IsCapCategoryConflation, IsCapCategoryMorphism ] );
- DoDeclarationStuff( "FiberProductByFR5" );
-
- DeclareOperationWithCache( "ProjectionsOfFiberProductByFR5", [ IsCapCategoryConflation, IsCapCategoryMorphism ] );
- DoDeclarationStuff( "ProjectionsOfFiberProductByFR5" );
+ DeclareOperationWithCache( "ProjectionsOfFiberProductInducedByStructureOfExactCategory", [ IsCapCategoryDeflation, IsCapCategoryMorphism ] );
+ DoDeclarationStuff( "ProjectionsOfFiberProductInducedByStructureOfExactCategory" );
  
- DeclareOperationWithCache( "UniversalMorphismIntoFiberProductByFR5", [ IsList, IsList ] );
- DoDeclarationStuff( "UniversalMorphismIntoFiberProductByFR5" );
- 
- DeclareOperationWithCache( "FR6", [ IsCapCategoryConflation, IsCapCategoryMorphism ] );
- DoDeclarationStuff( "FR6" );
+ DeclareOperationWithCache( "UniversalMorphismIntoFiberProductInducedByStructureOfExactCategory", [ IsList, IsList ] );
+ DoDeclarationStuff( "UniversalMorphismIntoFiberProductInducedByStructureOfExactCategory" );
 
- DeclareOperationWithCache( "PushoutByFR6", [ IsCapCategoryConflation, IsCapCategoryMorphism ] );
- DoDeclarationStuff( "PushoutByFR6" );
+ DeclareOperationWithCache( "PushoutObjectInducedByStructureOfExactCategory", [ IsCapCategoryInflation, IsCapCategoryMorphism ] );
+ DoDeclarationStuff( "PushoutObjectInducedByStructureOfExactCategory" );
  
- DeclareOperationWithCache( "InjectionsOfPushoutByFR6", [ IsCapCategoryConflation, IsCapCategoryMorphism ] );
- DoDeclarationStuff( "InjectionsOfPushoutByFR6" );
+ DeclareOperationWithCache( "InjectionsOfPushoutInducedByStructureOfExactCategory", [ IsCapCategoryInflation, IsCapCategoryMorphism ] );
+ DoDeclarationStuff( "InjectionsOfPushoutInducedByStructureOfExactCategory" );
 
- DeclareOperationWithCache( "UniversalMorphismFromPushoutByFR6", [ IsList, IsList ] );
- DoDeclarationStuff( "UniversalMorphismFromPushoutByFR6" );
+ DeclareOperationWithCache( "UniversalMorphismFromPushoutInducedByStructureOfExactCategory", [ IsList, IsList ] );
+ DoDeclarationStuff( "UniversalMorphismFromPushoutInducedByStructureOfExactCategory" );
  
  DeclareOperationWithCache( "FitIntoConflationUsingInjectiveObject", [ IsCapCategoryObject ] );
  DoDeclarationStuff( "FitIntoConflationUsingInjectiveObject" );
@@ -149,6 +137,8 @@ DeclareAttribute( "INSTALL_LOGICAL_IMPLICATIONS_FOR_FROBENIUS_CATEGORY",
 ## Properties
 ##
 #################################
+
+DeclareProperty( "IsExactCategory", IsCapCategory );
 
 DeclareProperty( "IsFrobeniusCategory", IsCapCategory );
 

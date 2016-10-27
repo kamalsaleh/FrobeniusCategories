@@ -14,8 +14,7 @@ if HasIsFinalized( category ) then
 
 fi;
 
-## 
-## A short sequence is conflation when it is exact
+## We define the class of conflations to be the class of all short exact sequences.
 
 AddIsConflation( category, function( sequence )
                               local alpha, beta, s, coker_alpha, coker_colift, ker_beta, ker_lift;
@@ -51,84 +50,69 @@ AddIsConflation( category, function( sequence )
 
                               end );
 
-AddFR3( category, function( conf1, conf2 )
-                          local alpha, beta;
-       
-                          beta := PreCompose( conf1!.morphism2, conf2!.morphism2 );
-       
-                          alpha := KernelEmbedding( beta );
-       
-                          return CreateConflation( alpha, beta );
-       
+## In an abelian categories every mono is normal, i.e., kernel of some morphism. Specifically, it is kernel of its 
+## own cokernel
+
+AddIsInflation( category, function( mor )
+                          
+                          return IsMonomorphism( mor );
+                          
                           end );
-   
-AddFR4( category,  function( conf1, conf2 )
-                          local alpha, beta;
-       
-                          alpha := PreCompose( conf1!.morphism1, conf2!.morphism1 );
-       
-                          beta := CokernelProjection( alpha );
-       
-                          return CreateConflation( alpha, beta );
-       
+
+## In an abelian categories every epi is normal, i.e., cokernel of some morphism. Specifically, it is cokernel of its 
+## own kernel
+                          
+AddIsDeflation( category, function( mor )
+                          
+                          return IsEpimorphism( mor );
+                          
                           end );
                           
-AddFR5( category,  function( conf, mor )
-                                local f,g, gamma, beta;
-       
-                                f:= conf!.morphism2;
-                                g:= mor;
-       
-                                f := f!.morphism;
-                                g := g!.morphism;
-       
-       
-                                gamma := ProjectionInFactorOfFiberProduct( [ f, g ], 1 );
+AddFiberProductObjectInducedByStructureOfExactCategory( category, function( def, mor )
+                                                               
+                                                               return FiberProduct( def, mor );
+                                                               
+                                                               end );
 
-                                beta  := ProjectionInFactorOfFiberProduct( [ f, g ], 2 );
+AddProjectionsOfFiberProductInducedByStructureOfExactCategory( category,  function(  def, mor )
+                                local gamma, beta;
+       
+                                gamma := ProjectionInFactorOfFiberProduct( [ def, mor ], 1 );
 
-                                return [ CreateConflation( KernelEmbedding( beta ), beta ), gamma ];
+                                beta  := AsDeflation( ProjectionInFactorOfFiberProduct( [ def, mor ], 2 ) );
+
+                                return [ gamma, beta ];
         
                                 end );
                                 
-AddUniversalMorphismIntoFiberProductByFR5( category, function( D, tau )
-                                                     local D1, universal_morphism;  
+AddUniversalMorphismIntoFiberProductInducedByStructureOfExactCategory( category, function( D, tau )
                                                      
-                                                     D1 := [ D[ 1 ]!.morphism2, D[ 2 ] ];
-                                                     
-                                                     universal_morphism := UniversalMorphismIntoFiberProduct( D1, tau );
-                                                     
-                                                     return universal_morphism;
+                                                     return UniversalMorphismIntoFiberProduct( D, tau );
                                                      
                                                      end );
 
 
-AddFR6( category,  function( conf, mor )
-                                local f,g, gamma, beta;
-       
-                                f:= conf!.morphism1;
-                                g:= mor;
-       
-                                f := f!.morphism;
-                                g := g!.morphism;
-       
-                                gamma := InjectionOfCofactorOfPushout( [ f, g ], 1 );
+AddPushoutObjectInducedByStructureOfExactCategory( category, function( inf, mor )
+                                                               
+                                                               return Pushout( inf, mor );
+                                                               
+                                                               end );
 
-                                beta  := InjectionOfCofactorOfPushout( [ f, g ], 2 );
+AddInjectionsOfPushoutInducedByStructureOfExactCategory( category,  function( inf, mor )
+                                local gamma, beta;
+       
+                                gamma := InjectionOfCofactorOfPushout( [ inf, mor ], 1 );
 
-                                return [ CreateConflation( beta, CokernelProjection( beta ) ), gamma ];
+                                beta  := AsInflation( InjectionOfCofactorOfPushout( [ inf, mor ], 2 ) );
+
+                                return [ gamma, beta ];
        
                                 end );
 
-AddUniversalMorphismFromPushoutByFR6( category, function( D, tau )
-                                                local D1, universal_morphism;
-        
-                                                D1 := [ D[ 1 ]!.morphism1, D[ 2 ] ];
-        
-                                                universal_morphism := UniversalMorphismFromPushout( D1, tau );
-        
-                                                return universal_morphism ;
+AddUniversalMorphismFromPushoutInducedByStructureOfExactCategory( category, function( D, tau )
                                                 
+                                                return UniversalMorphismFromPushout( D, tau );
+        
                                                 end );
                                                 
 return category;

@@ -116,27 +116,27 @@ BindGlobal( "COMPUTE_TRIANGULATED_STRUCTURE_OF_A_STABLE_CATEGORY_OF_A_FROBENIUS_
   # It states that every morphism f: A ---> B can be completed to an exact triangle.
   
   
-   AddTR1( stable_category, function( mor )
-                            local underlying_mor, A, B, conf_A, g, u;
-                            
-                            underlying_mor := UnderlyingMorphismOfTheStableMorphism( mor );
-                            
-                            A := Source( underlying_mor );
-                            
-                            B := Range( underlying_mor );
-                            
-                            conf_A := FitIntoConflationUsingInjectiveObject( A );
-                            
-                            g := FR6( conf_A, underlying_mor )[ 1 ]!.morphism1;
-                            
-                            u := UniversalMorphismFromPushoutByFR6( [ conf_A, underlying_mor ], 
-                                                                    [ conf_A!.morphism2, ZeroMorphism( B, Range( conf_A!.morphism2 ) ) ] );
-                            
-                            return [ AsStableCategoryMorphism( stable_category, g ),
-                                     AsStableCategoryObject( stable_category, Range( g ) ),
-                                     AsStableCategoryMorphism( stable_category, u ) ];
-                            
-                            end );
+#    AddTR1( stable_category, function( mor )
+#                             local underlying_mor, A, B, conf_A, g, u;
+#                             
+#                             underlying_mor := UnderlyingMorphismOfTheStableMorphism( mor );
+#                             
+#                             A := Source( underlying_mor );
+#                             
+#                             B := Range( underlying_mor );
+#                             
+#                             conf_A := FitIntoConflationUsingInjectiveObject( A );
+#                             
+#                             g := FR6( conf_A, underlying_mor )[ 1 ]!.morphism1;
+#                             
+#                             u := UniversalMorphismFromPushoutByFR6( [ conf_A, underlying_mor ], 
+#                                                                     [ conf_A!.morphism2, ZeroMorphism( B, Range( conf_A!.morphism2 ) ) ] );
+#                             
+#                             return [ AsStableCategoryMorphism( stable_category, g ),
+#                                      AsStableCategoryObject( stable_category, Range( g ) ),
+#                                      AsStableCategoryMorphism( stable_category, u ) ];
+#                             
+#                             end );
    
   # Adding TR3
   # Input is two triangles tr_f, tr_g and two morphisms u, v such that vf1 = g1u.
