@@ -141,4 +141,3 @@ DeclareAttribute( "INSTALL_LOGICAL_IMPLICATIONS_FOR_FROBENIUS_CATEGORY",
 DeclareProperty( "IsExactCategory", IsCapCategory );
 
 DeclareProperty( "IsFrobeniusCategory", IsCapCategory );
-
