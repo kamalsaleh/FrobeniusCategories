@@ -5,3 +5,4 @@
 ##############################################################
 
 
+DeclareOperation( "TurnAbelianCategoryToExactCategory", [ IsCapCategory ] );

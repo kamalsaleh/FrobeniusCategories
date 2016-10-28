@@ -8,9 +8,15 @@ BindGlobal( "TURN_ABELIAN_CATEGORY_TO_EXACT_CATEGORY",
 
 function( category )
 
+if not IsAbelianCategory( category ) then 
+   
+   Error( "The given category is supposed to be abelian" );
+   
+fi;
+
 if HasIsFinalized( category ) then 
 
-   return Error( "The category is finalized and hence no methods can be added!\n" );
+   Error( "The category is finalized and hence no methods can be added!\n" );
 
 fi;
 
@@ -50,8 +56,7 @@ AddIsConflation( category, function( sequence )
 
                               end );
 
-## In an abelian categories every mono is normal, i.e., kernel of some morphism. Specifically, it is kernel of its 
-## own cokernel
+# In Abelian categories every mono is the kernel mono of its cokernel epi;
 
 AddIsInflation( category, function( mor )
                           
@@ -59,8 +64,7 @@ AddIsInflation( category, function( mor )
                           
                           end );
 
-## In an abelian categories every epi is normal, i.e., cokernel of some morphism. Specifically, it is cokernel of its 
-## own kernel
+## I Abelian categories every epi is the cokernel epi of its kernel mono;
                           
 AddIsDeflation( category, function( mor )
                           
@@ -115,6 +119,19 @@ AddUniversalMorphismFromPushoutInducedByStructureOfExactCategory( category, func
         
                                                 end );
                                                 
+SetIsExactCategory( category, true );
+                                                
 return category;
 
 end );
+
+
+##
+InstallMethod( TurnAbelianCategoryToExactCategory, 
+                     [ IsCapCategory ], 
+                     
+   function( category )
+   
+   TURN_ABELIAN_CATEGORY_TO_EXACT_CATEGORY( category );
+   
+   end );
