@@ -29,21 +29,21 @@ AddDerivationToCAP( IsDeflation,
       
       end : Description := "returns if the given morphism is deflation regarding the frobenius structure" );
       
+AddDerivationToCAP( InjectiveColift, 
+            [ [ Colift, 1 ] ], 
+            
+      function( mono, mor )
+      
+      return Colift( mono, mor );
+      
+      end : Description := "returns a morphism col with mono;col = mor" );
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+AddDerivationToCAP( ProjectiveLift, 
+            [ [ Lift, 1 ] ], 
+            
+      function( mor, epi )
+      
+      return Lift( mor, epi );
+      
+      end : Description := "returns a morphism l with l;epi = mor" );
 
