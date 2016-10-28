@@ -26,7 +26,7 @@ Q := HomalgFieldOfRationalsInSingular( );
 #! Q
 category := MatrixCategory( Q:FinalizeCategory := false );
 #! Category of matrices over Q
-TURN_ABELIAN_CATEGORY_TO_EXACT_CATEGORY( category );
+TurnAbelianCategoryToExactCategory( category );
 #! Category of matrices over Q
 
 #########################################
@@ -48,28 +48,28 @@ AddFitIntoConflationUsingProjectiveObject( category, function( obj )
                                                     end );
 
 AddInjectiveColift( category, function( mono, morphism )
-                              local A, B, matrix_of_colift;
+                              local mono_matrix, mor_matrix, matrix_of_colift;
                               
-                              A := UnderlyingMatrix( mono );
+                              mono_matrix := UnderlyingMatrix( mono );
                               
-                              B := UnderlyingMatrix( morphism );
+                              mor_matrix := UnderlyingMatrix( morphism );
                               
-                              matrix_of_colift := LeftDivide( A, B );
+                              matrix_of_colift := LeftDivide( mono_matrix, mor_matrix );
                               
                               return VectorSpaceMorphism( Range( mono ), matrix_of_colift, Range( morphism ) );
                               
                               end );
                               
-AddInjectiveColift( category, function( morphism, epi )
-                              local A, B, matrix_of_colift;
+AddProjectiveLift( category, function( morphism, epi )
+                              local mor_matrix, epi_matrix, matrix_of_lift;
                               
-                              A := UnderlyingMatrix( morphism );
+                              mor_matrix := UnderlyingMatrix( morphism );
                               
-                              B := UnderlyingMatrix( epi );
+                              epi_matrix := UnderlyingMatrix( epi );
                               
-                              matrix_of_colift := RightDivide( A, B );
+                              matrix_of_lift := RightDivide( mor_matrix, epi_matrix );
                               
-                              return VectorSpaceMorphism( Range( mono ), matrix_of_colift, Range( morphism ) );
+                              return VectorSpaceMorphism( Source( morphism ), matrix_of_lift, Source( epi ) );
                               
                               end );
                               
