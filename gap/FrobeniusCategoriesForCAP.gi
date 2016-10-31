@@ -663,7 +663,15 @@ InstallMethodWithCache( CreateConflation,
     
 end );
     
-    
+##
+InstallMethod( IsWellDefinedForConflations, 
+                [ IsCapCategoryConflation ], 
+                
+  function( conf )
+  
+  return IsConflation( conf );
+  
+end );
 ##############################
 ##
 ## View
