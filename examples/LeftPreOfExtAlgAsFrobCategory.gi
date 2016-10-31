@@ -108,6 +108,9 @@ AddColift( category,
     
     end );
     
+    
+   # ProjectiveLift can be derived by Lift
+   
 AddLift( category, 
 
    function( morphism_1, morphism_2 )
@@ -145,19 +148,19 @@ AddLift( category,
     basis_indices := MyList( l-1 );
     
     Q := CoefficientsRing( R ); 
-    Print( "computing the lift ." );
-    R_B := Q*UnionOfRows( List( basis_indices, u-> KroneckerMat( HomalgTransposedMat( FRight( u, B ) ), HomalgIdentityMatrix( NrRows( A ), R ) ) ) );
-    Print( "." );
-    R_N := Q*UnionOfRows( List( basis_indices, u-> KroneckerMat( HomalgTransposedMat( FRight( u, N ) ), HomalgIdentityMatrix( NrRows( A ), R ) ) ) );    
-    Print( "." );
-    L_P := Q*UnionOfRows( List( basis_indices, u-> KroneckerMat( HomalgIdentityMatrix( NrColumns( M ), R ), FLeft( u, P ) ) ) );
-    Print( "." );
-    R_M := Q*UnionOfRows( List( basis_indices, u-> KroneckerMat( HomalgTransposedMat( FRight( u, M ) ), HomalgIdentityMatrix( NrRows( P ), R ) ) ) );
-    Print( "." );
-    L_id_s := Q*UnionOfRows( List( basis_indices, u-> KroneckerMat( HomalgIdentityMatrix( NrRows( B ), R ), FLeft( u, HomalgIdentityMatrix( NrRows( A ), R ) ) ) ) );
-    Print( "." );
+
+    R_B := UnionOfRows( List( basis_indices, u-> KroneckerMat( Involution( Q*FRight( u, B ) ), HomalgIdentityMatrix( NrRows( A ), Q ) ) ) );
+
+    R_N := UnionOfRows( List( basis_indices, u-> KroneckerMat( Involution( Q*FRight( u, N ) ), HomalgIdentityMatrix( NrRows( A ), Q ) ) ) );    
+
+    L_P := UnionOfRows( List( basis_indices, u-> KroneckerMat( HomalgIdentityMatrix( NrColumns( M ), Q ), Q*FLeft( u, P ) ) ) );
+
+    R_M := UnionOfRows( List( basis_indices, u-> KroneckerMat( Involution( Q*FRight( u, M ) ), HomalgIdentityMatrix( NrRows( P ), Q ) ) ) );
+
+    L_id_s := UnionOfRows( List( basis_indices, u-> KroneckerMat( HomalgIdentityMatrix( NrRows( B ), Q ), Q*FLeft( u, HomalgIdentityMatrix( NrRows( A ), R ) ) ) ) );
+
     L_P_mod := L_P* Involution( L_id_s );
-    Print( "." );
+
     A_deco := DecompositionOfHomalgMat( A );
    
     A_deco_list := List( A_deco, i-> i[ 2 ] );
@@ -185,7 +188,7 @@ AddLift( category,
     mat := UnionOfRows( mat1, mat2 );
      
     A_vec_over_zero_vec := UnionOfRows( A_vec, HomalgZeroMatrix( NrColumns( M )*NrRows( P )*2^l, 1, Q ) );
-    Print( "\nThe equation is sent to singular" );
+
     sol := LeftDivide( mat, A_vec_over_zero_vec );
     
     if sol = fail then 
