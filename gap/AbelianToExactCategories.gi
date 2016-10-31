@@ -22,39 +22,7 @@ fi;
 
 ## We define the class of conflations to be the class of all short exact sequences.
 
-AddIsConflation( category, function( sequence )
-                              local alpha, beta, s, coker_alpha, coker_colift, ker_beta, ker_lift;
-                              alpha := sequence!.morphism1;
-                              
-                              beta  := sequence!.morphism2;
-                              
-                              ## alpha should be the kernel of beta ..
-   
-                              ker_beta := KernelEmbedding( beta );
-   
-                              ker_lift := KernelLift( beta, alpha );
-   
-                              if not IsIsomorphism( ker_lift ) then 
-   
-                                 return false;
-                                 
-                              fi;
-   
-                              ## beta should be the cokernel of alpha
-   
-                              coker_alpha  := CokernelProjection( alpha );
-   
-                              coker_colift := CokernelColift( alpha, beta );
-   
-                              if not IsIsomorphism( coker_colift ) then 
-   
-                                  return false;
-                                  
-                              fi;
-
-                              return true;
-
-                              end );
+AddIsConflation( category, ReturnTrue );
 
 # In Abelian categories every mono is the kernel mono of its cokernel epi;
 
