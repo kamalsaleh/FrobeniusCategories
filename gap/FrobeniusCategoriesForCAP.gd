@@ -107,11 +107,20 @@ fi;
 DeclareOperation( "CreateShortSequence", 
                       [ IsCapCategoryMorphism, IsCapCategoryMorphism ] );
 
+DeclareOperation( "IsWellDefinedForShortSequences", 
+                      [ IsCapCategoryShortSequence ] );
+
 DeclareOperation( "CreateShortExactSequence", 
                       [ IsCapCategoryMorphism, IsCapCategoryMorphism ] );
 
+DeclareOperation( "IsWellDefinedForShortExactSequences", 
+                      [ IsCapCategoryShortExactSequence ] );
+                      
 DeclareOperation( "CreateConflation", 
                       [ IsCapCategoryMorphism, IsCapCategoryMorphism ] );
+
+DeclareOperation( "IsWellDefinedForConflations", 
+                      [ IsCapCategoryConflation ] );
 
 #################################
 ##

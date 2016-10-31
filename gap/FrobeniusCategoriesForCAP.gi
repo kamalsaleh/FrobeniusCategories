@@ -107,8 +107,17 @@ post_function := function( morphism, return_value )
 IsConflation := rec( 
 
 installation_name := "IsConflation", 
-filter_list := [ IsCapCategoryShortSequence ],
+filter_list := [ IsCapCategoryShortExactSequence ],
 cache_name := "IsConflation",
+pre_function := function( seq )
+                
+                if not IsWellDefinedForShortExactSequences( seq ) then 
+                
+                   return [ false, "The given short sequence is not even a short exact sequence" ];
+                   
+                fi;
+                
+                end, 
 return_type := "bool",
 post_function := function( seq, return_value )
                  
@@ -499,12 +508,6 @@ InstallMethodWithCache( CreateShortSequence,
      
    fi;
    
-   if not IsZeroForMorphisms( PreCompose( alpha, beta ) ) then 
-   
-     Error( "The composition of the two morphisms is not Zero" );
-     
-   fi;
-   
    s := rec( object1:= Source( alpha ), 
              
              morphism1:= alpha,
@@ -523,6 +526,28 @@ InstallMethodWithCache( CreateShortSequence,
     
 end );
 
+##
+InstallMethod( IsWellDefinedForShortSequences, 
+                [ IsCapCategoryShortSequence ], 
+                
+  function( seq )
+  local alpha, beta;
+  
+  alpha := seq!.morphism1;
+  
+  beta := seq!.morphism2;
+  
+    if not IsZeroForMorphisms( PreCompose( alpha, beta ) ) then 
+    
+      return false;
+      
+    fi;
+    
+  return true;
+  
+end );
+
+
 InstallMethodWithCache( CreateShortExactSequence, 
               
               [ IsCapCategoryMorphism, IsCapCategoryMorphism ], 
@@ -538,39 +563,7 @@ InstallMethodWithCache( CreateShortExactSequence,
        Error( "Range of the first morphism should equal the Source of the second morphism" );
      
    fi;
-   
-   # img alpha should be contained in ker of alpha
-   
-   if not IsZeroForMorphisms( PreCompose( alpha, beta ) ) then 
-   
-       Error( "The composition of the two morphisms is not Zero" );
-     
-   fi;
-   
-   ## alpha should be the kernel of beta ..
-   
-   ker_beta := KernelEmbedding( beta );
-   
-   ker_lift := KernelLift( beta, alpha );
-   
-   if not IsIsomorphism( ker_lift ) then 
-   
-      Error( "The first morphism is not kernel of the second morphism, thus the given sequence can not be exact" );
       
-   fi;
-   
-   ## beta should be the cokernel of alpha
-   
-   coker_alpha  := CokernelProjection( alpha );
-   
-   coker_colift := CokernelColift( alpha, beta );
-   
-   if not IsIsomorphism( coker_colift ) then 
-   
-      Error( "The second morphism is not cokernel of the first morphism, thus the given sequence can not be exact" );
-      
-   fi;
-   
    s := rec( object1:= Source( alpha ), 
              
              morphism1:= alpha,
@@ -588,7 +581,55 @@ InstallMethodWithCache( CreateShortExactSequence,
     return s;
     
 end );
- 
+
+
+##
+InstallMethod( IsWellDefinedForShortExactSequences, 
+                [ IsCapCategoryShortExactSequence ], 
+                
+  function( seq )
+  local alpha, beta, ker_beta, ker_lift, coker_alpha, coker_colift;
+  
+    alpha := seq!.morphism1;
+  
+    beta := seq!.morphism2;
+  
+    if not IsWellDefinedForShortSequences( seq ) then 
+  
+      return false;
+     
+    fi;
+      
+    ## alpha should be the kernel of beta ..
+
+    ker_beta := KernelEmbedding( beta );
+    
+    ker_lift := KernelLift( beta, alpha );
+    
+    if not IsIsomorphism( ker_lift ) then 
+    
+       return false;
+       
+    fi;
+    
+    ## beta should be the cokernel of alpha
+    
+    coker_alpha  := CokernelProjection( alpha );
+    
+    coker_colift := CokernelColift( alpha, beta );
+    
+    if not IsIsomorphism( coker_colift ) then 
+    
+       return false;
+       
+    fi;
+  
+  return true;
+  
+end );
+
+
+##
 InstallMethodWithCache( CreateConflation, 
  
                        [ IsCapCategoryMorphism, IsCapCategoryMorphism ],
@@ -603,39 +644,7 @@ InstallMethodWithCache( CreateConflation,
        Error( "Range of the first morphism should equal the Source of the second morphism" );
      
    fi;
-   
-   # img alpha should be contained in ker of alpha
-   
-   if not IsZeroForMorphisms( PreCompose( alpha, beta ) ) then 
-   
-       Error( "The composition of the two morphisms is not Zero" );
-     
-   fi;
-   
-   ## alpha should be the kernel of beta ..
-   
-   ker_beta := KernelEmbedding( beta );
-   
-   ker_lift := KernelLift( beta, alpha );
-   
-   if not IsIsomorphism( ker_lift ) then 
-   
-      Error( "The first morphism is not kernel of the second morphism, thus the given sequence can not be exact" );
-      
-   fi;
-   
-   ## beta should be the cokernel of alpha
-   
-   coker_alpha  := CokernelProjection( alpha );
-   
-   coker_colift := CokernelColift( alpha, beta );
-   
-   if not IsIsomorphism( coker_colift ) then 
-   
-      Error( "The second morphism is not cokernel of the first morphism, thus the given sequence can not be exact" );
-      
-   fi;
-   
+
    s := rec( object1:= Source( alpha ), 
              
              morphism1:= alpha,
@@ -778,7 +787,7 @@ InstallMethod( AsDeflation,
        
     elif not CanCompute( CapCategory( alpha ), "IsDeflation" ) then 
     
-       Error( "There is no method to decide if the morphism is an deflationor not" );
+       Error( "There is no method to decide if the morphism is an deflation or not" );
        
     elif not IsDeflation( alpha ) then 
     
