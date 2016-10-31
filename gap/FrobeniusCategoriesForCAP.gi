@@ -115,6 +115,10 @@ pre_function := function( seq )
                 
                    return [ false, "The given short sequence is not even a short exact sequence" ];
                    
+                else 
+                
+                   return [ true ];
+                   
                 fi;
                 
                 end, 
@@ -712,7 +716,22 @@ InstallMethod( Display,
               
    function( seq )
    
-   Print( "           morphism1                  morphism2\n" );
+   if IsCapCategoryConflation( seq ) then 
+    
+       Print( "A Conflation in ", CapCategory( seq ), " given by the sequence:\n" );
+    
+    elif IsCapCategoryShortExactSequence( seq ) then 
+    
+       Print( "A short exact sequence in ", CapCategory( seq ), " given by:\n" );
+   
+    else 
+   
+       Print( "A short sequence in ", CapCategory( seq ), " given by :\n" );
+   
+    fi;
+    
+   
+   Print( "\n           morphism1                  morphism2\n" );
    Print( "object1 ----------------> object2 -----------------> object3\n" );
    
    Print( "\nobject1 is\n" ); Display( seq!.object1 );
