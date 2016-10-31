@@ -29,25 +29,40 @@ AddFitIntoConflationUsingProjectiveObject( category, function( obj )
                                                      end );
 
 AddFitIntoConflationUsingInjectiveObject( category, function( obj )
-                                                    local ring, dual, nat, dual_obj, free_cover, dual_free_cover, obj_to_double_dual_obj, embedding;
+                                                    local syzygies, embedding;
                                                     
-                                                    ring := UnderlyingHomalgRing( obj );
+                                                    syzygies := SyzygiesOfColumns( UnderlyingMatrix( obj ) );
                                                     
-                                                    dual := FunctorDualForLeftPresentations( ring );
-                                                    
-                                                    nat  := NaturalTransformationFromIdentityToDoubleDualForLeftPresentations( ring );
-                                                    
-                                                    dual_obj := ApplyFunctor( dual, obj );
-                                                    
-                                                    free_cover := CoverByFreeModule( dual_obj );
-                                                    
-                                                    dual_free_cover := ApplyFunctor( dual, free_cover );
-                                                    
-                                                    obj_to_double_dual_obj := ApplyNaturalTransformation( nat, obj );
-                                                    
-                                                    embedding := PreCompose( obj_to_double_dual_obj, dual_free_cover );
+                                                    embedding := PresentationMorphism( obj, syzygies, FreeLeftPresentation( NrColumns( syzygies ), R ) );
                                                     
                                                     return ConflationOfInflation( AsInflation( embedding ) );
+                                                   
+                                                    # The commented method bellow was the first method written to do the job, it mathematically beutifull, but a little bit 
+                                                   
+                                                    # slower than the method above :/.
+                                                   
+                                                    # syzygies of columns provids a monomorphism in this specific category, why :) ?
+                                                    # -------------------------------------------------------------------------------
+                                                    
+                                                    # local ring, dual, nat, dual_obj, free_cover, dual_free_cover, obj_to_double_dual_obj, embedding;
+                                                    
+                                                    # ring := UnderlyingHomalgRing( obj );
+                                                    
+                                                    # dual := FunctorDualForLeftPresentations( ring );
+                                                    
+                                                    # nat  := NaturalTransformationFromIdentityToDoubleDualForLeftPresentations( ring );
+                                                    
+                                                    # dual_obj := ApplyFunctor( dual, obj );
+                                                    
+                                                    # free_cover := CoverByFreeModule( dual_obj );
+                                                    
+                                                    # dual_free_cover := ApplyFunctor( dual, free_cover );
+                                                    
+                                                    # obj_to_double_dual_obj := ApplyNaturalTransformation( nat, obj );
+                                                    
+                                                    # embedding := PreCompose( obj_to_double_dual_obj, dual_free_cover );
+                                                    
+                                                    # return ConflationOfInflation( AsInflation( embedding ) );
                                                     
                                                     end );
 
