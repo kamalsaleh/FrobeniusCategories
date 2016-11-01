@@ -297,7 +297,7 @@ pre_function := function( inf, mor )
                 end,
 return_type := "object",
 
-post_function := function( conf, mor, return_value )
+post_function := function( inf, mor, return_value )
  
                  AddToGenesis( return_value, "PushoutObjectInducedByStructureOfExactCategory", [ inf, mor ] );
                  
