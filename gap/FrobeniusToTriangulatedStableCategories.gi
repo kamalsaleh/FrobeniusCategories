@@ -141,19 +141,64 @@ BindGlobal( "COMPUTE_TRIANGULATED_STRUCTURE_OF_A_STABLE_CATEGORY_OF_A_FROBENIUS_
 
          
   # Adding TR3
-  # Input is two triangles tr_f, tr_g and two morphisms u, v such that vf1 = g1u.
+  # Input is two triangles tr1, tr2 and two morphisms u, v such that vf1 = g1u.
   #
-  #             f1          f2              f3
-  # tr_f:  A ---------> B ----------> C ------------> A[ 1 ]
-  #        |            |             |                |
-  #      u |          v |             | ?              | u[ 1 ]
-  #        V            V             V                V
-  # tr_g:  A' --------> B'----------> C'------------> A'[ 1 ]
-  #              g1            g2            g3
+  #             f1_              g1_              h1_
+  # tr1  :  A1 ---------> B1 ----------> C1 ------------> T( A1 )
+  #         |             |              |                |
+  #    phi_ |        psi_ |              | ?              | T( phi_ )
+  #         V             V              V                V
+  # tr2  :  A2 ---------> B2-----------> C2 ------------> T( A2 )
+  #             f2_             g2_               h2_
   #
-  # Output is w: C ---> C' such that the diagram is commutative
-
-   
+  # Output is theta: C1 ---> C2 such that the diagram is commutative
+  
+  AddTR3( stable_category, 
+  
+       function( tr1, tr2, phi_, psi_ )
+       local f1_, f2_, g2_, f2_after_phi_minus_psi_after_f1_, u1, beta,
+       u2, phi, phi1, f2, alpha2, f1, g2, psi, mor;
+       
+       f1_ := tr1!.morphism1;
+       
+       f2_ := tr2!.morphism1;
+       
+       g2_ := tr2!.morphism2;
+       
+       # since all morphisms in first square commute, it follows that the morphism:
+       
+       f2_after_phi_minus_psi_after_f1_ := UnderlyingMorphismOfTheStableMorphism( PreCompose( phi_, f2_ ) - PreCompose( f1_, psi_ ) );
+       
+       # is zero in the stable category, and hence factors through an injective object. Using univeral property of 
+       # injective objects we can assume that the morphism should also factor through I, that was used to
+       # construct tr1.
+       
+       u1 := Genesis( UnderlyingObjectOfTheStableObject( tr1!.object3 ) )!.PushoutObjectInducedByStructureOfExactCategory[ 1 ];
+       
+       beta := Colift( u1, f2_after_phi_minus_psi_after_f1_ );
+       
+       u2 := Genesis( UnderlyingObjectOfTheStableObject( tr2!.object3 ) )!.PushoutObjectInducedByStructureOfExactCategory[ 1 ];
+       
+       phi := UnderlyingMorphismOfTheStableMorphism( phi_ );
+       
+       phi1 := InjectiveColift( u1, PreCompose( phi, u2 ) );
+       
+       f2 := UnderlyingMorphismOfTheStableMorphism( f2_ );
+       
+       alpha2 := InjectionsOfPushoutInducedByStructureOfExactCategory( u2, f2 )[ 1 ];
+       
+       f1 := UnderlyingMorphismOfTheStableMorphism( f1_ );
+       
+       g2 := UnderlyingMorphismOfTheStableMorphism( g2_ );
+       
+       psi := UnderlyingMorphismOfTheStableMorphism( psi_ );
+       
+       mor := UniversalMorphismFromPushoutInducedByStructureOfExactCategory( [ u1, f1 ], 
+                                                               [ PreCompose(beta, g2 ) + PreCompose( phi1, alpha2 ), PreCompose( psi, g2 ) ] ); 
+       return AsStableCategoryMorphism( stable_category, mor );
+       
+       end );
+       
     return stable_category;
     
 end );
