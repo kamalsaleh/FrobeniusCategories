@@ -102,7 +102,7 @@ BindGlobal( "COMPUTE_TRIANGULATED_STRUCTURE_OF_A_STABLE_CATEGORY_OF_A_FROBENIUS_
                                         
                                         mor1 := ProjectiveLift( PreCompose( conf_A!.morphism2, mor0 ), conf_B!.morphism2 );
                                         
-                                        mor2 :=  KernelLift( PreCompose( conf_A!.morphism1, mor1 ), conf_B!.morphism2 );
+                                        mor2 :=  KernelLift( conf_B!.morphism2, PreCompose( conf_A!.morphism1, mor1 ) );
                                         
                                         return AsStableCategoryMorphism( stable_category, mor2 );
                                         
@@ -115,29 +115,31 @@ BindGlobal( "COMPUTE_TRIANGULATED_STRUCTURE_OF_A_STABLE_CATEGORY_OF_A_FROBENIUS_
   # Adding TR1, 
   # It states that every morphism f: A ---> B can be completed to an exact triangle.
   
-  
-#    AddTR1( stable_category, function( mor )
-#                             local underlying_mor, A, B, conf_A, g, u;
-#                             
-#                             underlying_mor := UnderlyingMorphismOfTheStableMorphism( mor );
-#                             
-#                             A := Source( underlying_mor );
-#                             
-#                             B := Range( underlying_mor );
-#                             
-#                             conf_A := FitIntoConflationUsingInjectiveObject( A );
-#                             
-#                             g := FR6( conf_A, underlying_mor )[ 1 ]!.morphism1;
-#                             
-#                             u := UniversalMorphismFromPushoutByFR6( [ conf_A, underlying_mor ], 
-#                                                                     [ conf_A!.morphism2, ZeroMorphism( B, Range( conf_A!.morphism2 ) ) ] );
-#                             
-#                             return [ AsStableCategoryMorphism( stable_category, g ),
-#                                      AsStableCategoryObject( stable_category, Range( g ) ),
-#                                      AsStableCategoryMorphism( stable_category, u ) ];
-#                             
-#                             end );
-   
+  AddCompleteMorphismToExactTriangleByTR1( stable_category,
+         
+         function( mor )
+         local underlying_mor, A, B, conf_A, inf, mor1, mor2;
+         
+         underlying_mor := UnderlyingMorphismOfTheStableMorphism( mor );
+         
+         A := Source( underlying_mor );
+                             
+         B := Range( underlying_mor );
+                             
+         conf_A := FitIntoConflationUsingInjectiveObject( A );                             
+         
+         inf := conf_A!.morphism1;
+         
+         mor1 := InjectionsOfPushoutInducedByStructureOfExactCategory( inf, underlying_mor )[ 2 ];
+         
+         mor2 := UniversalMorphismFromPushoutInducedByStructureOfExactCategory( [ inf, underlying_mor ], [ conf_A!.morphism2, ZeroMorphism( Range( underlying_mor ), conf_A!.object3 ) ] );
+         
+         return CreateExactTriangle( mor,
+                                     AsStableCategoryMorphism( stable_category, mor1 ),
+                                     AsStableCategoryMorphism( stable_category, mor2 ) );
+         end );
+
+         
   # Adding TR3
   # Input is two triangles tr_f, tr_g and two morphisms u, v such that vf1 = g1u.
   #
@@ -151,19 +153,6 @@ BindGlobal( "COMPUTE_TRIANGULATED_STRUCTURE_OF_A_STABLE_CATEGORY_OF_A_FROBENIUS_
   #
   # Output is w: C ---> C' such that the diagram is commutative
 
-#     AddTR3( stable_category, function( tr_f, tr_g, u, v )
-#                              local 
-#                              
-#                              f1 := tr_f!.morphism1;
-#                              
-#                              g1 := tr_g!.morphism1;
-#                              
-#                              standard_tr_f := CompleteMorphismToExactTriangleByTR1( f1 );
-#                              
-#                              Standard_tr_g := CompleteMorphismToExactTriangleByTR1( g1 );
-#                              
-                             
-                            
    
     return stable_category;
     
