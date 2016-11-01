@@ -299,7 +299,7 @@ return_type := "object",
 
 post_function := function( conf, mor, return_value )
  
-                 AddToGenesis( return_value, "PushoutObjectInducedByStructureOfExactCategory", [ conf, mor ] );
+                 AddToGenesis( return_value, "PushoutObjectInducedByStructureOfExactCategory", [ inf, mor ] );
                  
                  end ),
                  
@@ -308,19 +308,13 @@ InjectionsOfPushoutInducedByStructureOfExactCategory:= rec(
 installation_name := "InjectionsOfPushoutInducedByStructureOfExactCategory", 
 filter_list := [ IsCapCategoryInflation, "morphism" ],
 cache_name := "InjectionsOfPushoutInducedByStructureOfExactCategory",
-return_type := [ "morphism", IsCapCategoryInflation ]
-# ,
-# 
-# post_function := function( inf, mor, return_value )
-#                  
-#                  if not IsEqualForMorphisms( PostCompose( return_value[ 1 ], inf ), PostCompose( return_value[ 2 ], mor ) ) then 
-#                  
-#                     Error( "The function given does not provid a pushout, since the diagram resulted is not commutative" );
-#                     
-#                  fi;
-#                  
-#                  end
-                 ),                 
+return_type := [ "morphism", IsCapCategoryInflation ],
+
+post_function := function( inf, mor, return_value )
+                 
+                 AddToGenesis( Range( return_value[ 2 ] ), "PushoutObjectInducedByStructureOfExactCategory", [ inf, mor ] );
+                 
+                 end ),                 
 
 
 UniversalMorphismFromPushoutInducedByStructureOfExactCategory:= rec( 
