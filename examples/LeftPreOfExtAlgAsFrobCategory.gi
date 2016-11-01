@@ -1,14 +1,11 @@
 
-
-
-
 ## ReadPackage( "FrobeniusCategoriesForCAP", "examples/LeftPreOfExtAlgAsFrobCategory.gi" );
 
 
 LoadPackage( "ModulePresentations" );
 LoadPackage( "FrobeniusCategoriesForCap" );
 
-R := KoszulDualRing( HomalgFieldOfRationalsInSingular()*"x,y,z" );
+R := KoszulDualRing( HomalgFieldOfRationalsInSingular()*"x,y" );
 
 category := LeftPresentations( R:FinalizeCategory := false );
 
@@ -229,6 +226,14 @@ end );
 AddIsProjective( category, function( obj )
                             local cover, lift; 
                             
+                            # If the number of rows of the matrix is zero then the module is free, hence projective.
+                              
+                            if NrRows( UnderlyingMatrix( obj ) ) = 0 then 
+                            
+                              return true;
+                              
+                            fi;
+                            
                             cover := CoverByFreeModule( obj );
                             
                             lift := Lift( IdentityMorphism( obj ), cover );
@@ -250,5 +255,68 @@ AddIsInjective( category, function( obj )
                            return IsProjective( obj );
                            
                            end );
-
+                        
 Finalize( category );
+
+#################################################
+##
+## Constructing the stable category 
+##
+#################################################
+
+Test_Function := 
+        
+        function( mor )
+        
+        local underlying_mor, M, N, A, sol, m;
+        
+        underlying_mor := UnderlyingMorphismOfTheStableMorphism( mor );
+        
+        if HasIsZero( underlying_mor ) and IsZero( underlying_mor ) then 
+        
+          return true;
+          
+        fi;
+           
+        M := UnderlyingMatrix( Source( mor ) );
+
+        N := UnderlyingMatrix( Range( mor ) );
+        
+        # in this case M, N are free modules.
+        if NrRows( M )= 0 or NrRows( N )= 0 then 
+        
+           return true; 
+           
+        fi;
+        
+        m := SyzygiesOfColumns( M );
+        
+        A := UnderlyingMatrix( mor );
+        
+        sol := SolveTwoSidedEquationOverExteriorAlgebra( m, N, A );
+        
+        if sol = fail then 
+        
+           return false;
+           
+        else 
+        
+           return true;
+           
+       fi;
+       
+       end;
+       
+stable_category := StableCategory( category, Test_Function :FinalizeStableCategory := false );
+
+############################################################
+##
+## Giving the stable the structure of triangulated category
+##
+###########################################################
+
+
+COMPUTE_TRIANGULATED_STRUCTURE_OF_A_STABLE_CATEGORY_OF_A_FROBENIUS_CATEGORY( stable_category );
+
+
+
