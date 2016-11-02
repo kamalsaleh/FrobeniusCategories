@@ -107,7 +107,37 @@ BindGlobal( "COMPUTE_TRIANGULATED_STRUCTURE_OF_A_STABLE_CATEGORY_OF_A_FROBENIUS_
                                         return AsStableCategoryMorphism( stable_category, mor2 );
                                         
                                         end );
-                                        
+                                       
+   AddIsomorphismFromObjectToShiftAfterReverseShiftOfTheObject( stable_category, 
+               
+               function( A_ )
+               local A, conf_A, SA, conf_SA, TSA, inf1, inf2, h1, h2, mor; 
+               
+               A := UnderlyingObjectOfTheStableObject( A_ );
+               
+               conf_A := FitIntoConflationUsingProjectiveObject( A );
+               
+               SA := conf_A!.object1;
+               
+               conf_SA := FitIntoConflationUsingInjectiveObject( SA );
+               
+               TSA := conf_SA!.object3;
+               
+               inf1 := conf_A!.morphism1;
+               
+               inf2 := conf_SA!.morphism1;
+               
+               h1 := UniversalMorphismFromPushoutInducedByStructureOfExactCategory( [ inf1, inf2 ], [ conf_A!.morphism2, ZeroMorphism( conf_SA!.object2, A ) ] );
+               
+               h2 := UniversalMorphismFromPushoutInducedByStructureOfExactCategory( [ inf1, inf2 ], [ ZeroMorphism( conf_A!.object2, TSA ), conf_SA!.morphism2 ] );
+               
+               ####
+               
+               return AsStableCategoryMorphism( stable_category, mor );
+               
+               end );
+               
+    
   # Standard triangles are of the form  
   #       A -------> B -------> C ----------> T( A )
   # where  C = PushoutObject( B, I ) where A ----> I ----> T( A ) is a conflation.
@@ -175,6 +205,7 @@ BindGlobal( "COMPUTE_TRIANGULATED_STRUCTURE_OF_A_STABLE_CATEGORY_OF_A_FROBENIUS_
        
        u1 := Genesis( UnderlyingObjectOfTheStableObject( tr1!.object3 ) )!.PushoutObjectInducedByStructureOfExactCategory[ 1 ];
        
+       # There is beutifull mathematical theory behind this.
        beta := Colift( u1, f2_after_phi_minus_psi_after_f1_ );
        
        u2 := Genesis( UnderlyingObjectOfTheStableObject( tr2!.object3 ) )!.PushoutObjectInducedByStructureOfExactCategory[ 1 ];
@@ -198,7 +229,10 @@ BindGlobal( "COMPUTE_TRIANGULATED_STRUCTURE_OF_A_STABLE_CATEGORY_OF_A_FROBENIUS_
        return AsStableCategoryMorphism( stable_category, mor );
        
        end );
-       
+     
+    
+    SetIsTriangulatedCategory( stable_category, true );
+    
     return stable_category;
     
 end );
