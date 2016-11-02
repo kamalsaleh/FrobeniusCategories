@@ -131,7 +131,7 @@ BindGlobal( "COMPUTE_TRIANGULATED_STRUCTURE_OF_A_STABLE_CATEGORY_OF_A_FROBENIUS_
                
                h2 := UniversalMorphismFromPushoutInducedByStructureOfExactCategory( [ inf1, inf2 ], [ ZeroMorphism( conf_A!.object2, TSA ), conf_SA!.morphism2 ] );
                
-               ####
+               mor := PreCompose( Inverse( h1 ), h2 );
                
                return AsStableCategoryMorphism( stable_category, mor );
                
