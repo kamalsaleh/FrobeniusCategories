@@ -334,7 +334,7 @@ BindGlobal( "COMPUTE_TRIANGULATED_STRUCTURE_OF_A_STABLE_CATEGORY_OF_A_FROBENIUS_
                                      AsStableCategoryMorphism( stable_category,  F_E ),
                                      AsStableCategoryMorphism( stable_category, E_TD ) );
         
-        return [ tr_f_, tr_h_, tr_g_, tr ];
+        return [ tr_f_, tr_g_, tr_h_, tr ];
         end );
     
     SetIsTriangulatedCategory( stable_category, true );
@@ -342,4 +342,3 @@ BindGlobal( "COMPUTE_TRIANGULATED_STRUCTURE_OF_A_STABLE_CATEGORY_OF_A_FROBENIUS_
     return stable_category;
     
 end );
-   
