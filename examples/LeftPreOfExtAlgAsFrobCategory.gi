@@ -320,3 +320,132 @@ COMPUTE_TRIANGULATED_STRUCTURE_OF_A_STABLE_CATEGORY_OF_A_FROBENIUS_CATEGORY( sta
 
 Finalize( stable_category );
 
+
+## Demo 
+
+M := HomalgMatrix( "[ [ e0, e1 ] ]", 1,2, R );
+# <A 1 x 2 matrix over an external ring>
+M := AsLeftPresentation( M );
+# <An object in Category of left presentations of Q{e0,e1,e2}>
+ M_ := AsStableCategoryObject( stable_category, M );
+# <An object in the stable category of Category of left presentations of Q{e0,e1,e2}>
+Display( M_ );              
+# An object in the stable category of Category of left presentations of Q{e0,e1,e2} with underlying object
+# e0,e1
+# 
+# An object in Category of left presentations of Q{e0,e1,e2}
+T := ShiftFunctor( stable_category );
+# Shift functor in The stable category of Category of left presentations of Q{e0,e1,e2}
+S := ShiftFunctor( stable_category );
+# Shift functor in The stable category of Category of left presentations of Q{e0,e1,e2}
+TM_ := ApplyFunctor( T, M_ );
+# <An object in the stable category of Category of left presentations of Q{e0,e1,e2}>
+Display( TM_ );
+# An object in the stable category of Category of left presentations of Q{e0,e1,e2} with underlying object
+# 0, e0,e1,
+# e1,0, e0 
+# 
+# An object in Category of left presentations of Q{e0,e1,e2}
+STM_ := ApplyFunctor( S, TM_ );
+# <An object in the stable category of Category of left presentations of Q{e0,e1,e2}>
+Display( STM_ );
+# An object in the stable category of Category of left presentations of Q{e0,e1,e2} with underlying object
+# e1,e0,0, 0, 
+# 0, 0, e0,e1,
+# 0, e1,0, e0 
+# 
+# An object in Category of left presentations of Q{e0,e1,e2}
+Id_ST := AutoequivalenceFromIdentityToShiftAfterReverseShiftFunctor( stable_category );
+# Autoequivalence from identity functor to Shift after ReverseShift functor in The stable category of Category of left presentations of Q{e0,e1,e2}
+iso := ApplyNaturalTransformation( Id_ST, M_ );
+# <A morphism in the stable category of Category of left presentations of Q{e0,e1,e2}>
+Display( iso );
+# A morphism in the stable category of Category of left presentations of Q{e0,e1,e2} with underlying morphism
+# 0,1,
+# 1,0 
+# 
+# A morphism in Category of left presentations of Q{e0,e1,e2}
+Id_M_ := IdentityMorphism( M_ );
+# <A morphism in the stable category of Category of left presentations of Q{e0,e1,e2}>
+Tr := CompleteMorphismToExactTriangle( Id_M_ );
+# < An exact triangle in The stable category of Category of left presentations of Q{e0,e1,e2} >
+Display( Tr );
+# object1 --(morphism1)--> object2 --(morphism2)--> object3 --(morphism3)--> ShiftOfObject( object1 )
+# 
+# 
+# object1 is
+# An object in the stable category of Category of left presentations of Q{e0,e1,e2} with underlying object
+# e0,e1
+# 
+# An object in Category of left presentations of Q{e0,e1,e2}
+# 
+# 
+# morphism1 is 
+# A morphism in the stable category of Category of left presentations of Q{e0,e1,e2} with underlying morphism
+# 1,0,
+# 0,1 
+# 
+# An identity morphism in Category of left presentations of Q{e0,e1,e2}
+# 
+# 
+# object2 is
+# An object in the stable category of Category of left presentations of Q{e0,e1,e2} with underlying object
+# e0,e1
+# 
+# An object in Category of left presentations of Q{e0,e1,e2}
+# 
+# 
+# morphism2 is 
+# A morphism in the stable category of Category of left presentations of Q{e0,e1,e2} with underlying morphism
+# 0,0,0,1,0,
+# 0,0,0,0,1 
+# 
+# A monomorphism in Category of left presentations of Q{e0,e1,e2}
+# 
+# 
+# object3 is
+# An object in the stable category of Category of left presentations of Q{e0,e1,e2} with underlying object
+# 0, e0,e1,-1,0, 
+# e1,0, e0,0, -1,
+# 0, 0, 0, e0,e1 
+# 
+# An object in Category of left presentations of Q{e0,e1,e2}
+# 
+# 
+# morphism3 is 
+# A morphism in the stable category of Category of left presentations of Q{e0,e1,e2} with underlying morphism
+# 1,0,0,
+# 0,1,0,
+# 0,0,1,
+# 0,0,0,
+# 0,0,0 
+# 
+# A morphism in Category of left presentations of Q{e0,e1,e2}
+# 
+# 
+# ShiftOfObject( object1 ) is 
+# An object in the stable category of Category of left presentations of Q{e0,e1,e2} with underlying object
+# 0, e0,e1,
+# e1,0, e0 
+# 
+# An object in Category of left presentations of Q{e0,e1,e2}
+id1 := IdentityMorphism( Tr!.object1 );
+# <A morphism in the stable category of Category of left presentations of Q{e0,e1,e2}>
+id2 := IdentityMorphism( Tr!.object2 );
+# <A morphism in the stable category of Category of left presentations of Q{e0,e1,e2}>
+mor := CompleteToMorphismOfExactTriangles( Tr, Tr, id1, id2 );
+# <A morphism in the stable category of Category of left presentations of Q{e0,e1,e2}>
+Display( mor );
+# A morphism in the stable category of Category of left presentations of Q{e0,e1,e2} with underlying morphism
+# 1,0,0,0,0,
+# 0,1,0,0,0,
+# 0,0,1,0,0,
+# 0,0,0,1,0,
+# 0,0,0,0,1 
+# 
+# A morphism in Category of left presentations of Q{e0,e1,e2}
+OctohedralAxiom( Id_M_, Id_M_ );
+# [ < An exact triangle in The stable category of Category of left presentations of Q{e0,e1,e2} >, 
+#   < An exact triangle in The stable category of Category of left presentations of Q{e0,e1,e2} >, 
+#   < An exact triangle in The stable category of Category of left presentations of Q{e0,e1,e2} >, 
+#   < An exact triangle in The stable category of Category of left presentations of Q{e0,e1,e2} > ]
