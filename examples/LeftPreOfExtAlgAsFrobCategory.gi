@@ -34,7 +34,7 @@ AddFitIntoConflationUsingInjectiveObject( category, function( obj )
                                                     
                                                     return ConflationOfInflation( AsInflation( embedding ) );
                                                    
-                                                    # The commented method bellow was the first method written to do the job, it mathematically beutifull, but a little bit 
+                                                    # The commented method bellow was the first method written to do the job, it is mathematically beutifull, but a little bit 
                                                    
                                                     # slower than the method above :/.
                                                    
@@ -318,5 +318,5 @@ stable_category := StableCategory( category, Test_Function :FinalizeStableCatego
 
 COMPUTE_TRIANGULATED_STRUCTURE_OF_A_STABLE_CATEGORY_OF_A_FROBENIUS_CATEGORY( stable_category );
 
-
+Finalize( stable_category );
 
