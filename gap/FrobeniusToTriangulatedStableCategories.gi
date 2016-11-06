@@ -161,7 +161,7 @@ BindGlobal( "COMPUTE_TRIANGULATED_STRUCTURE_OF_A_STABLE_CATEGORY_OF_A_FROBENIUS_
   # Adding TR1, 
   # It states that every morphism f: A ---> B can be completed to an exact triangle.
   
-  AddCompleteMorphismToExactTriangleByTR1( stable_category,
+  AddCompleteMorphismToExactTriangle( stable_category,
          
          function( mor )
          local underlying_mor, A, B, conf_A, inf, mor1, mor2;
@@ -199,7 +199,7 @@ BindGlobal( "COMPUTE_TRIANGULATED_STRUCTURE_OF_A_STABLE_CATEGORY_OF_A_FROBENIUS_
   #
   # Output is theta: C1 ---> C2 such that the diagram is commutative
   
-  AddTR3( stable_category, 
+  AddCompleteToMorphismOfExactTriangles( stable_category, 
   
        function( tr1, tr2, phi_, psi_ )
        local f1_, f2_, g2_, f2_after_phi_minus_psi_after_f1_, u1, beta,
@@ -246,10 +246,12 @@ BindGlobal( "COMPUTE_TRIANGULATED_STRUCTURE_OF_A_STABLE_CATEGORY_OF_A_FROBENIUS_
        
        end );
      
-     AddTR4( stable_category, 
+     ###
+     AddOctohedralAxiom( stable_category, 
      
         function( f_, g_ )
-        local f, g, h_, h, A, B, C, tr_f_, tr_h_, D, conf_D, f1, B_to_I_D, conf_B_to_I_D, w, I1, B1, push_object_to_B1, conf_B, I, TB, iso, B1_TB, tr_g_;
+        local f, g, h_, h, A, B, C, tr_f_, tr_h_, D, conf_D, f1, B_to_I_D, conf_B_to_I_D, w, I1, B1, push_object_to_B1, conf_B, I, TB, iso, B1_TB, tr_g_,
+        u_A, alpha, gamma, h1, u_D, pi_D, TD, injections, beta, g1, D_F, F_E, E_TD, tr;
         
         f := UnderlyingMorphismOfTheStableMorphism( f_ );
         
@@ -265,21 +267,39 @@ BindGlobal( "COMPUTE_TRIANGULATED_STRUCTURE_OF_A_STABLE_CATEGORY_OF_A_FROBENIUS_
         
         C := Range( g );
         
-        tr_f_ := CompleteMorphismToExactTriangleByTR1( f_ );
+        tr_f_ := CompleteMorphismToExactTriangle( f_ );
         
-        tr_h_ := CompleteMorphismToExactTriangleByTR1( h_ );
+        u_A := FitIntoConflationUsingInjectiveObject( A )!.morphism1;
+        
+        alpha :=  InjectionsOfPushoutInducedByStructureOfExactCategory( AsInflation( u_A ), f )[ 1 ];
+        
+        f1 := UnderlyingMorphismOfTheStableMorphism( tr_f_!.morphism2 );
+        
+        tr_h_ := CompleteMorphismToExactTriangle( h_ );
+        
+        gamma := InjectionsOfPushoutInducedByStructureOfExactCategory( AsInflation( u_A ), h )[ 1 ];
+        
+        h1 := UnderlyingMorphismOfTheStableMorphism( tr_h_!.morphism2 );
         
         D := UnderlyingObjectOfTheStableObject( tr_f_!.object3 );
         
         conf_D := FitIntoConflationUsingInjectiveObject( D );
         
-        f1 := UnderlyingMorphismOfTheStableMorphism( tr_f_!.morphism2 );
+        u_D := conf_D!.morphism1;
         
-        B_to_I_D := PreCompose( f1, conf_D!.morphism1 );
+        pi_D := conf_D!.morphism2;
+        
+        TD := conf_D!.object3;
+        
+        B_to_I_D := PreCompose( f1, u_D );
         
         conf_B_to_I_D := ConflationOfInflation( AsInflation( B_to_I_D ) );
         
-        w := InjectionsOfPushoutInducedByStructureOfExactCategory( B_to_I_D, g )[ 2 ];
+        injections := InjectionsOfPushoutInducedByStructureOfExactCategory( B_to_I_D, g );
+        
+        beta := injections[ 1 ];
+        
+        g1 := injections[ 2 ];
         
         I1 := conf_B_to_I_D!.object2;
         
@@ -296,16 +316,25 @@ BindGlobal( "COMPUTE_TRIANGULATED_STRUCTURE_OF_A_STABLE_CATEGORY_OF_A_FROBENIUS_
         
         iso := SchanuelsIsomorphism(  conf_B_to_I_D, conf_B );
         
-        B1_TB := PreCompose( [ InjectionOfCofactorOfDirectSum( [ I, B1 ], 2), 
+        B1_TB := AdditiveInverseForMorphisms( PreCompose( [ InjectionOfCofactorOfDirectSum( [ I, B1 ], 2), 
                                iso,
-                               ProjectionInFactorOfDirectSum( [ I1, TB ], 2 ) ] );
+                               ProjectionInFactorOfDirectSum( [ I1, TB ], 2 ) ] ) );
                                
         tr_g_ := CreateExactTriangle( g_,
-                                     AsStableCategoryMorphism( stable_category,  w ),
+                                     AsStableCategoryMorphism( stable_category,  g1 ),
                                      AsStableCategoryMorphism( stable_category, PreCompose( push_object_to_B1, B1_TB ) ) );
         
+        D_F := UniversalMorphismFromPushoutInducedByStructureOfExactCategory( [ u_A, f ], [ gamma, PreCompose( g, h1 ) ] );
         
-        return 0;
+        F_E := UniversalMorphismFromPushoutInducedByStructureOfExactCategory( [ u_A, h ], [ PreCompose( [ alpha, u_D, beta ] ), g1 ] );
+        
+        E_TD := UniversalMorphismFromPushoutInducedByStructureOfExactCategory( [ B_to_I_D, g ], [ pi_D, ZeroMorphism( C, TD ) ] );
+        
+        tr := CreateExactTriangle( AsStableCategoryMorphism( stable_category, D_F ),
+                                     AsStableCategoryMorphism( stable_category,  F_E ),
+                                     AsStableCategoryMorphism( stable_category, E_TD ) );
+        
+        return [ tr_f_, tr_h_, tr_g_, tr ];
         end );
     
     SetIsTriangulatedCategory( stable_category, true );
