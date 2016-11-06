@@ -5,7 +5,7 @@
 LoadPackage( "ModulePresentations" );
 LoadPackage( "FrobeniusCategoriesForCap" );
 
-R := KoszulDualRing( HomalgFieldOfRationalsInSingular()*"x,y" );
+R := KoszulDualRing( HomalgFieldOfRationalsInSingular()*"x,y,z" );
 
 category := LeftPresentations( R:FinalizeCategory := false );
 

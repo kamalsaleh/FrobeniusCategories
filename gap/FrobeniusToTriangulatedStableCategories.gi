@@ -111,7 +111,7 @@ BindGlobal( "COMPUTE_TRIANGULATED_STRUCTURE_OF_A_STABLE_CATEGORY_OF_A_FROBENIUS_
    AddIsomorphismFromObjectToShiftAfterReverseShiftOfTheObject( stable_category, 
                
                function( A_ )
-               local A, conf_A, SA, conf_SA, TSA, inf1, inf2, h1, h2, mor; 
+               local A, conf_A, SA, conf_SA, TSA, inf1, inf2, h1, h2, mor, u1, v1, I_SA, injection_A, injection_SA, inverse_alpha, inverse_h1, alpha; 
                
                A := UnderlyingObjectOfTheStableObject( A_ );
                
@@ -131,7 +131,23 @@ BindGlobal( "COMPUTE_TRIANGULATED_STRUCTURE_OF_A_STABLE_CATEGORY_OF_A_FROBENIUS_
                
                h2 := UniversalMorphismFromPushoutInducedByStructureOfExactCategory( [ inf1, inf2 ], [ ZeroMorphism( conf_A!.object2, TSA ), conf_SA!.morphism2 ] );
                
-               mor := PreCompose( Inverse( h1 ), h2 );
+               u1 := InjectionsOfPushoutInducedByStructureOfExactCategory( AsInflation( inf1 ), inf2 )[ 2 ];
+               
+               I_SA := conf_SA!.object2;
+               
+               injection_SA := InjectionOfCofactorOfDirectSum( [ I_SA, A ], 1 );
+               
+               injection_A  := InjectionOfCofactorOfDirectSum( [ I_SA, A ], 2 );
+               
+               v1 := InjectiveColift( u1, IdentityMorphism( I_SA ) );
+               
+               alpha := PreCompose( v1, injection_SA ) + PreCompose( h1, injection_A );
+               
+               inverse_alpha := Inverse( alpha );
+               
+               inverse_h1 := PreCompose( injection_A, inverse_alpha );
+               
+               mor := AdditiveInverseForMorphisms( PreCompose( inverse_h1, h2 ) );
                
                return AsStableCategoryMorphism( stable_category, mor );
                
@@ -230,6 +246,67 @@ BindGlobal( "COMPUTE_TRIANGULATED_STRUCTURE_OF_A_STABLE_CATEGORY_OF_A_FROBENIUS_
        
        end );
      
+     AddTR4( stable_category, 
+     
+        function( f_, g_ )
+        local f, g, h_, h, A, B, C, tr_f_, tr_h_, D, conf_D, f1, B_to_I_D, conf_B_to_I_D, w, I1, B1, push_object_to_B1, conf_B, I, TB, iso, B1_TB, tr_g_;
+        
+        f := UnderlyingMorphismOfTheStableMorphism( f_ );
+        
+        g := UnderlyingMorphismOfTheStableMorphism( g_ );
+        
+        h_ := PreCompose( f_, g_ );
+        
+        h := UnderlyingMorphismOfTheStableMorphism( h_ );
+        
+        A := Source( f );
+        
+        B := Range( f );
+        
+        C := Range( g );
+        
+        tr_f_ := CompleteMorphismToExactTriangleByTR1( f_ );
+        
+        tr_h_ := CompleteMorphismToExactTriangleByTR1( h_ );
+        
+        D := UnderlyingObjectOfTheStableObject( tr_f_!.object3 );
+        
+        conf_D := FitIntoConflationUsingInjectiveObject( D );
+        
+        f1 := UnderlyingMorphismOfTheStableMorphism( tr_f_!.morphism2 );
+        
+        B_to_I_D := PreCompose( f1, conf_D!.morphism1 );
+        
+        conf_B_to_I_D := ConflationOfInflation( AsInflation( B_to_I_D ) );
+        
+        w := InjectionsOfPushoutInducedByStructureOfExactCategory( B_to_I_D, g )[ 2 ];
+        
+        I1 := conf_B_to_I_D!.object2;
+        
+        B1 := conf_B_to_I_D!.object3;
+        
+        push_object_to_B1 := UniversalMorphismFromPushoutInducedByStructureOfExactCategory( [ B_to_I_D, g ], 
+                 [conf_B_to_I_D!.morphism2, ZeroMorphism( C, B1 ) ] );
+        
+        conf_B := FitIntoConflationUsingInjectiveObject( B );
+        
+        I := conf_B!.object2;
+        
+        TB := conf_B!.object3;
+        
+        iso := SchanuelsIsomorphism(  conf_B_to_I_D, conf_B );
+        
+        B1_TB := PreCompose( [ InjectionOfCofactorOfDirectSum( [ I, B1 ], 2), 
+                               iso,
+                               ProjectionInFactorOfDirectSum( [ I1, TB ], 2 ) ] );
+                               
+        tr_g_ := CreateExactTriangle( g_,
+                                     AsStableCategoryMorphism( stable_category,  w ),
+                                     AsStableCategoryMorphism( stable_category, PreCompose( push_object_to_B1, B1_TB ) ) );
+        
+        
+        return 0;
+        end );
     
     SetIsTriangulatedCategory( stable_category, true );
     

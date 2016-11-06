@@ -122,6 +122,8 @@ DeclareOperation( "CreateConflation",
 DeclareOperation( "IsWellDefinedForConflations", 
                       [ IsCapCategoryConflation ] );
 
+DeclareOperation( "SchanuelsIsomorphism", [ IsCapCategoryConflation, IsCapCategoryConflation ] );
+
 #################################
 ##
 ##  Attributes

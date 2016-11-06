@@ -740,7 +740,89 @@ InstallMethod( Display,
    
 end );
 
+#####################################
+##
+## Operations
+##
+#####################################
 
+#           f1        g1 
+#        A ----> I1 -----> B1
+#
+#
+#        A ----> I2 -----> B2
+#           f2        g2
+#
+#        SchanuelsIsomorphism : I2 𐌈 B1 ----> I1 𐌈 B2
+# In the stable category,  B1 ------> I2 𐌈 B1 -------> I1 𐌈 B2 -------> B2 is also supposed to be isomorphism.
+
+##
+InstallMethodWithCache( SchanuelsIsomorphism, 
+            [ IsCapCategoryConflation, IsCapCategoryConflation ], 
+    
+    function( conf1, conf2 )
+    local f1, I1, g1, B1, f2, I2, g2, B2, phi, phi1, phi2, h1, h2, inverse_phi_1, inverse_phi_2, i_I1, i_I2, i_B1, i_B2, alpha, beta;
+    
+    if not IsExactCategory( CapCategory( conf1 ) ) then 
+      
+       Error( "The category should be exact" );
+       
+    fi;
+    
+    if not IsEqualForObjects( conf1!.object1, conf2!.object1 ) then 
+    
+       Error( "Both conflations should begin by the same object" );
+       
+    fi;
+    
+    f1 := conf1!.morphism1;
+    
+    I1 := Range( f1 );
+    
+    g1 := conf1!.morphism2;
+    
+    B1 := Range( g1 );
+    
+    f2 := conf2!.morphism1;
+    
+    I2 := Range( f2 );
+    
+    g2 := conf2!.morphism2;
+    
+    B2 := Range( g2 );
+    
+    phi := InjectionsOfPushoutInducedByStructureOfExactCategory( f1, f2 );
+    
+    phi1 := phi[ 1 ];
+    
+    phi2 := phi[ 2 ];
+    
+    h1 := UniversalMorphismFromPushoutInducedByStructureOfExactCategory( [ f1, f2 ], [ g1, ZeroMorphism( I2, Range( g1 )  ) ] );
+    
+    h2 := UniversalMorphismFromPushoutInducedByStructureOfExactCategory( [ f1, f2 ], [ ZeroMorphism( I1, Range( g2 )  ), g2 ] );
+    
+    inverse_phi_1 := InjectiveColift( phi1, IdentityMorphism( I1 ) );
+    
+    inverse_phi_2 := InjectiveColift( phi2, IdentityMorphism( I2 ) );
+    
+    i_I2 := InjectionOfCofactorOfDirectSum( [ I2, B1 ], 1 );
+    
+    i_B1 := InjectionOfCofactorOfDirectSum( [ I2, B1 ], 2 );
+    
+    alpha := PreCompose( inverse_phi_2, i_I2 ) + PreCompose( h1, i_B1 );
+    
+    i_I1 := InjectionOfCofactorOfDirectSum( [ I1, B2 ], 1 );
+    
+    i_B2 := InjectionOfCofactorOfDirectSum( [ I1, B2 ], 2 );
+    
+    beta := PreCompose( inverse_phi_1, i_I1 ) + PreCompose( h2, i_B2 );
+    
+    return PreCompose( Inverse( alpha ), beta );
+    
+    end );
+    
+    
+    
 #####################################
 ##
 ## Immediate Methods and Attributes 
