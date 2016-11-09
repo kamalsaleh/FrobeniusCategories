@@ -5,7 +5,7 @@
 LoadPackage( "ModulePresentations" );
 LoadPackage( "FrobeniusCategoriesForCap" );
 
-R := KoszulDualRing( HomalgFieldOfRationalsInSingular()*"x,y,z" );
+R := KoszulDualRing( HomalgFieldOfRationalsInSingular()*"x,y" );
 
 category := LeftPresentations( R:FinalizeCategory := false );
 
@@ -26,40 +26,25 @@ AddFitIntoConflationUsingProjectiveObject( category, function( obj )
                                                      end );
 
 AddFitIntoConflationUsingInjectiveObject( category, function( obj )
-                                                    local syzygies, embedding;
+                                                    local ring, dual, nat, dual_obj, free_cover, dual_free_cover, obj_to_double_dual_obj, embedding;
                                                     
-                                                    syzygies := SyzygiesOfColumns( UnderlyingMatrix( obj ) );
+                                                    ring := UnderlyingHomalgRing( obj );
                                                     
-                                                    embedding := PresentationMorphism( obj, syzygies, FreeLeftPresentation( NrColumns( syzygies ), R ) );
+                                                    dual := FunctorDualForLeftPresentations( ring );
+                                                    
+                                                    nat  := NaturalTransformationFromIdentityToDoubleDualForLeftPresentations( ring );
+                                                    
+                                                    dual_obj := ApplyFunctor( dual, obj );
+                                                    
+                                                    free_cover := CoverByFreeModule( dual_obj );
+                                                    
+                                                    dual_free_cover := ApplyFunctor( dual, free_cover );
+                                                    
+                                                    obj_to_double_dual_obj := ApplyNaturalTransformation( nat, obj );
+                                                    
+                                                    embedding := PreCompose( obj_to_double_dual_obj, dual_free_cover );
                                                     
                                                     return ConflationOfInflation( AsInflation( embedding ) );
-                                                   
-                                                    # The commented method bellow was the first method written to do the job, it is mathematically beutifull, but a little bit 
-                                                   
-                                                    # slower than the method above :/.
-                                                   
-                                                    # syzygies of columns provids a monomorphism in this specific category, why :) ?
-                                                    # -------------------------------------------------------------------------------
-                                                    
-                                                    # local ring, dual, nat, dual_obj, free_cover, dual_free_cover, obj_to_double_dual_obj, embedding;
-                                                    
-                                                    # ring := UnderlyingHomalgRing( obj );
-                                                    
-                                                    # dual := FunctorDualForLeftPresentations( ring );
-                                                    
-                                                    # nat  := NaturalTransformationFromIdentityToDoubleDualForLeftPresentations( ring );
-                                                    
-                                                    # dual_obj := ApplyFunctor( dual, obj );
-                                                    
-                                                    # free_cover := CoverByFreeModule( dual_obj );
-                                                    
-                                                    # dual_free_cover := ApplyFunctor( dual, free_cover );
-                                                    
-                                                    # obj_to_double_dual_obj := ApplyNaturalTransformation( nat, obj );
-                                                    
-                                                    # embedding := PreCompose( obj_to_double_dual_obj, dual_free_cover );
-                                                    
-                                                    # return ConflationOfInflation( AsInflation( embedding ) );
                                                     
                                                     end );
 
@@ -242,11 +227,9 @@ AddIsProjective( category, function( obj )
                             
                                return false;
                               
-                            else 
+                            fi; 
                             
-                               return true;
-                               
-                            fi;
+                            return true;
                             
                             end );
  
@@ -264,7 +247,8 @@ Finalize( category );
 ##
 #################################################
 
-Test_Function := 
+##
+membership_test_function := 
         
         function( mor )
         
@@ -299,15 +283,13 @@ Test_Function :=
         
            return false;
            
-        else 
-        
-           return true;
+        fi;
            
-       fi;
+        return true;
        
-       end;
+        end;
        
-stable_category := StableCategory( category, Test_Function :FinalizeStableCategory := false );
+stable_category := StableCategory( category, membership_test_function :FinalizeStableCategory := false );
 
 ############################################################
 ##
@@ -336,7 +318,7 @@ Display( M_ );
 # An object in Category of left presentations of Q{e0,e1,e2}
 T := ShiftFunctor( stable_category );
 # Shift functor in The stable category of Category of left presentations of Q{e0,e1,e2}
-S := ShiftFunctor( stable_category );
+S := ReverseShiftFunctor( stable_category );
 # Shift functor in The stable category of Category of left presentations of Q{e0,e1,e2}
 TM_ := ApplyFunctor( T, M_ );
 # <An object in the stable category of Category of left presentations of Q{e0,e1,e2}>
@@ -355,7 +337,7 @@ Display( STM_ );
 # 0, e1,0, e0 
 # 
 # An object in Category of left presentations of Q{e0,e1,e2}
-Id_ST := AutoequivalenceFromIdentityToShiftAfterReverseShiftFunctor( stable_category );
+Id_ST := NaturalIsomorphismFromIdentityToShiftAfterReverseShiftFunctor( stable_category );
 # Autoequivalence from identity functor to Shift after ReverseShift functor in The stable category of Category of left presentations of Q{e0,e1,e2}
 iso := ApplyNaturalTransformation( Id_ST, M_ );
 # <A morphism in the stable category of Category of left presentations of Q{e0,e1,e2}>
