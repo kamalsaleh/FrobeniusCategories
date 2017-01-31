@@ -8,129 +8,98 @@ BindGlobal( "TURN_ABELIAN_CATEGORY_TO_EXACT_CATEGORY",
 
 function( category )
 
+if not IsAbelianCategory( category ) then 
+   
+   Error( "The given category is supposed to be abelian" );
+   
+fi;
+
 if HasIsFinalized( category ) then 
 
-   return Error( "The category is finalized and hence no methods can be added!\n" );
+   Error( "The category is finalized and hence no methods can be added!\n" );
 
 fi;
 
-## 
-## A short sequence is conflation when it is exact
+## We define the class of conflations to be the class of all short exact sequences.
 
-AddIsConflation( category, function( sequence )
-                              local alpha, beta, s, coker_alpha, coker_colift, ker_beta, ker_lift;
-                              alpha := sequence!.morphism1;
-                              
-                              beta  := sequence!.morphism2;
-                              
-                              ## alpha should be the kernel of beta ..
-   
-                              ker_beta := KernelEmbedding( beta );
-   
-                              ker_lift := KernelLift( beta, alpha );
-   
-                              if not IsIsomorphism( ker_lift ) then 
-   
-                                 return false;
-                                 
-                              fi;
-   
-                              ## beta should be the cokernel of alpha
-   
-                              coker_alpha  := CokernelProjection( alpha );
-   
-                              coker_colift := CokernelColift( alpha, beta );
-   
-                              if not IsIsomorphism( coker_colift ) then 
-   
-                                  return false;
-                                  
-                              fi;
+AddIsConflation( category, ReturnTrue );
 
-                              return true;
+# In Abelian categories every mono is the kernel mono of its cokernel epi;
 
-                              end );
-
-AddFR3( category, function( conf1, conf2 )
-                          local alpha, beta;
-       
-                          beta := PreCompose( conf1!.morphism2, conf2!.morphism2 );
-       
-                          alpha := KernelEmbedding( beta );
-       
-                          return CreateConflation( alpha, beta );
-       
+AddIsInflation( category, function( mor )
+                          
+                          return IsMonomorphism( mor );
+                          
                           end );
-   
-AddFR4( category,  function( conf1, conf2 )
-                          local alpha, beta;
-       
-                          alpha := PreCompose( conf1!.morphism1, conf2!.morphism1 );
-       
-                          beta := CokernelProjection( alpha );
-       
-                          return CreateConflation( alpha, beta );
-       
+
+## I Abelian categories every epi is the cokernel epi of its kernel mono;
+                          
+AddIsDeflation( category, function( mor )
+                          
+                          return IsEpimorphism( mor );
+                          
                           end );
                           
-AddFR5( category,  function( conf, mor )
-                                local f,g, gamma, beta;
-       
-                                f:= conf!.morphism2;
-                                g:= mor;
-       
-                                f := f!.morphism;
-                                g := g!.morphism;
-       
-       
-                                gamma := ProjectionInFactorOfFiberProduct( [ f, g ], 1 );
+AddFiberProductObjectInducedByStructureOfExactCategory( category, function( def, mor )
+                                                               
+                                                               return FiberProduct( def, mor );
+                                                               
+                                                               end );
 
-                                beta  := ProjectionInFactorOfFiberProduct( [ f, g ], 2 );
+AddProjectionsOfFiberProductInducedByStructureOfExactCategory( category,  function(  def, mor )
+                                local gamma, beta;
+       
+                                gamma := ProjectionInFactorOfFiberProduct( [ def, mor ], 1 );
 
-                                return [ CreateConflation( KernelEmbedding( beta ), beta ), gamma ];
+                                beta  := AsDeflation( ProjectionInFactorOfFiberProduct( [ def, mor ], 2 ) );
+
+                                return [ gamma, beta ];
         
                                 end );
                                 
-AddUniversalMorphismIntoFiberProductByFR5( category, function( D, tau )
-                                                     local D1, universal_morphism;  
+AddUniversalMorphismIntoFiberProductInducedByStructureOfExactCategory( category, function( D, tau )
                                                      
-                                                     D1 := [ D[ 1 ]!.morphism2, D[ 2 ] ];
-                                                     
-                                                     universal_morphism := UniversalMorphismIntoFiberProduct( D1, tau );
-                                                     
-                                                     return universal_morphism;
+                                                     return UniversalMorphismIntoFiberProduct( D, tau );
                                                      
                                                      end );
 
 
-AddFR6( category,  function( conf, mor )
-                                local f,g, gamma, beta;
-       
-                                f:= conf!.morphism1;
-                                g:= mor;
-       
-                                f := f!.morphism;
-                                g := g!.morphism;
-       
-                                gamma := InjectionOfCofactorOfPushout( [ f, g ], 1 );
+AddPushoutObjectInducedByStructureOfExactCategory( category, function( inf, mor )
+                                                               
+                                                               return Pushout( inf, mor );
+                                                               
+                                                               end );
 
-                                beta  := InjectionOfCofactorOfPushout( [ f, g ], 2 );
+AddInjectionsOfPushoutInducedByStructureOfExactCategory( category,  function( inf, mor )
+                                local gamma, beta;
+       
+                                gamma := InjectionOfCofactorOfPushout( [ inf, mor ], 1 );
 
-                                return [ CreateConflation( beta, CokernelProjection( beta ) ), gamma ];
+                                beta  := AsInflation( InjectionOfCofactorOfPushout( [ inf, mor ], 2 ) );
+
+                                return [ gamma, beta ];
        
                                 end );
 
-AddUniversalMorphismFromPushoutByFR6( category, function( D, tau )
-                                                local D1, universal_morphism;
-        
-                                                D1 := [ D[ 1 ]!.morphism1, D[ 2 ] ];
-        
-                                                universal_morphism := UniversalMorphismFromPushout( D1, tau );
-        
-                                                return universal_morphism ;
+AddUniversalMorphismFromPushoutInducedByStructureOfExactCategory( category, function( D, tau )
                                                 
+                                                return UniversalMorphismFromPushout( D, tau );
+        
                                                 end );
+                                                
+SetIsExactCategory( category, true );
                                                 
 return category;
 
 end );
+
+
+##
+InstallMethod( TurnAbelianCategoryToExactCategory, 
+                     [ IsCapCategory ], 
+                     
+   function( category )
+   
+   TURN_ABELIAN_CATEGORY_TO_EXACT_CATEGORY( category );
+   
+   end );

@@ -21,8 +21,7 @@ DeclareRepresentation( "IsCapCategoryConflationRep",
 
                         IsCapCategoryConflation and IsAttributeStoringRep,
                         [ ] );
- 
-                        
+
 DeclareRepresentation( "IsCapCategoryMorphismOfShortSequencesRep",
 
                         IsCapCategoryMorphismOfShortSequences and IsAttributeStoringRep, 
@@ -108,8 +107,21 @@ post_function := function( morphism, return_value )
 IsConflation := rec( 
 
 installation_name := "IsConflation", 
-filter_list := [ IsCapCategoryShortSequence ],
+filter_list := [ IsCapCategoryShortExactSequence ],
 cache_name := "IsConflation",
+pre_function := function( seq )
+                
+                if not IsWellDefinedForShortExactSequences( seq ) then 
+                
+                   return [ false, "The given short sequence is not even a short exact sequence" ];
+                   
+                else 
+                
+                   return [ true ];
+                   
+                fi;
+                
+                end, 
 return_type := "bool",
 post_function := function( seq, return_value )
                  
@@ -121,85 +133,23 @@ post_function := function( seq, return_value )
                  
                  end ),
 
+FiberProductObjectInducedByStructureOfExactCategory:= rec( 
 
-FR3 := rec( 
-
-installation_name := "FR3", 
-filter_list := [ IsCapCategoryConflation, IsCapCategoryConflation ],
-cache_name := "FR3",
-
-pre_function := function( conf1, conf2 )
-                
-                if not IsEqualForObjects( conf2!.object2, conf1!.object3 ) then 
-                
-                  return [ false, "The deflations of the given conflations are not composable" ];
-                  
-                fi;
-                
-                return [ true ];
-                
-                end,
-                
-return_type := [ IsCapCategoryConflation ],
-
-post_function := function( conf1, conf2, return_value )
-                 
-                 if not IsEqualForMorphisms( PreCompose( conf1!.morphism2, conf2!.morphism2 ), return_value!.morphism2 ) then 
-                 
-                     Error( "The deflation of the output computed by your function of FR3 should equal the composition of the deflations of the conflations that are given as input" );
-                  
-                 fi;
-                 
-                 end ),
-                 
-FR4 := rec( 
-
-installation_name := "FR4", 
-filter_list := [ IsCapCategoryConflation, IsCapCategoryConflation ],
-cache_name := "FR4",
-
-pre_function := function( conf1, conf2 )
-                
-                if not IsEqualForObjects( conf2!.object1, conf1!.object2 ) then 
-                
-                  return [ false, "The inflations of the given conflations are not composable" ];
-                  
-                fi;
-                
-                return [ true ];
-                
-                end,
-                
-return_type := [ IsCapCategoryConflation ],
-
-post_function := function( conf1, conf2, return_value )
-                 
-                 if not IsEqualForMorphisms( PreCompose( conf1!.morphism1, conf2!.morphism1 ), return_value!.morphism1 ) then 
-                 
-                     Error( "The inflation of the output computed by your function of FR4 should equal the composition of the inflations of the conflations that are given as input" );
-                  
-                 fi;
-                 
-                 end ),
-              
-FR5:= rec( 
-
-installation_name := "FR5", 
-filter_list := [ IsCapCategoryConflation, "morphism" ],
-cache_name := "FR5",
-
-pre_function := function( conf, mor )
+installation_name := "FiberProductObjectInducedByStructureOfExactCategory", 
+filter_list := [ IsCapCategoryDeflation , "morphism" ],
+cache_name := "FiberProductObjectInducedByStructureOfExactCategory",
+pre_function := function( def, mor )
                 local is_equal_for_objects;
                 
-                is_equal_for_objects := IsEqualForObjects( conf!.object3, Range( mor ) );
+                is_equal_for_objects := IsEqualForObjects( Range( def ), Range( mor ) );
                 
                 if is_equal_for_objects = fail then 
                 
-                    return [ false, "Cannot decide if the object3 in the conflation is equal to the range of the given morphism" ];
+                    return [ false, "Cannot decide if the ranges of the both morphisms are equal" ];
                  
                 elif is_equal_for_objects = false then 
                 
-                    return  [ false, "The object3 in the conflation is not equal to the range of the input morphism" ];
+                    return  [ false, "The ranges of both morphisms are not equal" ];
                     
                 else 
                 
@@ -208,153 +158,135 @@ pre_function := function( conf, mor )
                 fi;
                 
                 end,
-                
-return_type := [ IsCapCategoryConflation, "morphism" ],
-
-post_function := function( conf, mor, return_value )
-                 
-                 if not IsEqualForObjects( return_value[ 1 ]!.object3, Source( mor ) ) then 
-                 
-                    Error( "Object3 of output conflation is not equal to the source of the input morphism" );
-                 
-                 fi;
-                 
-                 if not IsEqualForObjects( return_value[ 1 ]!.object2, Source( return_value[ 2 ] ) ) then 
-                 
-                    Error( "Object2 of output conflation is not equal to the source of the output morphism" );
-                    
-                 fi;
-                 
-                 
-                 if not IsEqualForMorphisms( PreCompose( return_value[ 2], conf!.morphism2 ), PreCompose( return_value[ 1 ]!.morphism2, mor ) ) then 
-                 
-                    Error( "The function given does not provid a Pullback, since the diagram resulted is not commutative" );
-                    
-                 fi;
-                 
-                 end ),
-FiberProductByFR5:= rec( 
-
-installation_name := "FiberProductByFR5", 
-filter_list := [ IsCapCategoryConflation, "morphism" ],
-cache_name := "FiberProductByFR5",
 return_type := "object",
 
-post_function := function( conf, mor, return_value )
+post_function := function( def, mor, return_value )
  
-                 AddToGenesis( return_value, "FiberProductDiagramByFR5", [ conf, mor ] );
+                 AddToGenesis( return_value, "FiberProductObjectInducedByStructureOfExactCategory", [ def, mor ] );
                  
                  end ),                 
 
 
-ProjectionsOfFiberProductByFR5:= rec( 
+ProjectionsOfFiberProductInducedByStructureOfExactCategory:= rec( 
 
-installation_name := "ProjectionsOfFiberProductByFR5", 
-filter_list := [ IsCapCategoryConflation, "morphism" ],
-cache_name := "ProjectionsOfFiberProductByFR5",
-return_type := [ "morphism", "morphism" ] ),                 
+installation_name := "ProjectionsOfFiberProductInducedByStructureOfExactCategory", 
+filter_list := [ IsCapCategoryDeflation, "morphism" ],
+cache_name := "ProjectionsOfFiberProductInducedByStructureOfExactCategory",
+return_type := [ "morphism", IsCapCategoryDeflation ]
+# ,
+# post_function := function( def, mor, return_value )
+#                  
+#                  if not IsEqualForMorphisms( PreCompose( return_value[ 2 ], mor ), PreCompose( return_value[ 1 ], def ) ) then 
+#                  
+#                     Error( "The function given does not provid a Pullback, since the diagram resulted is not commutative" );
+#                     
+#                  fi;
+#                  
+#                  end 
+                 ),                 
 
-UniversalMorphismIntoFiberProductByFR5:= rec( 
+UniversalMorphismIntoFiberProductInducedByStructureOfExactCategory:= rec( 
 
-installation_name := "UniversalMorphismIntoFiberProductByFR5", 
+installation_name := "UniversalMorphismIntoFiberProductInducedByStructureOfExactCategory", 
 filter_list := [ IsList, IsList ],
-cache_name := "UniversalMorphismIntoFiberProductByFR5",
+cache_name := "UniversalMorphismIntoFiberProductInducedByStructureOfExactCategory",
 
-pre_function:= function( D, tau )
-               local f,g, is_equal_for_morphisms;
+# pre_function:= function( D, tau )
+#                local def,mor, is_equal_for_morphisms;
+#                
+#                if not IsCapCategoryDeflation( D[ 1 ] ) then 
+#                
+#                   return [ false, "The first entry of the first list should be a deflation" ];
+#                   
+#                fi;
+#                
+#                if not IsCapCategoryMorphism( D[ 2 ] ) then
+#                  
+#                   return [ false, "The second entry of the first list should be a morphism" ];
+#                   
+#                fi;
+#                
+#                if not IsCapCategoryMorphism( tau[ 1 ] ) or not IsCapCategoryMorphism( tau[ 2 ] ) then
+#                
+#                   return [ false, "The second list should be list of two morphisms" ];
+#                   
+#                fi;
+#                
+#                
+#                def := D[ 1 ];
+#                mor := D[ 2 ];
+#                
+#                is_equal_for_morphisms := IsEqualForMorphisms( PreCompose( tau[ 1 ], def ), PreCompose( tau[ 2 ], mor ) );
+#                
+#                if is_equal_for_morphisms = fail then 
+#                
+#                    return [ false, "Cannot determine if the resulted diagram is commutative" ];
+#                    
+#                elif is_equal_for_morphisms = false then 
+#                
+#                    return [ false, "The resulted diagram by the inputs is not commutative" ];
+#                    
+#                else
+#                
+#                    return [ true ];
+#                    
+#                fi;
+#                
+#                end,
                
-               if not IsCapCategoryConflation( D[ 1 ] ) then 
                
-                  return [ false, "The first entry of the first list should be a conflation" ];
-                  
-               fi;
-               
-               if not IsCapCategoryMorphism( D[ 2 ] ) then
-                 
-                  return [ false, "The second entry of the first list should be a morphism" ];
-                  
-               fi;
-               
-               if not IsCapCategoryMorphism( tau[ 1 ] ) or not IsCapCategoryMorphism( tau[ 2 ] ) then
-               
-                  return [ false, "The second list should be list of two morphisms" ];
-                  
-               fi;
-               
-               
-               f := D[ 1 ]!.morphism2;
-               g := D[ 2 ];
-               
-               is_equal_for_morphisms := IsEqualForMorphisms( PreCompose( tau[ 1 ], f ), PreCompose( tau[ 2 ], g ) );
-               
-               if is_equal_for_morphisms = fail then 
-               
-                   return [ false, "Cannot determine if the resulted diagram is commutative" ];
-                   
-               elif is_equal_for_morphisms = false then 
-               
-                   return [ false, "The resulted diagram by the inputs is not commutative" ];
-                   
-               else
-               
-                   return [ true ];
-                   
-               fi;
-               
-               end,
-               
-               
-return_type := "morphism", 
+return_type := "morphism"
+# , 
+# 
+# post_function := function( D, tau, return_value )
+#                  local p, proj1, proj2, is_equal_for_morphisms;
+#                  
+#                  p := ProjectionsOfFiberProductInducedByStructureOfExactCategory( D[ 1 ], D [ 2 ] );
+#                  
+#                  is_equal_for_morphisms := IsEqualForMorphisms( PreCompose( return_value, p[ 1 ] ), tau[ 1 ] );
+#                
+#                  if is_equal_for_morphisms = fail then 
+#                 
+#                      Error( "Cannot determine if the resulted diagrams are commutative" );
+#                    
+#                  elif is_equal_for_morphisms = false then 
+#                
+#                      Error( "The resulted diagram by the output is not commutative" );
+#                    
+#                  fi;
+#                  
+#                  is_equal_for_morphisms := IsEqualForMorphisms( PreCompose( return_value, p[ 2 ] ), tau[ 2 ] );
+#                
+#                  if is_equal_for_morphisms = fail then 
+#                 
+#                      Error( "Cannot determine if the resulted diagrams are commutative" );
+#                    
+#                  elif is_equal_for_morphisms = false then 
+#                
+#                      Error( "The resulted diagram by the output is not commutative" );
+#                    
+#                  fi;
+#                  
+#                  end
+                 ),                 
 
-post_function := function( D, tau, return_value )
-                 local p, proj1, proj2, is_equal_for_morphisms;
-                 
-                 p := ProjectionsOfFiberProductByFR5( D[ 1 ], D [ 2 ] );
-                 
-                 is_equal_for_morphisms := IsEqualForMorphisms( PreCompose( return_value, p[ 1 ] ), tau[ 1 ] );
-               
-                 if is_equal_for_morphisms = fail then 
-                
-                     Error( "Cannot determine if the resulted diagrams are commutative" );
-                   
-                 elif is_equal_for_morphisms = false then 
-               
-                     Error( "The resulted diagram by the output is not commutative" );
-                   
-                 fi;
-                 
-                 is_equal_for_morphisms := IsEqualForMorphisms( PreCompose( return_value, p[ 2 ] ), tau[ 2 ] );
-               
-                 if is_equal_for_morphisms = fail then 
-                
-                     Error( "Cannot determine if the resulted diagrams are commutative" );
-                   
-                 elif is_equal_for_morphisms = false then 
-               
-                     Error( "The resulted diagram by the output is not commutative" );
-                   
-                 fi;
-                 
-                 end ),                 
+PushoutObjectInducedByStructureOfExactCategory:= rec( 
 
-FR6:= rec( 
-
-installation_name := "FR6", 
-filter_list := [ IsCapCategoryConflation, "morphism" ],
-cache_name := "FR6",
-
-pre_function := function( conf, mor )
+installation_name := "PushoutObjectInducedByStructureOfExactCategory", 
+filter_list := [ IsCapCategoryInflation, "morphism" ],
+cache_name := "PushoutObjectInducedByStructureOfExactCategory",
+pre_function := function( inf, mor )
                 local is_equal_for_objects;
                 
-                is_equal_for_objects := IsEqualForObjects( conf!.object1, Source( mor ) );
+                is_equal_for_objects := IsEqualForObjects( Source( inf ), Source( mor ) );
                 
                 if is_equal_for_objects = fail then 
                 
-                    return [ false, "Cannot decide if the object1 in the conflation is equal to the source of the given morphism" ];
+                    return [ false, "Cannot decide if the sources of the given morphisms are equal or not" ];
                  
                 elif is_equal_for_objects = false then 
                 
-                    return  [ false, "The object1 in the conflation is not equal to the source of the input morphism" ];
+                    return  [ false, "The sources of the given morphisms are not equal" ];
                     
                 else 
                 
@@ -363,136 +295,112 @@ pre_function := function( conf, mor )
                 fi;
                 
                 end,
-                
-return_type := [ IsCapCategoryConflation, "morphism" ],
-
-post_function := function( conf, mor, return_value )
-                 
-                 if not IsEqualForObjects( return_value[ 1 ]!.object1, Range( mor ) ) then 
-                 
-                    Error( "Object1 of output conflation is not equal to the range of the input morphism" );
-                 
-                 fi;
-                 
-                 if not IsEqualForObjects( return_value[ 1 ]!.object2, Range( return_value[ 2 ] ) ) then 
-                 
-                    Error( "Object2 of output conflation is not equal to the range of the output morphism" );
-                    
-                 fi;
-                 
-                 
-                 if not IsEqualForMorphisms( PostCompose( return_value[ 2 ], conf!.morphism1 ), PostCompose( return_value[ 1 ]!.morphism1, mor ) ) then 
-                 
-                    Error( "The function given does not provid a pushout, since the diagram resulted is not commutative" );
-                    
-                 fi;
-                 
-                 end ),
-                 
-PushoutByFR6:= rec( 
-
-installation_name := "PushoutByFR6", 
-filter_list := [ IsCapCategoryConflation, "morphism" ],
-cache_name := "PushoutByFR6",
 return_type := "object",
 
-post_function := function( conf, mor, return_value )
+post_function := function( inf, mor, return_value )
  
-                 AddToGenesis( return_value, "PushoutDiagramByFR6", [ conf, mor ] );
+                 AddToGenesis( return_value, "PushoutObjectInducedByStructureOfExactCategory", [ inf, mor ] );
                  
                  end ),
                  
-InjectionsOfPushoutByFR6:= rec( 
+InjectionsOfPushoutInducedByStructureOfExactCategory:= rec( 
 
-installation_name := "InjectionsOfPushoutByFR6", 
-filter_list := [ IsCapCategoryConflation, "morphism" ],
-cache_name := "InjectionsOfPushoutByFR6",
-return_type := [ "morphism", "morphism" ] ),                 
+installation_name := "InjectionsOfPushoutInducedByStructureOfExactCategory", 
+filter_list := [ IsCapCategoryInflation, "morphism" ],
+cache_name := "InjectionsOfPushoutInducedByStructureOfExactCategory",
+return_type := [ "morphism", IsCapCategoryInflation ],
 
-
-UniversalMorphismFromPushoutByFR6:= rec( 
-
-installation_name := "UniversalMorphismFromPushoutByFR6", 
-filter_list := [ IsList, IsList ],
-cache_name := "UniversalMorphismFromPushoutByFR6",
-
-pre_function:= function( D, tau )
-               local f,g, is_equal_for_morphisms;
-               
-               if not IsCapCategoryConflation( D[ 1 ] ) then 
-               
-                  return [ false, "The first entry of the first list should be a conflation" ];
-                  
-               fi;
-               
-               if not IsCapCategoryMorphism( D[ 2 ] ) then
+post_function := function( inf, mor, return_value )
                  
-                  return [ false, "The second entry of the first list should be a morphism" ];
-                  
-               fi;
-               
-               if not IsCapCategoryMorphism( tau[ 1 ] ) or not IsCapCategoryMorphism( tau[ 2 ] ) then
-               
-                  return [ false, "The second list should be list of two morphisms" ];
-                  
-               fi;
-               
-               
-               f := D[ 1 ]!.morphism1;
-               g := D[ 2 ];
-               
-               is_equal_for_morphisms := IsEqualForMorphisms( PostCompose( tau[ 1 ], f ), PostCompose( tau[ 2 ], g ) );
-               
-               if is_equal_for_morphisms = fail then 
-               
-                   return [ false, "Cannot determine if the resulted diagram is commutative" ];
-                   
-               elif is_equal_for_morphisms = false then 
-               
-                   return [ false, "The resulted diagram by the inputs is not commutative" ];
-                   
-               else
-               
-                   return [ true ];
-                   
-               fi;
-               
-               end,
-               
-               
-return_type := "morphism", 
-
-post_function := function( D, tau, return_value )
-                 local p, proj1, proj2, is_equal_for_morphisms;
-                 
-                 p :=InjectionsOfPushoutByFR6( D[ 1 ], D [ 2 ] );
-                 
-                 is_equal_for_morphisms := IsEqualForMorphisms( PostCompose( return_value, p[ 1 ] ), tau[ 1 ] );
-               
-                 if is_equal_for_morphisms = fail then 
-                
-                     Error( "Cannot determine if the resulted diagrams are commutative" );
-                   
-                 elif is_equal_for_morphisms = false then 
-               
-                     Error( "The resulted diagram by the output is not commutative" );
-                   
-                 fi;
-                 
-                 is_equal_for_morphisms := IsEqualForMorphisms( PostCompose( return_value, p[ 2 ] ), tau[ 2 ] );
-               
-                 if is_equal_for_morphisms = fail then 
-                
-                     Error( "Cannot determine if the resulted diagrams are commutative" );
-                   
-                 elif is_equal_for_morphisms = false then 
-               
-                     Error( "The resulted diagram by the output is not commutative" );
-                   
-                 fi;
+                 AddToGenesis( Range( return_value[ 2 ] ), "PushoutObjectInducedByStructureOfExactCategory", [ inf, mor ] );
                  
                  end ),                 
 
+
+UniversalMorphismFromPushoutInducedByStructureOfExactCategory:= rec( 
+
+installation_name := "UniversalMorphismFromPushoutInducedByStructureOfExactCategory", 
+filter_list := [ IsList, IsList ],
+cache_name := "UniversalMorphismFromPushoutInducedByStructureOfExactCategory",
+
+# pre_function:= function( D, tau )
+#                local inf,g, is_equal_for_morphisms;
+#                
+#                if not IsCapCategoryInflation( D[ 1 ] ) then 
+#                
+#                   return [ false, "The first entry of the first list should be an inflation" ];
+#                   
+#                fi;
+#                
+#                if not IsCapCategoryMorphism( D[ 2 ] ) then
+#                  
+#                   return [ false, "The second entry of the first list should be a morphism" ];
+#                   
+#                fi;
+#                
+#                if not IsCapCategoryMorphism( tau[ 1 ] ) or not IsCapCategoryMorphism( tau[ 2 ] ) then
+#                
+#                   return [ false, "The second list should be list of two morphisms" ];
+#                   
+#                fi;
+#                
+#                
+#                inf := D[ 1 ];
+#                g := D[ 2 ];
+#                
+#                is_equal_for_morphisms := IsEqualForMorphisms( PostCompose( tau[ 1 ], inf ), PostCompose( tau[ 2 ], g ) );
+#                
+#                if is_equal_for_morphisms = fail then 
+#                
+#                    return [ false, "Cannot determine if the resulted diagram is commutative" ];
+#                    
+#                elif is_equal_for_morphisms = false then 
+#                
+#                    return [ false, "The resulted diagram by the inputs is not commutative" ];
+#                    
+#                else
+#                
+#                    return [ true ];
+#                    
+#                fi;
+#                
+#                end,
+               
+               
+return_type := "morphism"
+# , 
+# 
+# post_function := function( D, tau, return_value )
+#                  local p, proj1, proj2, is_equal_for_morphisms;
+#                  
+#                  p := InjectionsOfPushoutInducedByStructureOfExactCategory( D[ 1 ], D [ 2 ] );
+#                  
+#                  is_equal_for_morphisms := IsEqualForMorphisms( PostCompose( return_value, p[ 1 ] ), tau[ 1 ] );
+#                
+#                  if is_equal_for_morphisms = fail then 
+#                 
+#                      Error( "Cannot determine if the resulted diagrams are commutative" );
+#                    
+#                  elif is_equal_for_morphisms = false then 
+#                
+#                      Error( "The resulted diagram by the output is not commutative" );
+#                    
+#                  fi;
+#                  
+#                  is_equal_for_morphisms := IsEqualForMorphisms( PostCompose( return_value, p[ 2 ] ), tau[ 2 ] );
+#                
+#                  if is_equal_for_morphisms = fail then 
+#                 
+#                      Error( "Cannot determine if the resulted diagrams are commutative" );
+#                    
+#                  elif is_equal_for_morphisms = false then 
+#                
+#                      Error( "The resulted diagram by the output is not commutative" );
+#                    
+#                  fi;
+#                  
+#                  end 
+                 ),                 
 
 FitIntoConflationUsingInjectiveObject := rec( 
 
@@ -569,7 +477,16 @@ CAP_INTERNAL_ENHANCE_NAME_RECORD( FROBENIUS_CATEGORIES_METHOD_NAME_RECORD );
 
 CAP_INTERNAL_INSTALL_ADDS_FROM_RECORD( FROBENIUS_CATEGORIES_METHOD_NAME_RECORD );
   
-                        
+########################################
+##
+## Properties logic
+##
+########################################
+
+InstallTrueMethod( IsExactCategory, IsFrobeniusCategory );
+
+InstallTrueMethod( IsAdditiveCategory, IsExactCategory );
+
 ########################################
 ##
 ##  Constructors 
@@ -586,12 +503,6 @@ InstallMethodWithCache( CreateShortSequence,
    if not IsEqualForObjects( Range( alpha ), Source( beta ) ) then 
    
      Error( "Range of the first morphism should equal the Source of the second morphism" );
-     
-   fi;
-   
-   if not IsZeroForMorphisms( PreCompose( alpha, beta ) ) then 
-   
-     Error( "The composition of the two morphisms is not Zero" );
      
    fi;
    
@@ -613,6 +524,28 @@ InstallMethodWithCache( CreateShortSequence,
     
 end );
 
+##
+InstallMethod( IsWellDefinedForShortSequences, 
+                [ IsCapCategoryShortSequence ], 
+                
+  function( seq )
+  local alpha, beta;
+  
+  alpha := seq!.morphism1;
+  
+  beta := seq!.morphism2;
+  
+    if not IsZeroForMorphisms( PreCompose( alpha, beta ) ) then 
+    
+      return false;
+      
+    fi;
+    
+  return true;
+  
+end );
+
+
 InstallMethodWithCache( CreateShortExactSequence, 
               
               [ IsCapCategoryMorphism, IsCapCategoryMorphism ], 
@@ -628,39 +561,7 @@ InstallMethodWithCache( CreateShortExactSequence,
        Error( "Range of the first morphism should equal the Source of the second morphism" );
      
    fi;
-   
-   # img alpha should be contained in ker of alpha
-   
-   if not IsZeroForMorphisms( PreCompose( alpha, beta ) ) then 
-   
-       Error( "The composition of the two morphisms is not Zero" );
-     
-   fi;
-   
-   ## alpha should be the kernel of beta ..
-   
-   ker_beta := KernelEmbedding( beta );
-   
-   ker_lift := KernelLift( beta, alpha );
-   
-   if not IsIsomorphism( ker_lift ) then 
-   
-      Error( "The first morphism is not kernel of the second morphism, thus the given sequence can not be exact" );
       
-   fi;
-   
-   ## beta should be the cokernel of alpha
-   
-   coker_alpha  := CokernelProjection( alpha );
-   
-   coker_colift := CokernelColift( alpha, beta );
-   
-   if not IsIsomorphism( coker_colift ) then 
-   
-      Error( "The second morphism is not cokernel of the first morphism, thus the given sequence can not be exact" );
-      
-   fi;
-   
    s := rec( object1:= Source( alpha ), 
              
              morphism1:= alpha,
@@ -678,7 +579,55 @@ InstallMethodWithCache( CreateShortExactSequence,
     return s;
     
 end );
- 
+
+
+##
+InstallMethod( IsWellDefinedForShortExactSequences, 
+                [ IsCapCategoryShortExactSequence ], 
+                
+  function( seq )
+  local alpha, beta, ker_beta, ker_lift, coker_alpha, coker_colift;
+  
+    alpha := seq!.morphism1;
+  
+    beta := seq!.morphism2;
+  
+    if not IsWellDefinedForShortSequences( seq ) then 
+  
+      return false;
+     
+    fi;
+      
+    ## alpha should be the kernel of beta ..
+
+    ker_beta := KernelEmbedding( beta );
+    
+    ker_lift := KernelLift( beta, alpha );
+    
+    if not IsIsomorphism( ker_lift ) then 
+    
+       return false;
+       
+    fi;
+    
+    ## beta should be the cokernel of alpha
+    
+    coker_alpha  := CokernelProjection( alpha );
+    
+    coker_colift := CokernelColift( alpha, beta );
+    
+    if not IsIsomorphism( coker_colift ) then 
+    
+       return false;
+       
+    fi;
+  
+  return true;
+  
+end );
+
+
+##
 InstallMethodWithCache( CreateConflation, 
  
                        [ IsCapCategoryMorphism, IsCapCategoryMorphism ],
@@ -693,39 +642,7 @@ InstallMethodWithCache( CreateConflation,
        Error( "Range of the first morphism should equal the Source of the second morphism" );
      
    fi;
-   
-   # img alpha should be contained in ker of alpha
-   
-   if not IsZeroForMorphisms( PreCompose( alpha, beta ) ) then 
-   
-       Error( "The composition of the two morphisms is not Zero" );
-     
-   fi;
-   
-   ## alpha should be the kernel of beta ..
-   
-   ker_beta := KernelEmbedding( beta );
-   
-   ker_lift := KernelLift( beta, alpha );
-   
-   if not IsIsomorphism( ker_lift ) then 
-   
-      Error( "The first morphism is not kernel of the second morphism, thus the given sequence can not be exact" );
-      
-   fi;
-   
-   ## beta should be the cokernel of alpha
-   
-   coker_alpha  := CokernelProjection( alpha );
-   
-   coker_colift := CokernelColift( alpha, beta );
-   
-   if not IsIsomorphism( coker_colift ) then 
-   
-      Error( "The second morphism is not cokernel of the first morphism, thus the given sequence can not be exact" );
-      
-   fi;
-   
+
    s := rec( object1:= Source( alpha ), 
              
              morphism1:= alpha,
@@ -744,7 +661,15 @@ InstallMethodWithCache( CreateConflation,
     
 end );
     
-    
+##
+InstallMethod( IsWellDefinedForConflations, 
+                [ IsCapCategoryConflation ], 
+                
+  function( conf )
+  
+  return IsConflation( conf );
+  
+end );
 ##############################
 ##
 ## View
@@ -785,7 +710,22 @@ InstallMethod( Display,
               
    function( seq )
    
-   Print( "           morphism1                  morphism2\n" );
+   if IsCapCategoryConflation( seq ) then 
+    
+       Print( "A Conflation in ", CapCategory( seq ), " given by the sequence:\n" );
+    
+    elif IsCapCategoryShortExactSequence( seq ) then 
+    
+       Print( "A short exact sequence in ", CapCategory( seq ), " given by:\n" );
+   
+    else 
+   
+       Print( "A short sequence in ", CapCategory( seq ), " given by :\n" );
+   
+    fi;
+    
+   
+   Print( "\n           morphism1                  morphism2\n" );
    Print( "object1 ----------------> object2 -----------------> object3\n" );
    
    Print( "\nobject1 is\n" ); Display( seq!.object1 );
@@ -800,12 +740,94 @@ InstallMethod( Display,
    
 end );
 
+#####################################
+##
+## Operations
+##
+#####################################
 
-################################
+#           f1        g1 
+#        A ----> I1 -----> B1
+#
+#
+#        A ----> I2 -----> B2
+#           f2        g2
+#
+#        SchanuelsIsomorphism : I2 𐌈 B1 ----> I1 𐌈 B2
+# In the stable category,  B1 ------> I2 𐌈 B1 -------> I1 𐌈 B2 -------> B2 is also supposed to be isomorphism.
+
+##
+InstallMethodWithCache( SchanuelsIsomorphism, 
+            [ IsCapCategoryConflation, IsCapCategoryConflation ], 
+    
+    function( conf1, conf2 )
+    local f1, I1, g1, B1, f2, I2, g2, B2, phi, phi1, phi2, h1, h2, inverse_phi_1, inverse_phi_2, i_I1, i_I2, i_B1, i_B2, alpha, beta;
+    
+    if not IsExactCategory( CapCategory( conf1 ) ) then 
+      
+       Error( "The category should be exact" );
+       
+    fi;
+    
+    if not IsEqualForObjects( conf1!.object1, conf2!.object1 ) then 
+    
+       Error( "Both conflations should begin by the same object" );
+       
+    fi;
+    
+    f1 := conf1!.morphism1;
+    
+    I1 := Range( f1 );
+    
+    g1 := conf1!.morphism2;
+    
+    B1 := Range( g1 );
+    
+    f2 := conf2!.morphism1;
+    
+    I2 := Range( f2 );
+    
+    g2 := conf2!.morphism2;
+    
+    B2 := Range( g2 );
+    
+    phi := InjectionsOfPushoutInducedByStructureOfExactCategory( f1, f2 );
+    
+    phi1 := phi[ 1 ];
+    
+    phi2 := phi[ 2 ];
+    
+    h1 := UniversalMorphismFromPushoutInducedByStructureOfExactCategory( [ f1, f2 ], [ g1, ZeroMorphism( I2, Range( g1 )  ) ] );
+    
+    h2 := UniversalMorphismFromPushoutInducedByStructureOfExactCategory( [ f1, f2 ], [ ZeroMorphism( I1, Range( g2 )  ), g2 ] );
+    
+    inverse_phi_1 := InjectiveColift( phi1, IdentityMorphism( I1 ) );
+    
+    inverse_phi_2 := InjectiveColift( phi2, IdentityMorphism( I2 ) );
+    
+    i_I2 := InjectionOfCofactorOfDirectSum( [ I2, B1 ], 1 );
+    
+    i_B1 := InjectionOfCofactorOfDirectSum( [ I2, B1 ], 2 );
+    
+    alpha := PreCompose( inverse_phi_2, i_I2 ) + PreCompose( h1, i_B1 );
+    
+    i_I1 := InjectionOfCofactorOfDirectSum( [ I1, B2 ], 1 );
+    
+    i_B2 := InjectionOfCofactorOfDirectSum( [ I1, B2 ], 2 );
+    
+    beta := PreCompose( inverse_phi_1, i_I1 ) + PreCompose( h2, i_B2 );
+    
+    return PreCompose( Inverse( alpha ), beta );
+    
+    end );
+    
+    
+    
+#####################################
 ##
 ## Immediate Methods and Attributes 
 ##
-################################
+#####################################
 
 InstallImmediateMethod( INSTALL_LOGICAL_IMPLICATIONS_FOR_FROBENIUS_CATEGORY,
                IsCapCategory and IsFrobeniusCategory, 
@@ -817,6 +839,8 @@ InstallImmediateMethod( INSTALL_LOGICAL_IMPLICATIONS_FOR_FROBENIUS_CATEGORY,
       Filename(
         DirectoriesPackageLibrary( "FrobeniusCategoriesForCAP", "LogicForFrobeniusCategories" ),
         "PredicateImplicationsForGeneralFrobeniusCategories.tex" ) );
+        
+   TryNextMethod( );
      
 end );
 
@@ -866,7 +890,7 @@ InstallMethod( AsDeflation,
        
     elif not CanCompute( CapCategory( alpha ), "IsDeflation" ) then 
     
-       Error( "There is no method to decide if the morphism is an deflationor not" );
+       Error( "There is no method to decide if the morphism is an deflation or not" );
        
     elif not IsDeflation( alpha ) then 
     
