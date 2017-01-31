@@ -6,4 +6,4 @@
 ReadPackage( "FrobeniusCategoriesForCAP", "gap/FrobeniusCategoriesForCAP.gi" );
 ReadPackage( "FrobeniusCategoriesForCAP", "gap/FrobeniusCategoriesDerivedMethods.gi");
 ReadPackage( "FrobeniusCategoriesForCAP", "gap/AbelianToExactCategories.gi" );
-ReadPackage( "FrobeniusCategoriesForCAP", "gap/FrobeniusToTriangulatedStableCategories.gi");
+#ReadPackage( "FrobeniusCategoriesForCAP", "gap/FrobeniusToTriangulatedStableCategories.gi");
