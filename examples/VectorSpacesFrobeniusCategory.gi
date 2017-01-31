@@ -22,7 +22,7 @@ LoadPackage( "FrobeniusCategoriesForCap" );
 ##
 #########################################
 
-Q := HomalgFieldOfRationalsInSingular( );
+Q := HomalgFieldOfRationals( );
 #! Q
 category := MatrixCategory( Q:FinalizeCategory := false );
 #! Category of matrices over Q
