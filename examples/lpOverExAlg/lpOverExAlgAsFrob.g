@@ -17,34 +17,15 @@ TurnAbelianCategoryToExactCategory( category );
 
 SetIsFrobeniusCategory( category, true );
 
-AddFitIntoConflationUsingProjectiveObject( category, function( obj )
-                                                     
-                                                         return ConflationOfDeflation( AsDeflation( CoverByFreeModule( obj ) ) );
-                                                         
-                                                     end );
+AddFitIntoConflationUsingProjectiveObject( category, 
+    function( obj )
+        return ConflationOfDeflation( AsDeflation( EpimorphismFromSomeProjectiveObject( obj ) ) );
+end );
 
-AddFitIntoConflationUsingInjectiveObject( category, function( obj )
-                                                    local ring, dual, nat, dual_obj, free_cover, dual_free_cover, obj_to_double_dual_obj, embedding;
-                                                    
-                                                    ring := UnderlyingHomalgRing( obj );
-                                                    
-                                                    dual := FunctorDualLeft( ring );
-                                                    
-                                                    nat  := NaturalTransformationFromIdentityToDoubleDualLeft( ring );
-                                                    
-                                                    dual_obj := ApplyFunctor( dual, obj );
-                                                    
-                                                    free_cover := CoverByFreeModule( dual_obj );
-                                                    
-                                                    dual_free_cover := ApplyFunctor( dual, free_cover );
-                                                    
-                                                    obj_to_double_dual_obj := ApplyNaturalTransformation( nat, obj );
-                                                    
-                                                    embedding := PreCompose( obj_to_double_dual_obj, dual_free_cover );
-                                                    
-                                                    return ConflationOfInflation( AsInflation( embedding ) );
-                                                    
-                                                    end );
+AddFitIntoConflationUsingInjectiveObject( category, 
+    function( obj )
+        return ConflationOfInflation( AsInflation( MonomorphismIntoSomeInjectiveObject( obj ) ) );
+end );
 
 # InjectiveColift can be derived from Colift, hence I will only add a method for Colift.
 
@@ -237,5 +218,34 @@ AddIsInjective( category, function( obj )
                            return IsProjective( obj );
                            
                            end );
-                        
+                           
+# extra methods that can be defined
+
+AddEpimorphismFromSomeProjectiveObject( category, 
+    function( obj )
+        return CoverByFreeModule( obj );
+    end );
+    
+AddMonomorphismIntoSomeInjectiveObject( category,
+    function( obj )
+    local ring, dual, nat, dual_obj, free_cover, dual_free_cover, obj_to_double_dual_obj;
+        
+    ring := UnderlyingHomalgRing( obj );
+                                                    
+    dual := FunctorDualLeft( ring );
+                                                    
+    nat  := NaturalTransformationFromIdentityToDoubleDualLeft( ring );
+                                                    
+    dual_obj := ApplyFunctor( dual, obj );
+                                                    
+    free_cover := CoverByFreeModule( dual_obj );
+                                                    
+    dual_free_cover := ApplyFunctor( dual, free_cover );
+                                                    
+    obj_to_double_dual_obj := ApplyNaturalTransformation( nat, obj );
+                                                    
+    return PreCompose( obj_to_double_dual_obj, dual_free_cover );
+    
+    end );
+    
 Finalize( category );
