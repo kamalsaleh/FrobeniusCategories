@@ -158,13 +158,15 @@ pre_function := function( def, mor )
                 fi;
                 
                 end,
-return_type := "object",
-
-post_function := function( def, mor, return_value )
- 
-                 AddToGenesis( return_value, "FiberProductObjectInducedByStructureOfExactCategory", [ def, mor ] );
-                 
-                 end ),                 
+return_type := "object"
+# ,
+# 
+# post_function := function( def, mor, return_value )
+#  
+#                  AddToGenesis( return_value, "FiberProductObjectInducedByStructureOfExactCategory", [ def, mor ] );
+#                  
+#                  end 
+                ),                 
 
 
 ProjectionsOfFiberProductInducedByStructureOfExactCategory:= rec( 
@@ -295,26 +297,30 @@ pre_function := function( inf, mor )
                 fi;
                 
                 end,
-return_type := "object",
-
-post_function := function( inf, mor, return_value )
- 
-                 AddToGenesis( return_value, "PushoutObjectInducedByStructureOfExactCategory", [ inf, mor ] );
-                 
-                 end ),
+return_type := "object"
+# ,
+# 
+# post_function := function( inf, mor, return_value )
+#  
+#                  AddToGenesis( return_value, "PushoutObjectInducedByStructureOfExactCategory", [ inf, mor ] );
+#                  
+#                  end 
+                 ),
                  
 InjectionsOfPushoutInducedByStructureOfExactCategory:= rec( 
 
 installation_name := "InjectionsOfPushoutInducedByStructureOfExactCategory", 
 filter_list := [ IsCapCategoryInflation, "morphism" ],
 cache_name := "InjectionsOfPushoutInducedByStructureOfExactCategory",
-return_type := [ "morphism", IsCapCategoryInflation ],
-
-post_function := function( inf, mor, return_value )
-                 
-                 AddToGenesis( Range( return_value[ 2 ] ), "PushoutObjectInducedByStructureOfExactCategory", [ inf, mor ] );
-                 
-                 end ),                 
+return_type := [ "morphism", IsCapCategoryInflation ]
+# ,
+# 
+# post_function := function( inf, mor, return_value )
+#                  
+#                  AddToGenesis( Range( return_value[ 2 ] ), "PushoutObjectInducedByStructureOfExactCategory", [ inf, mor ] );
+#                  
+#                  end 
+                 ),
 
 
 UniversalMorphismFromPushoutInducedByStructureOfExactCategory:= rec( 
