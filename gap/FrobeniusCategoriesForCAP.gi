@@ -731,18 +731,18 @@ InstallMethod( Display,
     fi;
     
    
-   Print( "\n           morphism1                  morphism2\n" );
-   Print( "object1 ----------------> object2 -----------------> object3\n" );
+   Print( "\n          mor_1                  mor_2\n" );
+   Print( "obj_1 ----------------> obj_2 -----------------> obj_3\n" );
    
-   Print( "\nobject1 is\n" ); Display( seq!.object1 );
+   Print( "\nobj_1 is\n" ); Display( seq!.object1 );
    
-   Print( "\n\nmorphism1 is\n" ); Display( seq!.morphism1 );
+   Print( "\n\nmor_1 is\n" ); Display( seq!.morphism1 );
    
-   Print( "\n\nobject2 is\n" ); Display( seq!.object2 );
+   Print( "\n\nobj_2 is\n" ); Display( seq!.object2 );
   
-   Print( "\n\nmorphism2 is\n" ); Display( seq!.morphism2 );
+   Print( "\n\nmor_2 is\n" ); Display( seq!.morphism2 );
    
-   Print( "\n\nobject3 is\n" ); Display( seq!.object3 );
+   Print( "\n\nobj_3 is\n" ); Display( seq!.object3 );
    
 end );
 
