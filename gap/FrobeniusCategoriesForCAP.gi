@@ -109,19 +109,6 @@ IsConflation := rec(
 installation_name := "IsConflation", 
 filter_list := [ IsCapCategoryShortExactSequence ],
 cache_name := "IsConflation",
-pre_function := function( seq )
-                
-                if not IsWellDefinedForShortExactSequences( seq ) then 
-                
-                   return [ false, "The given short sequence is not even a short exact sequence" ];
-                   
-                else 
-                
-                   return [ true ];
-                   
-                fi;
-                
-                end, 
 return_type := "bool",
 post_function := function( seq, return_value )
                  
@@ -133,11 +120,26 @@ post_function := function( seq, return_value )
                  
                  end ),
 
-FiberProductObjectInducedByStructureOfExactCategory:= rec( 
+ConflationOfInflation := rec( 
 
-installation_name := "FiberProductObjectInducedByStructureOfExactCategory", 
+installation_name := "ConflationOfInflation", 
+filter_list := [ "morphism" ],
+cache_name := "ConflationOfInflation",
+return_type := "IsCapCategoryConflation" ),
+
+
+ConflationOfDeflation := rec( 
+
+installation_name := "ConflationOfDeflation", 
+filter_list := [ "morphism" ],
+cache_name := "ConflationOfDeflation",
+return_type := "IsCapCategoryConflation" ),
+
+ExactFiberProduct:= rec( 
+
+installation_name := "ExactFiberProduct", 
 filter_list := [ IsCapCategoryDeflation , "morphism" ],
-cache_name := "FiberProductObjectInducedByStructureOfExactCategory",
+cache_name := "ExactFiberProduct",
 pre_function := function( def, mor )
                 local is_equal_for_objects;
                 
@@ -158,324 +160,143 @@ pre_function := function( def, mor )
                 fi;
                 
                 end,
-return_type := "object"
-# ,
-# 
-# post_function := function( def, mor, return_value )
-#  
-#                  AddToGenesis( return_value, "FiberProductObjectInducedByStructureOfExactCategory", [ def, mor ] );
-#                  
-#                  end 
-                ),                 
+return_type := "object" ),                 
 
 
-ProjectionsOfFiberProductInducedByStructureOfExactCategory:= rec( 
+ProjectionInFactorOfExactFiberProduct := rec( 
 
-installation_name := "ProjectionsOfFiberProductInducedByStructureOfExactCategory", 
-filter_list := [ IsCapCategoryDeflation, "morphism" ],
-cache_name := "ProjectionsOfFiberProductInducedByStructureOfExactCategory",
-return_type := [ "morphism", IsCapCategoryDeflation ]
-# ,
-# post_function := function( def, mor, return_value )
-#                  
-#                  if not IsEqualForMorphisms( PreCompose( return_value[ 2 ], mor ), PreCompose( return_value[ 1 ], def ) ) then 
-#                  
-#                     Error( "The function given does not provid a Pullback, since the diagram resulted is not commutative" );
-#                     
-#                  fi;
-#                  
-#                  end 
-                 ),                 
+installation_name := "ProjectionInFactorOfExactFiberProduct", 
+filter_list := [ IsList, IsInt ],
+cache_name := "ProjectionInFactorOfExactFiberProduct",
+return_type := [ "morphism" ] ),                 
 
-UniversalMorphismIntoFiberProductInducedByStructureOfExactCategory:= rec( 
+UniversalMorphismIntoExactFiberProduct:= rec( 
 
-installation_name := "UniversalMorphismIntoFiberProductInducedByStructureOfExactCategory", 
+installation_name := "UniversalMorphismIntoExactFiberProduct", 
 filter_list := [ IsList, IsList ],
-cache_name := "UniversalMorphismIntoFiberProductInducedByStructureOfExactCategory",
+cache_name := "UniversalMorphismIntoExactFiberProduct",
 
-# pre_function:= function( D, tau )
-#                local def,mor, is_equal_for_morphisms;
-#                
-#                if not IsCapCategoryDeflation( D[ 1 ] ) then 
-#                
-#                   return [ false, "The first entry of the first list should be a deflation" ];
-#                   
-#                fi;
-#                
-#                if not IsCapCategoryMorphism( D[ 2 ] ) then
-#                  
-#                   return [ false, "The second entry of the first list should be a morphism" ];
-#                   
-#                fi;
-#                
-#                if not IsCapCategoryMorphism( tau[ 1 ] ) or not IsCapCategoryMorphism( tau[ 2 ] ) then
-#                
-#                   return [ false, "The second list should be list of two morphisms" ];
-#                   
-#                fi;
-#                
-#                
-#                def := D[ 1 ];
-#                mor := D[ 2 ];
-#                
-#                is_equal_for_morphisms := IsEqualForMorphisms( PreCompose( tau[ 1 ], def ), PreCompose( tau[ 2 ], mor ) );
-#                
-#                if is_equal_for_morphisms = fail then 
-#                
-#                    return [ false, "Cannot determine if the resulted diagram is commutative" ];
-#                    
-#                elif is_equal_for_morphisms = false then 
-#                
-#                    return [ false, "The resulted diagram by the inputs is not commutative" ];
-#                    
-#                else
-#                
-#                    return [ true ];
-#                    
-#                fi;
-#                
-#                end,
-               
-               
-return_type := "morphism"
-# , 
-# 
-# post_function := function( D, tau, return_value )
-#                  local p, proj1, proj2, is_equal_for_morphisms;
-#                  
-#                  p := ProjectionsOfFiberProductInducedByStructureOfExactCategory( D[ 1 ], D [ 2 ] );
-#                  
-#                  is_equal_for_morphisms := IsEqualForMorphisms( PreCompose( return_value, p[ 1 ] ), tau[ 1 ] );
-#                
-#                  if is_equal_for_morphisms = fail then 
-#                 
-#                      Error( "Cannot determine if the resulted diagrams are commutative" );
-#                    
-#                  elif is_equal_for_morphisms = false then 
-#                
-#                      Error( "The resulted diagram by the output is not commutative" );
-#                    
-#                  fi;
-#                  
-#                  is_equal_for_morphisms := IsEqualForMorphisms( PreCompose( return_value, p[ 2 ] ), tau[ 2 ] );
-#                
-#                  if is_equal_for_morphisms = fail then 
-#                 
-#                      Error( "Cannot determine if the resulted diagrams are commutative" );
-#                    
-#                  elif is_equal_for_morphisms = false then 
-#                
-#                      Error( "The resulted diagram by the output is not commutative" );
-#                    
-#                  fi;
-#                  
-#                  end
-                 ),                 
-
-PushoutObjectInducedByStructureOfExactCategory:= rec( 
-
-installation_name := "PushoutObjectInducedByStructureOfExactCategory", 
-filter_list := [ IsCapCategoryInflation, "morphism" ],
-cache_name := "PushoutObjectInducedByStructureOfExactCategory",
-pre_function := function( inf, mor )
-                local is_equal_for_objects;
+ pre_function:= function( D, tau )
+                local def,mor, is_equal_for_morphisms;
                 
-                is_equal_for_objects := IsEqualForObjects( Source( inf ), Source( mor ) );
+                if not IsCapCategoryDeflation( D[ 1 ] ) then 
                 
-                if is_equal_for_objects = fail then 
+                   return [ false, "The first entry of the first list should be a deflation" ];
+                   
+                fi;
                 
-                    return [ false, "Cannot decide if the sources of the given morphisms are equal or not" ];
-                 
-                elif is_equal_for_objects = false then 
+                if not IsCapCategoryMorphism( D[ 2 ] ) then
+                  
+                   return [ false, "The second entry of the first list should be a morphism" ];
+                   
+                fi;
                 
-                    return  [ false, "The sources of the given morphisms are not equal" ];
+                if not IsCapCategoryMorphism( tau[ 1 ] ) or not IsCapCategoryMorphism( tau[ 2 ] ) then
+                
+                   return [ false, "The second list should be list of two morphisms" ];
+                   
+                fi;
+                
+                
+                def := D[ 1 ];
+                mor := D[ 2 ];
+                
+                is_equal_for_morphisms := IsCongruentForMorphisms( PreCompose( tau[ 1 ], def ), PreCompose( tau[ 2 ], mor ) );
+                
+                if is_equal_for_morphisms = fail then 
+                
+                    return [ false, "Cannot determine if the resulted diagram is commutative" ];
                     
-                else 
+                elif is_equal_for_morphisms = false then 
+                
+                    return [ false, "The resulted diagram by the inputs is not commutative" ];
+                    
+                else
                 
                     return [ true ];
                     
                 fi;
                 
                 end,
-return_type := "object"
-# ,
-# 
-# post_function := function( inf, mor, return_value )
-#  
-#                  AddToGenesis( return_value, "PushoutObjectInducedByStructureOfExactCategory", [ inf, mor ] );
-#                  
-#                  end 
-                 ),
-                 
-InjectionsOfPushoutInducedByStructureOfExactCategory:= rec( 
+return_type := "morphism" ),                 
 
-installation_name := "InjectionsOfPushoutInducedByStructureOfExactCategory", 
-filter_list := [ IsCapCategoryInflation, "morphism" ],
-cache_name := "InjectionsOfPushoutInducedByStructureOfExactCategory",
-return_type := [ "morphism", IsCapCategoryInflation ]
-# ,
-# 
-# post_function := function( inf, mor, return_value )
-#                  
-#                  AddToGenesis( Range( return_value[ 2 ] ), "PushoutObjectInducedByStructureOfExactCategory", [ inf, mor ] );
-#                  
-#                  end 
-                 ),
+ExactPushout:= rec( 
 
+installation_name := "ExactPushout", 
+filter_list := [ "morphism", "morphism" ],
+cache_name := "ExactPushout",
+return_type := "object" ),
+            
 
-UniversalMorphismFromPushoutInducedByStructureOfExactCategory:= rec( 
+InjectionOfCofactorOfExactPushout := rec( 
 
-installation_name := "UniversalMorphismFromPushoutInducedByStructureOfExactCategory", 
+installation_name := "InjectionOfCofactorOfExactPushout", 
+filter_list := [ IsList, IsInt ],
+cache_name := "InjectionOfCofactorOfExactPushout",
+return_type := [ "morphism" ] ),                 
+
+UniversalMorphismFromExactPushout:= rec( 
+
+installation_name := "UniversalMorphismFromExactPushout", 
 filter_list := [ IsList, IsList ],
-cache_name := "UniversalMorphismFromPushoutInducedByStructureOfExactCategory",
+cache_name := "UniversalMorphismFromExactPushout",
+return_type := "morphism" ),                 
 
-# pre_function:= function( D, tau )
-#                local inf,g, is_equal_for_morphisms;
-#                
-#                if not IsCapCategoryInflation( D[ 1 ] ) then 
-#                
-#                   return [ false, "The first entry of the first list should be an inflation" ];
-#                   
-#                fi;
-#                
-#                if not IsCapCategoryMorphism( D[ 2 ] ) then
-#                  
-#                   return [ false, "The second entry of the first list should be a morphism" ];
-#                   
-#                fi;
-#                
-#                if not IsCapCategoryMorphism( tau[ 1 ] ) or not IsCapCategoryMorphism( tau[ 2 ] ) then
-#                
-#                   return [ false, "The second list should be list of two morphisms" ];
-#                   
-#                fi;
-#                
-#                
-#                inf := D[ 1 ];
-#                g := D[ 2 ];
-#                
-#                is_equal_for_morphisms := IsEqualForMorphisms( PostCompose( tau[ 1 ], inf ), PostCompose( tau[ 2 ], g ) );
-#                
-#                if is_equal_for_morphisms = fail then 
-#                
-#                    return [ false, "Cannot determine if the resulted diagram is commutative" ];
-#                    
-#                elif is_equal_for_morphisms = false then 
-#                
-#                    return [ false, "The resulted diagram by the inputs is not commutative" ];
-#                    
-#                else
-#                
-#                    return [ true ];
-#                    
-#                fi;
-#                
-#                end,
-               
-               
-return_type := "morphism"
-# , 
-# 
-# post_function := function( D, tau, return_value )
-#                  local p, proj1, proj2, is_equal_for_morphisms;
-#                  
-#                  p := InjectionsOfPushoutInducedByStructureOfExactCategory( D[ 1 ], D [ 2 ] );
-#                  
-#                  is_equal_for_morphisms := IsEqualForMorphisms( PostCompose( return_value, p[ 1 ] ), tau[ 1 ] );
-#                
-#                  if is_equal_for_morphisms = fail then 
-#                 
-#                      Error( "Cannot determine if the resulted diagrams are commutative" );
-#                    
-#                  elif is_equal_for_morphisms = false then 
-#                
-#                      Error( "The resulted diagram by the output is not commutative" );
-#                    
-#                  fi;
-#                  
-#                  is_equal_for_morphisms := IsEqualForMorphisms( PostCompose( return_value, p[ 2 ] ), tau[ 2 ] );
-#                
-#                  if is_equal_for_morphisms = fail then 
-#                 
-#                      Error( "Cannot determine if the resulted diagrams are commutative" );
-#                    
-#                  elif is_equal_for_morphisms = false then 
-#                
-#                      Error( "The resulted diagram by the output is not commutative" );
-#                    
-#                  fi;
-#                  
-#                  end 
-                 ),                 
+FitIntoConflationUsingExactInjectiveObject := rec( 
 
-FitIntoConflationUsingInjectiveObject := rec( 
-
-installation_name := "FitIntoConflationUsingInjectiveObject", 
+installation_name := "FitIntoConflationUsingExactInjectiveObject", 
 filter_list := [ "object" ],
-cache_name := "FitIntoConflationUsingInjectiveObject",
+cache_name := "FitIntoConflationUsingExactInjectiveObject",
 return_type := [ IsCapCategoryConflation ] ),
 
-FitIntoConflationUsingProjectiveObject := rec( 
+FitIntoConflationUsingExactProjectiveObject := rec( 
 
-installation_name := "FitIntoConflationUsingProjectiveObject", 
+installation_name := "FitIntoConflationUsingExactProjectiveObject", 
 filter_list := [ "object" ],
-cache_name := "FitIntoConflationUsingProjectiveObject",
+cache_name := "FitIntoConflationUsingExactProjectiveObject",
 return_type := [ IsCapCategoryConflation ] ),
 
-InjectiveColift := rec( 
+IsExactProjectiveObject := rec( 
 
-installation_name := "InjectiveColift", 
+installation_name := "IsExactProjectiveObject", 
+filter_list := [ "object" ],
+cache_name := "IsExactProjectiveObject",
+return_type := [ "bool" ] ),
+
+IsExactInjectiveObject := rec( 
+
+installation_name := "IsExactInjectiveObject", 
+filter_list := [ "object" ],
+cache_name := "IsExactInjectiveObject",
+return_type := [ "bool" ] ),
+
+DeflationFromSomeExactProjectiveObject := rec( 
+
+installation_name := "DeflationFromSomeExactProjectiveObject", 
+filter_list := [ "object" ],
+cache_name := "DeflationFromSomeExactProjectiveObject",
+return_type := [ "morphism" ] ),
+
+InflationIntoSomeExactInjectiveObject := rec( 
+
+installation_name := "InflationIntoSomeExactInjectiveObject", 
+filter_list := [ "object" ],
+cache_name := "InflationIntoSomeExactInjectiveObject",
+return_type := [ "morphism" ] ),
+
+ExactProjectiveLift := rec( 
+
+installation_name := "ExactProjectiveLift", 
 filter_list := [ "morphism", "morphism" ],
-cache_name := "InjectiveColift",
-pre_function := function( f, g )
+cache_name := "ExactProjectiveLift",
+return_type := [ "morphism" ] ),
 
-                if not IsEqualForObjects( Source( f ), Source( g ) ) then 
-                
-                   return [ false, "The sources of the both morphisms should be equal" ];
-                   
-                fi;
-                
-                if not IsMonomorphism( f ) then 
+ExactInjectiveColift := rec( 
 
-                   return [ false, "The first morphism should be mono" ];
-
-                else 
-
-                   return [ true ];
-
-                fi;
-
-                end,
-
-return_type := "morphism" ),
-
-
-ProjectiveLift := rec( 
-
-installation_name := "ProjectiveLift", 
+installation_name := "ExactInjectiveColift", 
 filter_list := [ "morphism", "morphism" ],
-cache_name := "ProjectiveLift",
-pre_function := function( f, g )
-                
-                if not IsEqualForObjects( Range( f ), Range( g ) ) then 
-                
-                   return [ false, "The ranges of the both morphisms should be equal" ];
-                   
-                fi;
-                
-                if not IsEpimorphism( g ) then 
-
-                   return [ false, "The second morphism should be epi" ];
-
-                else 
-
-                   return [ true ];
-
-                fi;
-
-                end,
-return_type := "morphism" ),
-
+cache_name := "ExactInjectiveColift",
+return_type := [ "morphism" ] )
 
 ) );
 
