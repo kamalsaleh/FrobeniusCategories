@@ -1,9 +1,10 @@
 
+
+
 AddDerivationToCAP( IsInflation, 
             [ [ IsConflation, 1 ], [ CokernelProjection, 1 ] ], 
             
       function( mor )
-      
       local cokernel_projection, seq;
       
       cokernel_projection := CokernelProjection( mor );
@@ -12,13 +13,12 @@ AddDerivationToCAP( IsInflation,
       
       return IsConflation( seq );
       
-      end : Description := "returns if the given morphism is inflation regarding the frobenius structure" );
+end : Description := "returns whether the given morphism is inflation w.r.t the exact structure" );
       
 AddDerivationToCAP( IsDeflation, 
             [ [ IsConflation, 1 ], [ KernelEmbedding, 1 ] ], 
             
       function( mor )
-      
       local kernel_embedding, seq;
       
       kernel_embedding := KernelEmbedding( mor );
@@ -27,23 +27,35 @@ AddDerivationToCAP( IsDeflation,
       
       return IsConflation( seq );
       
-      end : Description := "returns if the given morphism is deflation regarding the frobenius structure" );
-      
-AddDerivationToCAP( InjectiveColift, 
-            [ [ Colift, 1 ] ], 
-            
-      function( mono, mor )
-      
-      return Colift( mono, mor );
-      
-      end : Description := "returns a morphism col with mono;col = mor" );
+end : Description := "returns whether the given morphism is deflation w.r.t the exact structure" );
 
-AddDerivationToCAP( ProjectiveLift, 
+AddDerivationToCAP( ExactProjectiveLift, 
             [ [ Lift, 1 ] ], 
             
-      function( mor, epi )
-      
-      return Lift( mor, epi );
-      
-      end : Description := "returns a morphism l with l;epi = mor" );
+      function( alpha, beta )
+
+      return Lift( alpha, beta );
+
+end : Description := "return the exact projective lift" );
+
+AddDerivationToCAP( ExactInjectiveColift, 
+            [ [ Colift, 1 ] ], 
+            
+      function( alpha, beta )
+
+      return Colift( alpha, beta );
+
+end : Description := "return the exact injective colift" );
+
+AddDerivationToCAP( FitIntoConflationUsingExactInjectiveObject,
+                  [ [ InflationIntoSomeExactInjectiveObject, 1 ], [ ConflationOfInflation, 1 ] ],
+      function( obj )
+      return ConflationOfInflation( InflationIntoSomeExactInjectiveObject( obj ) );
+end  );
+
+AddDerivationToCAP( FitIntoConflationUsingExactProjectiveObject,
+                  [ [ DeflationFromSomeExactProjectiveObject, 1 ], [ ConflationOfDeflation, 1 ] ],
+      function( obj )
+      return ConflationOfDeflation( DeflationFromSomeExactProjectiveObject( obj ) );
+end  );
 
