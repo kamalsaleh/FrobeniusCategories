@@ -27,31 +27,21 @@ DeclareCategory( "IsCapCategoryDeflation", IsCapCategoryMorphism );
 #################################
 
 
-if not IsPackageMarkedForLoading( "TriangulatedCategoriesForCAP", ">0.1" ) then
+# DeclareOperation( "DoDeclarationStuff", [ IsString ] );
+# InstallMethod( DoDeclarationStuff, 
+#                 [ IsString ], 
+# function( name_of_the_function )
+# Print( "DeclareOperation( ", Concatenation( "\"Add", name_of_the_function ), "\",\n" );
+# Print( "                  [ IsCapCategory, IsFunction ] );\n" );
+# Print( "\nDeclareOperation( ",Concatenation( "\"Add", name_of_the_function ), "\",\n" );
+# Print( "                  [ IsCapCategory, IsFunction, IsInt ] );\n" );
+# Print( "DeclareOperation( ", Concatenation( "\"Add", name_of_the_function ), "\",\n" );
+# Print( "                  [ IsCapCategory, IsList, IsInt ] );\n" );
+                  
+# Print( "DeclareOperation( ", Concatenation( "\"Add", name_of_the_function ), "\",\n" );
+# Print( "                  [ IsCapCategory, IsList ] );\n" );
+# end );
 
-##
- DeclareOperation( "DoDeclarationStuff", [ IsString ] );
- 
-## 
- InstallMethod( DoDeclarationStuff, 
-                [ IsString ], 
- function( name_of_the_function )
-
- DeclareOperation( Concatenation( "Add", name_of_the_function ),
-                   [ IsCapCategory, IsFunction, IsInt ] );
-                   
- DeclareOperation( Concatenation( "Add", name_of_the_function ),
-                   [ IsCapCategory, IsFunction ] );
-
-
- DeclareOperation( Concatenation( "Add", name_of_the_function ),
-                   [ IsCapCategory, IsList, IsInt ] );
-                   
- DeclareOperation( Concatenation( "Add", name_of_the_function ),
-                   [ IsCapCategory, IsList ] );
- end );
- 
-fi;
 ####################################
 ##
 ##  Methods Declarations in Records
