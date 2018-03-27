@@ -412,7 +412,7 @@ end );
 
 
 ##
-InstallMethod( IsShortExactSequence, 
+InstallMethod( IsShortExactSequence_, 
             [ IsCapCategoryShortSequence ], 
                 
   function( seq )
@@ -567,14 +567,14 @@ InstallMethod( Display,
     Print( "\no0 ------> o1 ------> o2\n\n" );
    
     Print( "\no0 is\n\n" ); Display( seq[ 0 ] );
-    Print( "------------------------------------" );
-    Print( "\n\nm0 is\n\n" ); Display( seq^0 );
-    Print( "------------------------------------" );
-    Print( "\n\no1 is\n\n" ); Display( seq[ 1 ] );
-    Print( "------------------------------------" );
-    Print( "\n\nm1 is\n\n" ); Display( seq^1 );
-    Print( "------------------------------------" );
-    Print( "\n\no2 is\n\n" ); Display( seq[ 2 ] );
+    Print( "\n------------------------------------\n" );
+    Print( "\nm0 is\n\n" ); Display( seq^0 );
+    Print( "\n------------------------------------\n" );
+    Print( "\no1 is\n\n" ); Display( seq[ 1 ] );
+    Print( "\n------------------------------------\n" );
+    Print( "\nm1 is\n\n" ); Display( seq^1 );
+    Print( "\n------------------------------------\n" );
+    Print( "\no2 is\n\n" ); Display( seq[ 2 ] );
    
 end );
 

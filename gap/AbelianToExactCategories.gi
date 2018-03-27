@@ -26,7 +26,7 @@ fi;
 
 AddIsConflation( category,
 function( seq )
-  return IsShortExactSequence( seq );
+  return IsShortExactSequence_( seq );
 end );
 
 # In Abelian categories every mono is the kernel mono of its cokernel epi;
