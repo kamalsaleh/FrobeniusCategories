@@ -320,7 +320,50 @@ InstallTrueMethod( IsAdditiveCategory, IsExactCategory );
 ##
 ########################################
 
-InstallMethodWithCache( CreateShortSequence, 
+InstallMethod( CategoryOfShortSequences,
+                [ IsCapCategory ],
+  function( category )
+  local name, cat;
+
+  name := Concatenation( "Category of short sequences of the ", Name( category ) );
+  
+  cat := CreateCapCategory( name );
+
+  AddIsWellDefinedForObjects( cat,
+
+  function( S )
+  local alpha, beta;
+  
+  alpha := S^0;
+  
+  beta := S^1;
+  
+    if not IsZeroForMorphisms( PreCompose( alpha, beta ) ) then 
+    
+      return false;
+      
+    fi;
+    
+  return true;
+  
+  end );
+
+  AddIsEqualForObjects( cat,
+      function( S1, S2 )
+      return IsEqualForObjects( ObjectAt( S1, 0 ), ObjectAt( S2, 0 ) ) and 
+              IsEqualForObjects( ObjectAt( S1, 1 ), ObjectAt( S2, 1 ) ) and
+               IsEqualForObjects( ObjectAt( S1, 2 ), ObjectAt( S2, 2 ) ) and
+                IsEqualForMorphisms( MorphismAt( S1, 0 ), MorphismAt( S2, 0 ) ) and 
+                 IsEqualForMorphisms( MorphismAt( S1, 1 ), MorphismAt( S2, 1 ) );
+      end );
+
+  Finalize( cat );
+  
+  return cat;
+
+end );
+
+InstallMethod( CreateShortSequence,
                
                [ IsCapCategoryMorphism, IsCapCategoryMorphism ], 
                
@@ -333,93 +376,53 @@ InstallMethodWithCache( CreateShortSequence,
      
    fi;
    
-   s := rec( object1:= Source( alpha ), 
+   s := rec( o0:= Source( alpha ), 
              
-             morphism1:= alpha,
+             m0:= alpha,
              
-             object2 := Range( alpha ),
+             o1 := Range( alpha ),
              
-             morphism2 := beta,
+             m1 := beta,
              
-             object3 := Range( beta ) );
+             o2 := Range( beta ) );
              
-    ObjectifyWithAttributes( s, TheTypeCapCategoryShortSequence,
-    
-                             CapCategory, CapCategory( alpha ) );
-                             
+    ObjectifyWithAttributes( s, TheTypeCapCategoryShortSequence );
+
+    AddObject( CategoryOfShortSequences( CapCategory( alpha ) ), s );                         
     return s;
     
 end );
 
-##
-InstallMethod( IsWellDefinedForShortSequences, 
-                [ IsCapCategoryShortSequence ], 
-                
-  function( seq )
-  local alpha, beta;
-  
-  alpha := seq!.morphism1;
-  
-  beta := seq!.morphism2;
-  
-    if not IsZeroForMorphisms( PreCompose( alpha, beta ) ) then 
-    
-      return false;
-      
-    fi;
-    
-  return true;
-  
-end );
 
 
 InstallMethodWithCache( CreateShortExactSequence, 
               
               [ IsCapCategoryMorphism, IsCapCategoryMorphism ], 
                
-   function( alpha, beta )
-   local s, coker_alpha, coker_colift, ker_beta, ker_lift;
-   
-   
-   # the two morphisms should be composable
-   
-   if not IsEqualForObjects( Range( alpha ), Source( beta ) ) then 
-   
-       Error( "Range of the first morphism should equal the Source of the second morphism" );
-     
-   fi;
-      
-   s := rec( object1:= Source( alpha ), 
-             
-             morphism1:= alpha,
-             
-             object2 := Range( alpha ),
-             
-             morphism2 := beta,
-             
-             object3 := Range( beta ) );
-             
-    ObjectifyWithAttributes( s, TheTypeCapCategoryShortExactSequence,
-    
-                             CapCategory, CapCategory( alpha ) );
-                             
-    return s;
+  function( alpha, beta )
+  local s;
+
+  s := CreateShortSequence( alpha, beta );
+
+  SetFilterObj( s, IsCapCategoryShortExactSequence );
+
+  return s;
     
 end );
 
 
 ##
-InstallMethod( IsWellDefinedForShortExactSequences, 
-                [ IsCapCategoryShortExactSequence ], 
+InstallMethod( IsShortExactSequence, 
+            [ IsCapCategoryShortSequence ], 
                 
   function( seq )
   local alpha, beta, ker_beta, ker_lift, coker_alpha, coker_colift;
   
-    alpha := seq!.morphism1;
+    alpha := seq^0;
   
-    beta := seq!.morphism2;
+    beta := seq^1;
   
-    if not IsWellDefinedForShortSequences( seq ) then 
+    if not IsWellDefinedForObjects( seq ) then 
   
       return false;
      
@@ -456,47 +459,56 @@ end );
 
 ##
 InstallMethodWithCache( CreateConflation, 
- 
                        [ IsCapCategoryMorphism, IsCapCategoryMorphism ],
     function( alpha, beta )
-    local s, coker_alpha, coker_colift, ker_beta, ker_lift;
-   
-   
-   # the two morphisms should be composable
-   
-   if not IsEqualForObjects( Range( alpha ), Source( beta ) ) then 
-   
-       Error( "Range of the first morphism should equal the Source of the second morphism" );
-     
-   fi;
-
-   s := rec( object1:= Source( alpha ), 
-             
-             morphism1:= alpha,
-             
-             object2 := Range( alpha ),
-             
-             morphism2 := beta,
-             
-             object3 := Range( beta ) );
-             
-    ObjectifyWithAttributes( s, TheTypeCapCategoryConflation,
+    local s;
     
-                             CapCategory, CapCategory( alpha ) );
-                             
+    s := CreateShortExactSequence( alpha, beta );
+
+    SetFilterObj( s, IsCapCategoryConflation );
+    
     return s;
     
 end );
-    
+
 ##
-InstallMethod( IsWellDefinedForConflations, 
-                [ IsCapCategoryConflation ], 
-                
-  function( conf )
-  
-  return IsConflation( conf );
-  
+InstallMethod( ObjectAtOp, [ IsCapCategoryShortSequence, IsInt ],
+  function( seq, i )
+  if i = 0 then
+    return seq!.o0;
+  elif i = 1 then
+    return seq!.o1;
+  elif i = 2 then
+    return seq!.o2;
+  else
+    Error( "The integer must be 0, 1 or 2" );
+  fi;
 end );
+
+##
+InstallMethod( \[\], [ IsCapCategoryShortSequence, IsInt ],
+  function( seq, i )
+  return ObjectAt( seq, i );
+end );
+
+##
+InstallMethod( MorphismAtOp, [ IsCapCategoryShortSequence, IsInt ],
+  function( seq, i )
+  if i = 0 then
+    return seq!.m0;
+  elif i = 1 then
+    return seq!.m1;
+  else
+    Error( "The integer must be 0 or 1" );
+  fi;
+end );
+
+##
+InstallMethod( \^, [ IsCapCategoryShortSequence, IsInt ],
+  function( seq, i )
+  return MorphismAt( seq, i );
+end );
+
 ##############################
 ##
 ## View
@@ -535,11 +547,11 @@ InstallMethod( Display,
               
               [ IsCapCategoryShortSequence ], 
               
-   function( seq )
+    function( seq )
    
-   if IsCapCategoryConflation( seq ) then 
+    if IsCapCategoryConflation( seq ) then 
     
-       Print( "A Conflation in ", CapCategory( seq ), " given by the sequence:\n" );
+       Print( "A Conflation in ", CapCategory( seq ), " given by:\n" );
     
     elif IsCapCategoryShortExactSequence( seq ) then 
     
@@ -550,20 +562,19 @@ InstallMethod( Display,
        Print( "A short sequence in ", CapCategory( seq ), " given by :\n" );
    
     fi;
-    
+
+    Print( "\n     m0          m1     " );
+    Print( "\no0 ------> o1 ------> o2\n\n" );
    
-   Print( "\n          mor_1                  mor_2\n" );
-   Print( "obj_1 ----------------> obj_2 -----------------> obj_3\n" );
-   
-   Print( "\nobj_1 is\n" ); Display( seq!.object1 );
-   
-   Print( "\n\nmor_1 is\n" ); Display( seq!.morphism1 );
-   
-   Print( "\n\nobj_2 is\n" ); Display( seq!.object2 );
-  
-   Print( "\n\nmor_2 is\n" ); Display( seq!.morphism2 );
-   
-   Print( "\n\nobj_3 is\n" ); Display( seq!.object3 );
+    Print( "\no0 is\n\n" ); Display( seq[ 0 ] );
+    Print( "------------------------------------" );
+    Print( "\n\nm0 is\n\n" ); Display( seq^0 );
+    Print( "------------------------------------" );
+    Print( "\n\no1 is\n\n" ); Display( seq[ 1 ] );
+    Print( "------------------------------------" );
+    Print( "\n\nm1 is\n\n" ); Display( seq^1 );
+    Print( "------------------------------------" );
+    Print( "\n\no2 is\n\n" ); Display( seq[ 2 ] );
    
 end );
 
@@ -588,64 +599,57 @@ InstallMethodWithCache( SchanuelsIsomorphism,
             [ IsCapCategoryConflation, IsCapCategoryConflation ], 
     
     function( conf1, conf2 )
-    local f1, I1, g1, B1, f2, I2, g2, B2, phi, phi1, phi2, h1, h2, inverse_phi_1, inverse_phi_2, i_I1, i_I2, i_B1, i_B2, alpha, beta;
+    local f1, I1, g1, B1, f2, I2, g2, B2, phi1, phi2, h1, h2, inverse_phi_1, inverse_phi_2, i_I1, i_I2, i_B1, i_B2, alpha, beta;
     
-    if not IsExactCategory( CapCategory( conf1 ) ) then 
-      
-       Error( "The category should be exact" );
-       
-    fi;
-    
-    if not IsEqualForObjects( conf1!.object1, conf2!.object1 ) then 
+    if not IsEqualForObjects( conf1[ 0 ], conf2[ 0 ] ) then 
     
        Error( "Both conflations should begin by the same object" );
        
     fi;
     
-    f1 := conf1!.morphism1;
+    f1 := conf1^0;
     
     I1 := Range( f1 );
     
-    g1 := conf1!.morphism2;
+    g1 := conf1^1;
     
     B1 := Range( g1 );
     
-    f2 := conf2!.morphism1;
+    f2 := conf2^0;
     
     I2 := Range( f2 );
     
-    g2 := conf2!.morphism2;
+    g2 := conf2^1;
     
     B2 := Range( g2 );
+
+    phi1 := InjectionOfCofactorOfExactPushout( [ f1, f2 ], 1 );
     
-    phi := InjectionsOfPushoutInducedByStructureOfExactCategory( f1, f2 );
+    phi2 := InjectionOfCofactorOfExactPushout( [ f1, f2 ], 2 );
+
+    h1 := UniversalMorphismFromExactPushout( [ f1, f2 ], [ g1, ZeroMorphism( I2, Range( g1 )  ) ] );
     
-    phi1 := phi[ 1 ];
+    h2 := UniversalMorphismFromExactPushout( [ f1, f2 ], [ ZeroMorphism( I1, Range( g2 )  ), g2 ] );
     
-    phi2 := phi[ 2 ];
+    inverse_phi_1 := ExactInjectiveColift( phi1, IdentityMorphism( I1 ) );
     
-    h1 := UniversalMorphismFromPushoutInducedByStructureOfExactCategory( [ f1, f2 ], [ g1, ZeroMorphism( I2, Range( g1 )  ) ] );
+    inverse_phi_2 := ExactInjectiveColift( phi2, IdentityMorphism( I2 ) );
     
-    h2 := UniversalMorphismFromPushoutInducedByStructureOfExactCategory( [ f1, f2 ], [ ZeroMorphism( I1, Range( g2 )  ), g2 ] );
-    
-    inverse_phi_1 := InjectiveColift( phi1, IdentityMorphism( I1 ) );
-    
-    inverse_phi_2 := InjectiveColift( phi2, IdentityMorphism( I2 ) );
-    
-    i_I2 := InjectionOfCofactorOfDirectSum( [ I2, B1 ], 1 );
-    
-    i_B1 := InjectionOfCofactorOfDirectSum( [ I2, B1 ], 2 );
-    
-    alpha := PreCompose( inverse_phi_2, i_I2 ) + PreCompose( h1, i_B1 );
-    
-    i_I1 := InjectionOfCofactorOfDirectSum( [ I1, B2 ], 1 );
-    
-    i_B2 := InjectionOfCofactorOfDirectSum( [ I1, B2 ], 2 );
-    
-    beta := PreCompose( inverse_phi_1, i_I1 ) + PreCompose( h2, i_B2 );
-    
+    # Let P denotes the exact pushout object
+    #
+    # from P to I2 𐌈 B1
+    alpha := MorphismBetweenDirectSums( 
+      [ # from P to I2 , from P to B1
+        [ inverse_phi_2, h1  ]  
+      ] );
+
+    # from P to I1 𐌈 B2
+    beta := MorphismBetweenDirectSums( 
+      [ # from P to I1 , from P to B2
+        [ inverse_phi_1, h2  ]  
+      ] );
+
     return PreCompose( Inverse( alpha ), beta );
-    
     end );
     
     
@@ -656,95 +660,61 @@ InstallMethodWithCache( SchanuelsIsomorphism,
 ##
 #####################################
 
-InstallImmediateMethod( INSTALL_LOGICAL_IMPLICATIONS_FOR_FROBENIUS_CATEGORY,
-               IsCapCategory and IsFrobeniusCategory, 
+InstallImmediateMethod( INSTALL_LOGICAL_IMPLICATIONS_FOR_EXACT_CATEGORY,
+               IsCapCategory and IsExactCategory, 
                0,
                
    function( category )
    
    AddPredicateImplicationFileToCategory( category,
       Filename(
-        DirectoriesPackageLibrary( "FrobeniusCategoriesForCAP", "LogicForFrobeniusCategories" ),
-        "PredicateImplicationsForGeneralFrobeniusCategories.tex" ) );
+        DirectoriesPackageLibrary( "FrobeniusCategoriesForCAP", "LogicForExactAndFrobeniusCategories" ),
+        "PredicateImplicationsForExactCategories.tex" ) );
         
    TryNextMethod( );
      
 end );
 
-InstallMethod( AsInflation, 
-                  [ IsCapCategoryMorphism ],
-                  
-    function( alpha )
-    
-    if IsCapCategoryInflation( alpha ) then 
-    
-       return alpha;
-       
-    elif HasIsInflation( alpha ) and IsInflation( alpha ) then 
-    
-       SetFilterObj( alpha, IsCapCategoryInflation );
-       
-    elif not CanCompute( CapCategory( alpha ), "IsInflation" ) then 
-    
-       Error( "There is no method to decide if the morphism is an inflation or not" );
-       
-    elif not IsInflation( alpha ) then 
-    
-       Error( "The morphism is not inflation" );
+InstallImmediateMethod( INSTALL_LOGICAL_IMPLICATIONS_FOR_FROBENIUS_CATEGORY,
+               IsCapCategory and IsFrobeniusCategory, 
+               0,
+               
+   function( category )
+   
+   SetIsExactCategory( category, true );
+   SetIsExactCategoryWithEnoughExactProjectives( category, true );
+   SetIsExactCategoryWithEnoughExactInjectives( category, true );
+   
+   AddPredicateImplicationFileToCategory( category,
+      Filename(
+        DirectoriesPackageLibrary( "FrobeniusCategoriesForCAP", "LogicForExactAndFrobeniusCategories" ),
+        "PredicateImplicationsForFrobeniusCategories.tex" ) );
+        
+   TryNextMethod( );
      
-    else
-    
-       SetFilterObj( alpha, IsCapCategoryInflation );
-    
-    fi;
-    
-    return alpha;
-    
 end );
 
-InstallMethod( AsDeflation, 
-                  [ IsCapCategoryMorphism ],
-                  
-    function( alpha )
-    
-    if IsCapCategoryDeflation( alpha ) then 
-    
-       return alpha;
-       
-    elif HasIsDeflation( alpha ) and IsDeflation( alpha ) then 
-    
-      SetFilterObj( alpha, IsCapCategoryDeflation );
-       
-    elif not CanCompute( CapCategory( alpha ), "IsDeflation" ) then 
-    
-       Error( "There is no method to decide if the morphism is an deflation or not" );
-       
-    elif not IsDeflation( alpha ) then 
-    
-       Error( "The morphism is not deflation" );
-     
-    else
-    
-    SetFilterObj( alpha, IsCapCategoryDeflation );
-    
-    fi;
-    
-    return alpha;
-    
+InstallImmediateMethod( SetFilterOnInflations,
+               IsCapCategoryMorphism and IsInflation, 
+               0,
+   function( mor )
+   SetFilterObj( mor, IsCapCategoryInflation );     
+   TryNextMethod( );
 end );
 
-InstallMethod( ConflationOfInflation, 
-               [ IsCapCategoryInflation ], 
-   function( alpha )
-   
-   return CreateConflation( alpha, CokernelProjection( alpha ) );
-   
+
+InstallImmediateMethod( SetFilterOnDeflations,
+               IsCapCategoryMorphism and IsDeflation, 
+               0,
+   function( mor )
+   SetFilterObj( mor, IsCapCategoryDeflation );     
+   TryNextMethod( );
 end );
 
-InstallMethod( ConflationOfDeflation, 
-               [ IsCapCategoryDeflation ], 
-   function( alpha )
-   
-   return CreateConflation( KernelEmbedding( alpha ), alpha );
-   
+InstallImmediateMethod( SetFilterOnConflations,
+               IsCapCategoryShortSequence and IsConflation, 
+               0,
+   function( mor )
+   SetFilterObj( mor, IsCapCategoryConflation );     
+   TryNextMethod( );
 end );

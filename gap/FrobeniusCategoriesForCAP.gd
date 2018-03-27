@@ -285,6 +285,8 @@ DeclareOperation( "AddExactInjectiveColift",
 ##
 #################################
 
+DeclareAttribute( "CategoryOfShortSequences", IsCapCategory );
+
 DeclareOperation( "CreateShortSequence", 
                       [ IsCapCategoryMorphism, IsCapCategoryMorphism ] );
 
@@ -303,19 +305,14 @@ DeclareAttribute( "IsShortExactSequence", IsCapCategoryShortSequence );
 ##
 #################################
 
-DeclareAttribute( "CapCategory", IsCapCategoryShortSequence );
+DeclareAttribute( "INSTALL_LOGICAL_IMPLICATIONS_FOR_FROBENIUS_CATEGORY", IsCapCategory );
+DeclareAttribute( "INSTALL_LOGICAL_IMPLICATIONS_FOR_EXACT_CATEGORY", IsCapCategory );
 
-DeclareAttribute( "AsInflation", IsCapCategoryMorphism );
+DeclareAttribute( "SetFilterOnInflations", IsCapCategoryMorphism );
 
-DeclareAttribute( "AsDeflation", IsCapCategoryMorphism );
-
-DeclareAttribute( "ConflationOfInflation", IsCapCategoryInflation );
-
-DeclareAttribute( "ConflationOfDeflation", IsCapCategoryDeflation );
-
-DeclareAttribute( "INSTALL_LOGICAL_IMPLICATIONS_FOR_FROBENIUS_CATEGORY",
-                  IsCapCategory );
-                  
+DeclareAttribute( "SetFilterOnDeflations", IsCapCategoryMorphism );
+DeclareAttribute( "SetFilterOnConflations", IsCapCategoryShortSequence );
+        
 #################################
 ##
 ## Properties
@@ -323,5 +320,14 @@ DeclareAttribute( "INSTALL_LOGICAL_IMPLICATIONS_FOR_FROBENIUS_CATEGORY",
 #################################
 
 DeclareProperty( "IsExactCategory", IsCapCategory );
+DeclareProperty( "IsExactCategoryWithEnoughExactProjectives", IsCapCategory );
+DeclareProperty( "IsExactCategoryWithEnoughExactInjectives", IsCapCategory );
 
 DeclareProperty( "IsFrobeniusCategory", IsCapCategory );
+
+KeyDependentOperation( "MorphismAt", IsCapCategoryShortSequence, IsInt, ReturnTrue );
+DeclareOperation( "\^", [ IsCapCategoryShortSequence, IsInt ] );
+
+KeyDependentOperation( "ObjectAt", IsCapCategoryShortSequence, IsInt, ReturnTrue );
+#DeclareOperation( "\[\]", [ IsCapCategoryShortSequence, IsInt ] );
+
