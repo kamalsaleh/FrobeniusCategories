@@ -4,8 +4,10 @@
 ##                                        Siegen University 
 ##############################################################
 
-BindGlobal( "TURN_ABELIAN_CATEGORY_TO_EXACT_CATEGORY",
-
+##
+InstallMethod( TurnAbelianCategoryToExactCategory, 
+                     [ IsCapCategory ], 
+       
 function( category )
 
 if not IsAbelianCategory( category ) then 
@@ -22,84 +24,95 @@ fi;
 
 ## We define the class of conflations to be the class of all short exact sequences.
 
-AddIsConflation( category, ReturnTrue );
+AddIsConflation( category,
+function( seq )
+  return IsShortExactSequence( seq );
+end );
 
 # In Abelian categories every mono is the kernel mono of its cokernel epi;
 
-AddIsInflation( category, function( mor )
-                          
-                          return IsMonomorphism( mor );
-                          
-                          end );
+AddIsInflation( category, 
+    function( mor )
+    return IsMonomorphism( mor );
+end );
 
 ## I Abelian categories every epi is the cokernel epi of its kernel mono;
                           
-AddIsDeflation( category, function( mor )
-                          
-                          return IsEpimorphism( mor );
-                          
-                          end );
-                          
-AddFiberProductObjectInducedByStructureOfExactCategory( category, function( def, mor )
-                                                               
-                                                               return FiberProduct( def, mor );
-                                                               
-                                                               end );
+AddIsDeflation( category, 
+    function( mor )
+    return IsEpimorphism( mor );   
+end );
 
-AddProjectionsOfFiberProductInducedByStructureOfExactCategory( category,  function(  def, mor )
-                                local gamma, beta;
-       
-                                gamma := ProjectionInFactorOfFiberProduct( [ def, mor ], 1 );
+AddConflationOfDeflation( category,
+    function( mor )
+    if not IsDeflation(mor) then
+        Error( "The given morphism is not deflation" );
+    fi;
+    return CreateConflation( KernelEmbedding(mor), mor );    
+end );
 
-                                beta  := AsDeflation( ProjectionInFactorOfFiberProduct( [ def, mor ], 2 ) );
+AddConflationOfInflation( category,
+    function( mor )
+    if not IsInflation(mor) then
+        Error( "The given morphism is not inflation" );
+    fi;
+    return CreateConflation( mor, CokernelProjection( mor ) );    
+end );
 
-                                return [ gamma, beta ];
-        
-                                end );
+AddExactFiberProduct( category, 
+    function( mor1, mor2 )              
+    return FiberProduct( mor1, mor2 );
+  end );
+
+AddProjectionInFactorOfExactFiberProduct( category,
+    function( D, i )
+    return ProjectionInFactorOfFiberProduct( D, i );
+end );
                                 
-AddUniversalMorphismIntoFiberProductInducedByStructureOfExactCategory( category, function( D, tau )
-                                                     
-                                                     return UniversalMorphismIntoFiberProduct( D, tau );
-                                                     
-                                                     end );
+AddUniversalMorphismIntoExactFiberProduct( category, 
+    function( D, tau )                                                 
+    return UniversalMorphismIntoFiberProduct( D, tau );
+end );
 
+AddExactPushout( category, 
+    function( mor1, mor2 )                              
+    return Pushout( mor1, mor2 );
+end );
 
-AddPushoutObjectInducedByStructureOfExactCategory( category, function( inf, mor )
-                                                               
-                                                               return Pushout( inf, mor );
-                                                               
-                                                               end );
+AddInjectionOfCofactorOfExactPushout( category,
+    function( D, i )
+    return InjectionOfCofactorOfPushout(D,i);
+end );
 
-AddInjectionsOfPushoutInducedByStructureOfExactCategory( category,  function( inf, mor )
-                                local gamma, beta;
-       
-                                gamma := InjectionOfCofactorOfPushout( [ inf, mor ], 1 );
+AddUniversalMorphismFromExactPushout( category, 
+    function( D, tau )                                            
+    return UniversalMorphismFromPushout( D, tau );
+end );
 
-                                beta  := AsInflation( InjectionOfCofactorOfPushout( [ inf, mor ], 2 ) );
+if HasIsAbelianCategoryWithEnoughProjectives( category ) and
+        IsAbelianCategoryWithEnoughProjectives( category ) then
 
-                                return [ gamma, beta ];
-       
-                                end );
+    SetIsExactCategoryWithEnoughExactProjectives( category, true );
 
-AddUniversalMorphismFromPushoutInducedByStructureOfExactCategory( category, function( D, tau )
-                                                
-                                                return UniversalMorphismFromPushout( D, tau );
-        
-                                                end );
-                                                
+    AddIsExactProjectiveObject( category, IsProjective );
+    AddDeflationFromSomeExactProjectiveObject( category, EpimorphismFromSomeProjectiveObject );
+    AddExactProjectiveLift( category, ProjectiveLift );
+
+fi;
+
+if HasIsAbelianCategoryWithEnoughInjectives( category ) and 
+        IsAbelianCategoryWithEnoughInjectives( category ) then 
+
+    SetIsExactCategoryWithEnoughExactInjectives( category, true );
+
+    AddIsExactInjectiveObject( category, IsInjective );
+    AddInflationIntoSomeExactInjectiveObject( category, MonomorphismIntoSomeInjectiveObject );
+    AddExactInjectiveColift( category, InjectiveColift );
+
+fi;
+
 SetIsExactCategory( category, true );
                                                 
 return category;
 
 end );
-
-
-##
-InstallMethod( TurnAbelianCategoryToExactCategory, 
-                     [ IsCapCategory ], 
-                     
-   function( category )
-   
-   TURN_ABELIAN_CATEGORY_TO_EXACT_CATEGORY( category );
-   
-   end );
