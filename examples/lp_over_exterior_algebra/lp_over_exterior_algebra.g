@@ -252,7 +252,7 @@ return cat;
 
 end );
 
-generating_set_of_external_hom := 
+basis_of_external_hom := 
     function( MA, MB )
     local A, B, l, basis_indices, Q, N, sN, r,m,s,n,t,sN_t, basis_sN_t, basis, XX, XX_, X_, i, R;
 
@@ -294,7 +294,43 @@ generating_set_of_external_hom :=
 
     od;
 
-return Filtered( basis, b -> not IsZeroForMorphisms(b) );
+return DuplicateFreeList( Filtered( basis, b -> not IsZeroForMorphisms(b) ) );
+
+end;
+
+compute_coefficients := function( M, N, f )
+    local R, l, basis_indices, Q, b, A, B, C, vec, main_list, matrix, constant;
+    
+    if not IsWellDefined( f ) then
+        return fail;
+    fi;
+    
+    R := UnderlyingHomalgRing( M );
+    l := Length( IndeterminatesOfExteriorRing( R ) );
+    basis_indices := standard_list_of_basis_indices( l-1 );
+    Q := CoefficientsRing( R ); 
+
+    b := basis_of_external_hom( M, N );
+    A := List( b, UnderlyingMatrix );
+    B := UnderlyingMatrix( N );
+    C := UnderlyingMatrix( f );
+
+    vec := function( H ) return Iterated( List( [ 1 .. NrColumns( H ) ], i -> CertainColumns( H, [ i ] ) ), UnionOfRows ); end;
+
+    main_list := 
+        List( [ 1 .. Length( basis_indices) ], 
+        function( i ) 
+        local current_A, current_B, current_C, main;
+        current_A := List( A, a -> HomalgTransposedMat( DecompositionOfHomalgMat(a)[i][2]*Q ) );
+        current_B := HomalgTransposedMat( FRight( basis_indices[i], B )*Q );
+        current_C := HomalgTransposedMat( DecompositionOfHomalgMat(C)[i][2]*Q );
+        main := UnionOfColumns( Iterated( List( current_A, vec ), UnionOfColumns ), KroneckerMat( HomalgIdentityMatrix( NrColumns( current_C ), Q ), current_B ) ); 
+        return [ main, vec( current_C) ];
+        end );
+
+    matrix :=   Iterated( List( main_list, m -> m[ 1 ] ), UnionOfRows );
+    constant := Iterated( List( main_list, m -> m[ 2 ] ), UnionOfRows );
+    return CertainRows( LeftDivide( matrix, constant), [ 1..Length( b ) ] );
 
 end;
 
@@ -636,7 +672,10 @@ m := HomalgMatrix( "[ [ e1, e0, e1, e1*e0, e0-e1 ], [ 0, 1, e1*e0, 0, -4*e1 ], [
 M := AsLeftPresentation( m );
 n := HomalgMatrix( "[ [ e0, e1, e1, e1*e0, e0-e1 ], [ 1, 0, e1*e0, e0, e0 ], [ e1*e0, 0, 1, e1*e0-e0, 0 ] ]", 3, 5, R);
 N := AsLeftPresentation( n );
-
+hom_basis := basis_of_external_hom( M, N );
+random := List( [ 1..Length( hom_basis ) ], i-> Random( [ -i..i ] ) );;
+f := Sum( [ 1..Length( hom_basis ) ], i -> random[ i ] * hom_basis[ i ] );
+compute_coefficients( M, N, f );
 
 # Very important note:
 # if you compute hom(M,N) you will have a set of 46 morphisms and the first and the 30'th are congruent.
