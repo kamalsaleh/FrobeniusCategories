@@ -334,6 +334,17 @@ compute_coefficients := function( M, N, f )
 
 end;
 
+# Any element, u, in exterior algebra with zero constant is nilpotent.
+# In this case u+1 is unit:
+# 1 = 1 + u^n = (1+u)( 1+-...+- u^{n-1} ).
+is_reduced_module := 
+    function( M )
+    local F, b;
+    F := FreeLeftPresentation( 1, UnderlyingHomalgRing( M ) );
+    b := basis_of_external_hom( M, F );
+    return not ForAny( b, IsEpimorphism );
+end;
+
 can_be_factored_through_free_module := 
     function( mor )
     local m;
