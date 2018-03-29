@@ -319,9 +319,12 @@ return DuplicateFreeList( Filtered( basis, b -> not IsZeroForMorphisms(b) ) );
 
 end;
 
-compute_coefficients := function( M, N, f )
-    local R, l, basis_indices, Q, b, A, B, C, vec, main_list, matrix, constant;
+compute_coefficients := function( b, f )
+    local R, l, basis_indices, Q, A, B, C, vec, main_list, matrix, constant, M, N, sol;
     
+    M := Source( f );
+    N := Range( f );
+
     if not IsWellDefined( f ) then
         return fail;
     fi;
@@ -330,8 +333,7 @@ compute_coefficients := function( M, N, f )
     l := Length( IndeterminatesOfExteriorRing( R ) );
     basis_indices := standard_list_of_basis_indices( l-1 );
     Q := CoefficientsRing( R ); 
-
-    b := basis_of_external_hom( M, N );
+    
     A := List( b, UnderlyingMatrix );
     B := UnderlyingMatrix( N );
     C := UnderlyingMatrix( f );
@@ -351,8 +353,12 @@ compute_coefficients := function( M, N, f )
 
     matrix :=   Iterated( List( main_list, m -> m[ 1 ] ), UnionOfRows );
     constant := Iterated( List( main_list, m -> m[ 2 ] ), UnionOfRows );
-    return CertainRows( LeftDivide( matrix, constant), [ 1..Length( b ) ] );
-
+    sol := LeftDivide( matrix, constant);
+    if sol = fail then 
+        return fail;
+    else
+        return CertainRows( sol, [ 1..Length( b ) ] );
+    fi;
 end;
 
 # Any element, u, in exterior algebra with zero constant is nilpotent.
@@ -707,7 +713,7 @@ N := AsLeftPresentation( n );
 hom_basis := basis_of_external_hom( M, N );
 random := List( [ 1..Length( hom_basis ) ], i-> Random( [ -i..i ] ) );;
 f := Sum( [ 1..Length( hom_basis ) ], i -> random[ i ] * hom_basis[ i ] );
-compute_coefficients( M, N, f );
+compute_coefficients( hom_basis, f );
 
 # Very important note:
 # if you compute hom(M,N) you will have a set of 46 morphisms and the first and the 30'th are congruent.
