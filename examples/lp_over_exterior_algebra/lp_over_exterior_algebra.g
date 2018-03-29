@@ -699,6 +699,13 @@ is_isomorphism_for_stable_category :=
     return is_split_epi_for_stable_category( mor ) and is_split_mono_for_stable_category( mor );
 end;
 
+inverse_in_stable_category := 
+    function( mor )
+    # check if mor is really iso
+    return lift_for_stable_category( IdentityMorphism( Range( mor ) ), mor );
+end;
+
+
 R := KoszulDualRing( HomalgFieldOfRationalsInSingular()*"x,y" );
 cat := LeftPresentations( R: FinalizeCategory := false );
 ADD_METHODS_TO_LEFT_PRESENTATIONS_OVER_EXTERIOR_ALGEBRA( cat );
