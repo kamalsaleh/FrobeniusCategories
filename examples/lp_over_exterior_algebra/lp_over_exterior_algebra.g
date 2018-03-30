@@ -357,7 +357,7 @@ compute_coefficients := function( b, f )
     if sol = fail then 
         return fail;
     else
-        return CertainRows( sol, [ 1..Length( b ) ] );
+        return EntriesOfHomalgMatrix( CertainRows( sol, [ 1..Length( b ) ] ) );
     fi;
 end;
 
