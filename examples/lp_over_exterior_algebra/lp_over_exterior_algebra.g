@@ -269,6 +269,50 @@ end );
  
 AddIsInjective( cat, IsProjective );
 
+AddCanBeFactoredThroughExactProjective( cat,  
+    function( mor )
+    local m;
+    m := Colift( MonomorphismIntoSomeInjectiveObject( Source( mor ) ), mor );
+    if m = fail then
+        return false;
+    else
+        return true;
+    fi;
+end );
+
+AddCanBeFactoredThroughExactInjective( cat,  
+    function( mor )
+    local m;
+    m := Colift( MonomorphismIntoSomeInjectiveObject( Source( mor ) ), mor );
+    if m = fail then
+        return false;
+    else
+        return true;
+    fi;
+end );
+
+AddFactorizationThroughExactInjective( cat, 
+    function( mor )
+    local m;
+    m := Colift( MonomorphismIntoSomeInjectiveObject( Source( mor ) ), mor );
+    if m = fail then
+        return fail;
+    else
+        return [ MonomorphismIntoSomeInjectiveObject( Source( mor ) ), m ];
+    fi;
+end );
+
+AddFactorizationThroughExactProjective( cat, 
+    function( mor )
+    local m;
+    m := Colift( MonomorphismIntoSomeInjectiveObject( Source( mor ) ), mor );
+    if m = fail then
+        return fail;
+    else
+        return [ MonomorphismIntoSomeInjectiveObject( Source( mor ) ), m ];
+    fi;
+end );
+
 return cat;
 
 end );
@@ -370,17 +414,6 @@ is_reduced_module :=
     F := FreeLeftPresentation( 1, UnderlyingHomalgRing( M ) );
     b := basis_of_external_hom( M, F );
     return not ForAny( b, IsEpimorphism );
-end;
-
-can_be_factored_through_free_module := 
-    function( mor )
-    local m;
-    m := Colift( MonomorphismIntoSomeInjectiveObject( Source( mor ) ), mor );
-    if m = fail then
-        return false;
-    else
-        return true;
-    fi;
 end;
 
 colift_lift_in_stable_category :=
@@ -712,7 +745,7 @@ ADD_METHODS_TO_LEFT_PRESENTATIONS_OVER_EXTERIOR_ALGEBRA( cat );
 TurnAbelianCategoryToExactCategory( cat );
 SetIsFrobeniusCategory( cat, true );
 Finalize( cat );
-
+quit;
 m := HomalgMatrix( "[ [ e1, e0, e1, e1*e0, e0-e1 ], [ 0, 1, e1*e0, 0, -4*e1 ], [ e1+e0, 0, 1, e1*e0-e1, 0 ] ]", 3, 5, R);
 M := AsLeftPresentation( m );
 n := HomalgMatrix( "[ [ e0, e1, e1, e1*e0, e0-e1 ], [ 1, 0, e1*e0, e0, e0 ], [ e1*e0, 0, 1, e1*e0-e0, 0 ] ]", 3, 5, R);

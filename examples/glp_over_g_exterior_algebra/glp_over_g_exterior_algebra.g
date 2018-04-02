@@ -278,6 +278,50 @@ end );
  
 AddIsInjective( cat, IsProjective );
 
+AddCanBeFactoredThroughExactProjective( cat,  
+    function( mor )
+    local m;
+    m := Colift( MonomorphismIntoSomeInjectiveObject( Source( mor ) ), mor );
+    if m = fail then
+        return false;
+    else
+        return true;
+    fi;
+end );
+
+AddCanBeFactoredThroughExactInjective( cat,  
+    function( mor )
+    local m;
+    m := Colift( MonomorphismIntoSomeInjectiveObject( Source( mor ) ), mor );
+    if m = fail then
+        return false;
+    else
+        return true;
+    fi;
+end );
+
+AddFactorizationThroughExactInjective( cat, 
+    function( mor )
+    local m;
+    m := Colift( MonomorphismIntoSomeInjectiveObject( Source( mor ) ), mor );
+    if m = fail then
+        return fail;
+    else
+        return [ MonomorphismIntoSomeInjectiveObject( Source( mor ) ), m ];
+    fi;
+end );
+
+AddFactorizationThroughExactProjective( cat, 
+    function( mor )
+    local m;
+    m := Colift( MonomorphismIntoSomeInjectiveObject( Source( mor ) ), mor );
+    if m = fail then
+        return fail;
+    else
+        return [ MonomorphismIntoSomeInjectiveObject( Source( mor ) ), m ];
+    fi;
+end );
+
 return cat;
 
 end );
@@ -308,17 +352,6 @@ create_random_morphism :=
 
     return GradedPresentationMorphism( CokernelObject( f), m12, CokernelObject( g ) );
 
-end;
-
-can_be_factored_through_exact_injective_module := 
-    function( mor )
-    local m;
-    m := Colift( MonomorphismIntoSomeInjectiveObject( Source( mor ) ), mor );
-    if m = fail then
-        return false;
-    else
-        return true;
-    fi;
 end;
 
 compute_degree_zero_part := 
