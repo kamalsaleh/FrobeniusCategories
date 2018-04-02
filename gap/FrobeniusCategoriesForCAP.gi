@@ -296,7 +296,70 @@ ExactInjectiveColift := rec(
 installation_name := "ExactInjectiveColift", 
 filter_list := [ "morphism", "morphism" ],
 cache_name := "ExactInjectiveColift",
-return_type := [ "morphism" ] )
+return_type := [ "morphism" ] ),
+
+CanBeFactoredThroughExactProjective := rec(
+
+installation_name := "CanBeFactoredThroughExactProjective", 
+filter_list := [ "morphism" ],
+cache_name := "CanBeFactoredThroughExactProjective",
+return_type := [ "bool" ] ),
+
+CanBeFactoredThroughExactInjective := rec(
+
+installation_name := "CanBeFactoredThroughExactInjective", 
+filter_list := [ "morphism" ],
+cache_name := "CanBeFactoredThroughExactInjective",
+return_type := [ "bool" ] ),
+
+##
+FactorizationThroughExactInjective := rec(
+
+installation_name := "FactorizationThroughExactInjective", 
+filter_list := [ "morphism" ],
+cache_name := "FactorizationThroughExactInjective",
+pre_function := function( mor )
+                if not CanBeFactoredThroughExactInjective( mor ) then
+                    return [ fail ];
+                fi;
+                    return [ true ];
+                end,
+return_type := [ "morphism", "morphism" ],
+post_function :=    function( mor, return_value )
+                    if not IsExactInjectiveObject( Range( return_value[ 1 ] ) ) then
+                        return [ false, "The output of your method is not compatible" ];
+                    fi;
+                    
+                    if not IsCongruentForMorphisms( PreCompose( return_value[ 1 ], return_value[ 2 ] ), mor ) then
+                        return [ false, "The composition does not equal the input morphism" ];
+                    fi;
+                    return [ true ];
+                    end ),
+
+##
+FactorizationThroughExactProjective := rec(
+
+installation_name := "FactorizationThroughExactProjective", 
+filter_list := [ "morphism" ],
+cache_name := "FactorizationThroughExactProjective",
+pre_function := function( mor )
+                if not CanBeFactoredThroughExactProjective( mor ) then
+                    return [ false, "The given morphism can be factored through an exact projective object" ];
+                fi;
+                return [ true ];
+                end,
+return_type := [ "morphism", "morphism" ],
+
+post_function :=    function( mor, return_value )
+                    if not IsExactProjectiveObject( Range( return_value[ 1 ] ) ) then
+                        return [ false, "The output of your method is not compatible" ];
+                    fi;
+                    
+                    if not IsCongruentForMorphisms( PreCompose( return_value[ 1 ], return_value[ 2 ] ), mor ) then
+                        return [ false, "The composition does not equal the input morphism" ];
+                    fi;
+                    return [ true ];
+                    end ),
 
 ) );
 

@@ -278,6 +278,57 @@ DeclareOperation( "AddExactInjectiveColift",
 DeclareOperation( "AddExactInjectiveColift",
                   [ IsCapCategory, IsList ] );
 
+##
+DeclareProperty( "CanBeFactoredThroughExactProjective", IsCapCategoryMorphism );
+
+DeclareOperation( "AddCanBeFactoredThroughExactProjective",
+                  [ IsCapCategory, IsFunction ] );
+
+DeclareOperation( "AddCanBeFactoredThroughExactProjective",
+                  [ IsCapCategory, IsFunction, IsInt ] );
+DeclareOperation( "AddCanBeFactoredThroughExactProjective",
+                  [ IsCapCategory, IsList, IsInt ] );
+DeclareOperation( "AddCanBeFactoredThroughExactProjective",
+                  [ IsCapCategory, IsList ] );
+
+##
+DeclareProperty( "CanBeFactoredThroughExactInjective", IsCapCategoryMorphism );
+
+DeclareOperation( "AddCanBeFactoredThroughExactInjective",
+                  [ IsCapCategory, IsFunction ] );
+
+DeclareOperation( "AddCanBeFactoredThroughExactInjective",
+                  [ IsCapCategory, IsFunction, IsInt ] );
+DeclareOperation( "AddCanBeFactoredThroughExactInjective",
+                  [ IsCapCategory, IsList, IsInt ] );
+DeclareOperation( "AddCanBeFactoredThroughExactInjective",
+                  [ IsCapCategory, IsList ] );
+
+##
+DeclareAttribute( "FactorizationThroughExactProjective", IsCapCategoryMorphism );
+
+DeclareOperation( "AddFactorizationThroughExactProjective",
+                  [ IsCapCategory, IsFunction ] );
+
+DeclareOperation( "AddFactorizationThroughExactProjective",
+                  [ IsCapCategory, IsFunction, IsInt ] );
+DeclareOperation( "AddFactorizationThroughExactProjective",
+                  [ IsCapCategory, IsList, IsInt ] );
+DeclareOperation( "AddFactorizationThroughExactProjective",
+                  [ IsCapCategory, IsList ] );
+
+##
+DeclareAttribute( "FactorizationThroughExactInjective", IsCapCategoryMorphism );
+
+DeclareOperation( "AddFactorizationThroughExactInjective",
+                  [ IsCapCategory, IsFunction ] );
+
+DeclareOperation( "AddFactorizationThroughExactInjective",
+                  [ IsCapCategory, IsFunction, IsInt ] );
+DeclareOperation( "AddFactorizationThroughExactInjective",
+                  [ IsCapCategory, IsList, IsInt ] );
+DeclareOperation( "AddFactorizationThroughExactInjective",
+                  [ IsCapCategory, IsList ] );
 
 #################################
 ##
