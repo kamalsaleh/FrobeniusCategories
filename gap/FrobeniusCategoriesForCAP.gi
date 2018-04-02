@@ -179,7 +179,7 @@ cache_name := "UniversalMorphismIntoExactFiberProduct",
  pre_function:= function( D, tau )
                 local def,mor, is_equal_for_morphisms;
                 
-                if not IsCapCategoryDeflation( D[ 1 ] ) then 
+                if not IsDeflation( D[ 1 ] ) then 
                 
                    return [ false, "The first entry of the first list should be a deflation" ];
                    
@@ -659,10 +659,14 @@ end );
 
 ##
 InstallMethodWithCache( SchanuelsIsomorphism, 
-            [ IsCapCategoryConflation, IsCapCategoryConflation ], 
+            [ IsCapCategoryConflation, IsCapCategoryConflation, IsString ], 
     
-    function( conf1, conf2 )
-    local f1, I1, g1, B1, f2, I2, g2, B2, phi1, phi2, h1, h2, inverse_phi_1, inverse_phi_2, i_I1, i_I2, i_B1, i_B2, alpha, beta;
+    function( conf1, conf2, string )
+    local f1, I1, g1, B1, f2, I2, g2, B2, phi1, phi2, h1, h2, inverse_phi_1, inverse_phi_2, alpha, beta;
+    
+    if not string = "left" then
+      TryNextMethod();
+    fi;
     
     if not IsEqualForObjects( conf1[ 0 ], conf2[ 0 ] ) then 
     
@@ -716,7 +720,81 @@ InstallMethodWithCache( SchanuelsIsomorphism,
     end );
     
     
+#           f1        g1 
+#        A1 ----> P1 -----> B
+#
+#
+#        A2 ----> P2 -----> B
+#           f2        g2
+#
+#        SchanuelsIsomorphism : A1 𐌈 P2 ----> A2 𐌈 P1
+# In the stable category,  A1 ------> A1 𐌈 P2 ----> A2 𐌈 P1 -------> A2 is also supposed to be isomorphism.
+
+InstallMethodWithCache( SchanuelsIsomorphism, 
+            [ IsCapCategoryConflation, IsCapCategoryConflation, IsString ], 
     
+    function( conf1, conf2, string )
+    local f1, P1, g1, A1, f2, P2, g2, A2, phi1, phi2, h1, h2, inverse_phi_1, inverse_phi_2, alpha, beta;
+    
+    if not string = "right" then
+      TryNextMethod();
+    fi;
+
+    if not IsEqualForObjects( conf1[ 2 ], conf2[ 2 ] ) then 
+    
+       Error( "Both conflations should end by the same object" );
+       
+    fi;
+    
+    f1 := conf1^0;
+    
+    g1 := conf1^1;
+    
+    A1 := Source( f1 );
+    
+    P1 := Range( f1 );
+    
+    f2 := conf2^0;
+    
+    g2 := conf2^1;
+    
+    A2 := Source( f2 );
+
+    P2 := Range( f2 );
+        
+    phi1 := ProjectionInFactorOfExactFiberProduct( [ g1, g2 ], 1 );
+    
+    phi2 := ProjectionInFactorOfExactFiberProduct( [ g1, g2 ], 2 );
+
+    h1 := UniversalMorphismIntoExactFiberProduct( [ g1, g2 ], [ f1, ZeroMorphism( A1, P2  ) ] );
+    
+    h2 := UniversalMorphismIntoExactFiberProduct( [ g1, g2 ], [ ZeroMorphism( A2, P1 ), f2 ] );
+    
+    inverse_phi_1 := ExactProjectiveLift( IdentityMorphism( P1 ), phi1 );
+    
+    inverse_phi_2 := ExactProjectiveLift( IdentityMorphism( P2 ), phi2 );
+    
+    # Let P denotes the exact pullback object
+    #
+    # from A1 𐌈 P2 to P
+    alpha := MorphismBetweenDirectSums( 
+      [ # from from A1 to P, P2 to P 
+        [ h1 ],
+        [ inverse_phi_2 ]  
+      ] );
+
+    # from A2 𐌈 P1 to P
+    beta := MorphismBetweenDirectSums( 
+      [ # from from A2 to P, P1 to P 
+        [ h2 ],
+        [ inverse_phi_1 ]  
+      ] );
+
+    return PreCompose( alpha, Inverse( beta ) );
+end );
+
+
+
 #####################################
 ##
 ## Immediate Methods and Attributes 

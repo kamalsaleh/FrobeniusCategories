@@ -347,7 +347,7 @@ DeclareOperation( "CreateShortExactSequence",
 DeclareOperation( "CreateConflation", 
                       [ IsCapCategoryMorphism, IsCapCategoryMorphism ] );
 
-DeclareOperation( "SchanuelsIsomorphism", [ IsCapCategoryConflation, IsCapCategoryConflation ] );
+DeclareOperation( "SchanuelsIsomorphism", [ IsCapCategoryConflation, IsCapCategoryConflation, IsString ] );
 
 DeclareAttribute( "IsShortExactSequence_", IsCapCategoryShortSequence );
 #################################
