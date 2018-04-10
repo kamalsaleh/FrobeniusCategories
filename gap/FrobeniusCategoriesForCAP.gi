@@ -135,6 +135,67 @@ filter_list := [ "morphism" ],
 cache_name := "ConflationOfDeflation",
 return_type := "IsCapCategoryConflation" ),
 
+ExactKernelObject := rec( 
+
+installation_name := "ExactKernelObject", 
+filter_list := [ "morphism" ],
+cache_name := "ExactKernelObject",
+return_type := "object" ),
+
+##
+ExactKernelEmbedding := rec( 
+
+installation_name := "ExactKernelEmbedding", 
+filter_list := [ "morphism" ],
+cache_name := "ExactKernelEmbedding",
+return_type := "morphism" ),
+
+ExactKernelEmbeddingWithGivenExactKernelObject := rec( 
+
+installation_name := "ExactKernelEmbeddingWithGivenExactKernelObject", 
+filter_list := [ "morphism", "object" ],
+cache_name := "ExactKernelEmbeddingWithGivenExactKernelObject",
+return_type := "morphism" ),
+
+##
+ExactKernelLift := rec( 
+
+installation_name := "ExactKernelLift", 
+filter_list := [ "morphism", "morphism" ],
+cache_name := "ExactKernelLift",
+return_type := "morphism" ),
+
+##
+ExactCokernelObject := rec( 
+
+installation_name := "ExactCokernelObject", 
+filter_list := [ "morphism" ],
+cache_name := "ExactCokernelObject",
+return_type := "object" ),
+
+##
+ExactCokernelProjection := rec( 
+
+installation_name := "ExactCokernelProjection", 
+filter_list := [ "morphism" ],
+cache_name := "ExactCokernelProjection",
+return_type := "morphism" ),
+
+ExactCokernelProjectionWithGivenExactCokernelObject := rec( 
+
+installation_name := "ExactCokernelProjectionWithGivenExactCokernelObject", 
+filter_list := [ "morphism", "object" ],
+cache_name := "ExactCokernelProjectionWithGivenExactCokernelObject",
+return_type := "morphism" ),
+
+##
+ExactCokernelColift := rec( 
+
+installation_name := "ExactCokernelColift", 
+filter_list := [ "morphism", "morphism" ],
+cache_name := "ExactCokernelColift",
+return_type := "morphism" ),
+
 ExactFiberProduct:= rec( 
 
 installation_name := "ExactFiberProduct", 

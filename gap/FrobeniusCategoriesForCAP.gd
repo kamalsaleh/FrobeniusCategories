@@ -85,6 +85,104 @@ DeclareOperation( "AddIsDeflation",
 DeclareOperation( "AddIsDeflation",
                   [ IsCapCategory, IsList ] );
 
+DeclareAttribute( "ExactKernelObject", IsCapCategoryMorphism );
+
+DeclareOperation( "AddExactKernelObject",
+                  [ IsCapCategory, IsFunction ] );
+
+DeclareOperation( "AddExactKernelObject",
+                  [ IsCapCategory, IsFunction, IsInt ] );
+DeclareOperation( "AddExactKernelObject",
+                  [ IsCapCategory, IsList, IsInt ] );
+DeclareOperation( "AddExactKernelObject",
+                  [ IsCapCategory, IsList ] );
+
+DeclareAttribute( "ExactKernelEmbedding", IsCapCategoryMorphism );
+
+DeclareOperation( "AddExactKernelEmbedding",
+                  [ IsCapCategory, IsFunction ] );
+
+DeclareOperation( "AddExactKernelEmbedding",
+                  [ IsCapCategory, IsFunction, IsInt ] );
+DeclareOperation( "AddExactKernelEmbedding",
+                  [ IsCapCategory, IsList, IsInt ] );
+DeclareOperation( "AddExactKernelEmbedding",
+                  [ IsCapCategory, IsList ] );
+
+DeclareOperation( "ExactKernelEmbeddingWithGivenExactKernelObject", [ IsCapCategoryMorphism, IsCapCategoryObject ] );
+
+DeclareOperation( "AddExactKernelEmbeddingWithGivenExactKernelObject",
+                  [ IsCapCategory, IsFunction ] );
+
+DeclareOperation( "AddExactKernelEmbeddingWithGivenExactKernelObject",
+                  [ IsCapCategory, IsFunction, IsInt ] );
+DeclareOperation( "AddExactKernelEmbeddingWithGivenExactKernelObject",
+                  [ IsCapCategory, IsList, IsInt ] );
+DeclareOperation( "AddExactKernelEmbeddingWithGivenExactKernelObject",
+                  [ IsCapCategory, IsList ] );
+
+DeclareOperation( "ExactKernelLift", [ IsCapCategoryMorphism, IsCapCategoryMorphism ] );
+
+DeclareOperation( "AddExactKernelLift",
+                  [ IsCapCategory, IsFunction ] );
+
+DeclareOperation( "AddExactKernelLift",
+                  [ IsCapCategory, IsFunction, IsInt ] );
+DeclareOperation( "AddExactKernelLift",
+                  [ IsCapCategory, IsList, IsInt ] );
+DeclareOperation( "AddExactKernelLift",
+                  [ IsCapCategory, IsList ] );
+
+##
+DeclareAttribute( "ExactCokernelObject", IsCapCategoryMorphism );
+
+DeclareOperation( "AddExactCokernelObject",
+                  [ IsCapCategory, IsFunction ] );
+
+DeclareOperation( "AddExactCokernelObject",
+                  [ IsCapCategory, IsFunction, IsInt ] );
+DeclareOperation( "AddExactCokernelObject",
+                  [ IsCapCategory, IsList, IsInt ] );
+DeclareOperation( "AddExactCokernelObject",
+                  [ IsCapCategory, IsList ] );
+
+DeclareOperation( "ExactCokernelProjectionWithGivenExactCokernelObject", [ IsCapCategoryMorphism, IsCapCategoryObject ] );
+
+DeclareOperation( "AddExactCokernelProjectionWithGivenExactCokernelObject",
+                  [ IsCapCategory, IsFunction ] );
+
+DeclareOperation( "AddExactCokernelProjectionWithGivenExactCokernelObject",
+                  [ IsCapCategory, IsFunction, IsInt ] );
+DeclareOperation( "AddExactCokernelProjectionWithGivenExactCokernelObject",
+                  [ IsCapCategory, IsList, IsInt ] );
+DeclareOperation( "AddExactCokernelProjectionWithGivenExactCokernelObject",
+                  [ IsCapCategory, IsList ] );
+                  
+DeclareAttribute( "ExactCokernelProjection", IsCapCategoryMorphism );
+
+DeclareOperation( "AddExactCokernelProjection",
+                  [ IsCapCategory, IsFunction ] );
+
+DeclareOperation( "AddExactCokernelProjection",
+                  [ IsCapCategory, IsFunction, IsInt ] );
+DeclareOperation( "AddExactCokernelProjection",
+                  [ IsCapCategory, IsList, IsInt ] );
+DeclareOperation( "AddExactCokernelProjection",
+                  [ IsCapCategory, IsList ] );
+
+##
+DeclareOperation( "ExactCokernelColift", [ IsCapCategoryMorphism, IsCapCategoryMorphism ] );
+
+DeclareOperation( "AddExactCokernelColift",
+                  [ IsCapCategory, IsFunction ] );
+
+DeclareOperation( "AddExactCokernelColift",
+                  [ IsCapCategory, IsFunction, IsInt ] );
+DeclareOperation( "AddExactCokernelColift",
+                  [ IsCapCategory, IsList, IsInt ] );
+DeclareOperation( "AddExactCokernelColift",
+                  [ IsCapCategory, IsList ] );
+
 ##
 DeclareAttribute( "ConflationOfInflation", IsCapCategoryMorphism );
 
