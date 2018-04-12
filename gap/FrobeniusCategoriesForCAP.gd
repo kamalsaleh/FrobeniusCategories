@@ -37,7 +37,7 @@ DeclareCategory( "IsCapCategoryDeflation", IsCapCategoryMorphism );
 # Print( "                  [ IsCapCategory, IsFunction, IsInt ] );\n" );
 # Print( "DeclareOperation( ", Concatenation( "\"Add", name_of_the_function ), "\",\n" );
 # Print( "                  [ IsCapCategory, IsList, IsInt ] );\n" );
-                  
+#                 
 # Print( "DeclareOperation( ", Concatenation( "\"Add", name_of_the_function ), "\",\n" );
 # Print( "                  [ IsCapCategory, IsList ] );\n" );
 # end );

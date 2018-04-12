@@ -59,6 +59,16 @@ AddConflationOfInflation( category,
     return CreateConflation( mor, CokernelProjection( mor ) );    
 end );
 
+AddExactKernelObject( category, KernelObject );
+AddExactKernelEmbedding( category, KernelEmbedding );
+AddExactKernelEmbeddingWithGivenExactKernelObject( category, KernelEmbeddingWithGivenKernelObject );
+AddExactKernelLift( category, KernelLift );
+
+AddExactCokernelObject( category, CokernelObject );
+AddExactCokernelProjection( category, CokernelProjection );
+AddExactCokernelProjectionWithGivenExactCokernelObject( category, CokernelProjectionWithGivenCokernelObject );
+AddExactCokernelColift( category, CokernelColift );
+
 AddExactFiberProduct( category, 
     function( mor1, mor2 )              
     return FiberProduct( mor1, mor2 );
