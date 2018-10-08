@@ -478,5 +478,5 @@ KeyDependentOperation( "MorphismAt", IsCapCategoryShortSequence, IsInt, ReturnTr
 DeclareOperation( "\^", [ IsCapCategoryShortSequence, IsInt ] );
 
 KeyDependentOperation( "ObjectAt", IsCapCategoryShortSequence, IsInt, ReturnTrue );
-#DeclareOperation( "\[\]", [ IsCapCategoryShortSequence, IsInt ] );
+DeclareOperation( "\[\]", [ IsCapCategoryShortSequence, IsInt ] );
 
