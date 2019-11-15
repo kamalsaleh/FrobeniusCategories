@@ -1,7 +1,7 @@
 
-LoadPackage( "FrobeniusCategoriesForCAP" );
+LoadPackage( "FrobeniusCategories" );
 LoadPackage( "GradedModulePresentations" );
-ReadPackage( "FrobeniusCategoriesForCAP", "/examples/glp_over_g_exterior_algebra/tools.g" );
+ReadPackage( "FrobeniusCategories", "/examples/glp_over_g_exterior_algebra/tools.g" );
 
 BindGlobal( "ADD_METHODS_TO_GRADED_LEFT_PRESENTATIONS_OVER_EXTERIOR_ALGEBRA", 
 

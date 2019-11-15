@@ -1,5 +1,5 @@
 #
-# FrobeniusCategoriesForCAP: Framework for Frobenius Categories
+# FrobeniusCategories: Framework for Frobenius Categories
 #
 # This file contains package meta data. For additional information on
 # the meaning and correct usage of these fields, please consult the
@@ -8,7 +8,7 @@
 #
 SetPackageInfo( rec(
 
-PackageName := "FrobeniusCategoriesForCAP",
+PackageName := "FrobeniusCategories",
 Subtitle := "Framework for Frobenius Categories",
 Version := "1.0",
 Date := "14/04/2018", # dd/mm/yyyy format
@@ -28,10 +28,10 @@ Persons := [
 ],
 
 #SourceRepository := rec( Type := "TODO", URL := "URL" ),
-#IssueTrackerURL := "https://github.com/kamalsaleh/FrobeniusCategoriesForCAP",
+#IssueTrackerURL := "https://github.com/kamalsaleh/FrobeniusCategories",
 #SupportEmail := "TODO",
 
-PackageWWWHome := "https://github.com/kamalsaleh/FrobeniusCategoriesForCAP",
+PackageWWWHome := "https://github.com/kamalsaleh/FrobeniusCategories",
 
 PackageInfoURL := Concatenation( ~.PackageWWWHome, "PackageInfo.g" ),
 README_URL     := Concatenation( ~.PackageWWWHome, "README.md" ),
@@ -53,7 +53,7 @@ Status := "dev",
 AbstractHTML   :=  "",
 
 PackageDoc := rec(
-  BookName  := "FrobeniusCategoriesForCAP",
+  BookName  := "FrobeniusCategories",
   ArchiveURLSubset := ["doc"],
   HTMLStart := "doc/chap0.html",
   PDFFile   := "doc/manual.pdf",

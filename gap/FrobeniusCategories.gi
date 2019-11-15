@@ -870,7 +870,7 @@ InstallImmediateMethod( INSTALL_LOGICAL_IMPLICATIONS_FOR_EXACT_CATEGORY,
    
    AddPredicateImplicationFileToCategory( category,
       Filename(
-        DirectoriesPackageLibrary( "FrobeniusCategoriesForCAP", "LogicForExactAndFrobeniusCategories" ),
+        DirectoriesPackageLibrary( "FrobeniusCategories", "LogicForExactAndFrobeniusCategories" ),
         "PredicateImplicationsForExactCategories.tex" ) );
         
    TryNextMethod( );
@@ -889,7 +889,7 @@ InstallImmediateMethod( INSTALL_LOGICAL_IMPLICATIONS_FOR_FROBENIUS_CATEGORY,
    
    AddPredicateImplicationFileToCategory( category,
       Filename(
-        DirectoriesPackageLibrary( "FrobeniusCategoriesForCAP", "LogicForExactAndFrobeniusCategories" ),
+        DirectoriesPackageLibrary( "FrobeniusCategories", "LogicForExactAndFrobeniusCategories" ),
         "PredicateImplicationsForFrobeniusCategories.tex" ) );
         
    TryNextMethod( );

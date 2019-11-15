@@ -1,9 +1,9 @@
 #
-# FrobeniusCategoriesForCAP: Framework for Frobenius Categories
+# FrobeniusCategories: Framework for Frobenius Categories
 #
 # Reading the implementation part of the package.
 #
-ReadPackage( "FrobeniusCategoriesForCAP", "gap/FrobeniusCategoriesForCAP.gi" );
-ReadPackage( "FrobeniusCategoriesForCAP", "gap/FrobeniusCategoriesDerivedMethods.gi");
-ReadPackage( "FrobeniusCategoriesForCAP", "gap/AbelianToExactCategories.gi" );
-#ReadPackage( "FrobeniusCategoriesForCAP", "gap/FrobeniusToTriangulatedStableCategories.gi");
+ReadPackage( "FrobeniusCategories", "gap/FrobeniusCategories.gi" );
+ReadPackage( "FrobeniusCategories", "gap/FrobeniusCategoriesDerivedMethods.gi");
+ReadPackage( "FrobeniusCategories", "gap/AbelianToExactCategories.gi" );
+#ReadPackage( "FrobeniusCategories", "gap/FrobeniusToTriangulatedStableCategories.gi");

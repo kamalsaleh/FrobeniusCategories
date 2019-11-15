@@ -1,6 +1,6 @@
 
-LoadPackage( "FrobeniusCategoriesForCAP" );
-ReadPackage( "FrobeniusCategoriesForCAP", "/examples/lp_over_exterior_algebra/tools.g" );
+LoadPackage( "FrobeniusCategories" );
+ReadPackage( "FrobeniusCategories", "/examples/lp_over_exterior_algebra/tools.g" );
 
 BindGlobal( "ADD_METHODS_TO_LEFT_PRESENTATIONS_OVER_EXTERIOR_ALGEBRA", 
 
