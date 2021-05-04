@@ -24,13 +24,13 @@ DeclareRepresentation( "IsCapCategoryConflationRep",
 
 DeclareRepresentation( "IsCapCategoryMorphismOfShortSequencesRep",
 
-                        IsCapCategoryMorphismOfShortSequences and IsAttributeStoringRep, 
+                        IsCapCategoryMorphismOfShortSequences and IsAttributeStoringRep,
                         [ ] );
 
 
 ##############################
 ##
-## Family and type 
+## Family and type
 ##
 ##############################
 
@@ -42,26 +42,26 @@ BindGlobal( "CapCategoryShortExactSequencesFamily",
 
 BindGlobal( "CapCategoryConflationsFamily",
   NewFamily( "CapCategoryConflationsFamily", IsCapCategoryConflation ) );
-  
+
 BindGlobal( "CapCategoryMorphismsOfShortSequencesFamily",
   NewFamily( "CapCategoryMorphismsOfShortSequencesFamily", IsObject ) );
-  
-BindGlobal( "TheTypeCapCategoryShortSequence", 
-  NewType( CapCategoryShortSequencesFamily, 
+
+BindGlobal( "TheTypeCapCategoryShortSequence",
+  NewType( CapCategoryShortSequencesFamily,
                       IsCapCategoryShortSequenceRep ) );
-                      
-BindGlobal( "TheTypeCapCategoryShortExactSequence", 
-  NewType( CapCategoryShortExactSequencesFamily, 
+
+BindGlobal( "TheTypeCapCategoryShortExactSequence",
+  NewType( CapCategoryShortExactSequencesFamily,
                       IsCapCategoryShortExactSequenceRep ) );
-                      
-BindGlobal( "TheTypeCapCategoryConflation", 
-  NewType( CapCategoryConflationsFamily, 
+
+BindGlobal( "TheTypeCapCategoryConflation",
+  NewType( CapCategoryConflationsFamily,
                       IsCapCategoryConflationRep ) );
-                      
-BindGlobal( "TheTypeCapCategoryMorphismOfShortSequences", 
-  NewType( CapCategoryMorphismsOfShortSequencesFamily, 
+
+BindGlobal( "TheTypeCapCategoryMorphismOfShortSequences",
+  NewType( CapCategoryMorphismsOfShortSequencesFamily,
                       IsCapCategoryMorphismOfShortSequencesRep ) );
-                      
+
 ###############################
 ##
 ##  Records and methods
@@ -70,372 +70,158 @@ BindGlobal( "TheTypeCapCategoryMorphismOfShortSequences",
 
 InstallValue( CAP_INTERNAL_FROBENIUS_CATEGORIES_BASIC_OPERATIONS, rec( ) );
 
-InstallValue( FROBENIUS_CATEGORIES_METHOD_NAME_RECORD, rec( 
+InstallValue( FROBENIUS_CATEGORIES_METHOD_NAME_RECORD, rec(
 
-IsInflation := rec( 
+IsConflationPair := rec(
+installation_name := "IsConflationPair",
+filter_list := [ "category", "morphism", "morphism" ],
+cache_name := "IsConflationPair",
+return_type := "bool" ),
 
-installation_name := "IsInflation", 
-filter_list := [ "morphism" ],
-cache_name := "IsInflation",
-return_type := "bool",
-post_function := function( morphism, return_value )
-                 
-                 if return_value = true then 
-                 
-                    SetFilterObj( morphism, IsCapCategoryInflation );
-                    
-                 fi;
-                 
-                 end ),
-
-IsDeflation := rec( 
-
-installation_name := "IsDeflation", 
-filter_list := [ "morphism" ],
-cache_name := "IsDeflation",
-return_type := "bool",
-post_function := function( morphism, return_value )
-                 
-                 if return_value = true then 
-                 
-                    SetFilterObj( morphism, IsCapCategoryDeflation );
-                    
-                 fi;
-                 
-                 end ),
-                 
-IsConflation := rec( 
-
-installation_name := "IsConflation", 
-filter_list := [ IsCapCategoryShortExactSequence ],
-cache_name := "IsConflation",
-return_type := "bool",
-post_function := function( seq, return_value )
-                 
-                 if return_value = true then 
-                 
-                    SetFilterObj( seq, IsCapCategoryConflation );
-                    
-                 fi;
-                 
-                 end ),
-
-ConflationOfInflation := rec( 
-
-installation_name := "ConflationOfInflation", 
-filter_list := [ "morphism" ],
-cache_name := "ConflationOfInflation",
-return_type := "IsCapCategoryConflation" ),
-
-
-ConflationOfDeflation := rec( 
-
-installation_name := "ConflationOfDeflation", 
-filter_list := [ "morphism" ],
-cache_name := "ConflationOfDeflation",
-return_type := "IsCapCategoryConflation" ),
-
-ExactKernelObject := rec( 
-
-installation_name := "ExactKernelObject", 
-filter_list := [ "morphism" ],
-number_of_diagram_arguments := 1,
-cache_name := "ExactKernelObject",
-return_type := "object" ),
-
-##
-ExactKernelEmbedding := rec( 
-
-installation_name := "ExactKernelEmbedding", 
-filter_list := [ "morphism" ],
-number_of_diagram_arguments := 1,
-cache_name := "ExactKernelEmbedding",
+CompleteInflationToConflation := rec(
+installation_name := "CompleteInflationToConflation",
+filter_list := [ "category", "morphism" ],
+cache_name := "CompleteInflationToConflation",
 return_type := "morphism" ),
 
-ExactKernelEmbeddingWithGivenExactKernelObject := rec( 
-
-installation_name := "ExactKernelEmbeddingWithGivenExactKernelObject", 
-filter_list := [ "morphism", "object" ],
-number_of_diagram_arguments := 1,
-cache_name := "ExactKernelEmbeddingWithGivenExactKernelObject",
+CompleteDeflationToConflation := rec(
+installation_name := "CompleteDeflationToConflation",
+filter_list := [ "category", "morphism" ],
+cache_name := "CompleteDeflationToConflation",
 return_type := "morphism" ),
 
-##
-ExactKernelLift := rec( 
-
-installation_name := "ExactKernelLift", 
-filter_list := [ "morphism", "morphism" ],
-number_of_diagram_arguments := 1,
-cache_name := "ExactKernelLift",
+LiftAlongInflation := rec(
+installation_name := "LiftAlongInflation",
+filter_list := [ "category", "morphism", "morphism" ],
+cache_name := "LiftAlongInflation",
 return_type := "morphism" ),
 
-##
-ExactCokernelObject := rec( 
-
-installation_name := "ExactCokernelObject", 
-filter_list := [ "morphism" ],
-number_of_diagram_arguments := 1,
-cache_name := "ExactCokernelObject",
-return_type := "object" ),
-
-##
-ExactCokernelProjection := rec( 
-
-installation_name := "ExactCokernelProjection", 
-filter_list := [ "morphism" ],
-number_of_diagram_arguments := 1,
-cache_name := "ExactCokernelProjection",
+ColiftAlongDeflation := rec(
+installation_name := "ColiftAlongDeflation",
+filter_list := [ "category", "morphism", "morphism" ],
+cache_name := "ColiftAlongDeflation",
 return_type := "morphism" ),
 
-ExactCokernelProjectionWithGivenExactCokernelObject := rec( 
-
-installation_name := "ExactCokernelProjectionWithGivenExactCokernelObject", 
-filter_list := [ "morphism", "object" ],
-number_of_diagram_arguments := 1,
-cache_name := "ExactCokernelProjectionWithGivenExactCokernelObject",
-return_type := "morphism" ),
-
-##
-ExactCokernelColift := rec( 
-
-installation_name := "ExactCokernelColift", 
-filter_list := [ "morphism", "morphism" ],
-number_of_diagram_arguments := 1,
-cache_name := "ExactCokernelColift",
-return_type := "morphism" ),
-
-ExactFiberProduct:= rec( 
-
-installation_name := "ExactFiberProduct", 
-filter_list := [ IsCapCategoryDeflation , "morphism" ],
+ExactFiberProduct:= rec(
+installation_name := "ExactFiberProduct",
+filter_list := [ "category", "morphism" , "morphism" ],
 cache_name := "ExactFiberProduct",
-pre_function := function( def, mor )
-                local is_equal_for_objects;
-                
-                is_equal_for_objects := IsEqualForObjects( Range( def ), Range( mor ) );
-                
-                if is_equal_for_objects = fail then 
-                
-                    return [ false, "Cannot decide if the ranges of the both morphisms are equal" ];
-                 
-                elif is_equal_for_objects = false then 
-                
-                    return  [ false, "The ranges of both morphisms are not equal" ];
-                    
-                else 
-                
-                    return [ true ];
-                    
-                fi;
-                
-                end,
-return_type := "object" ),                 
+return_type := "object" ),
 
+ProjectionInFactorOfExactFiberProduct := rec(
 
-ProjectionInFactorOfExactFiberProduct := rec( 
-
-installation_name := "ProjectionInFactorOfExactFiberProduct", 
-filter_list := [ IsList, IsInt ],
+installation_name := "ProjectionInFactorOfExactFiberProduct",
+filter_list := [ "category", "morphism", "morphism", IsInt ],
 cache_name := "ProjectionInFactorOfExactFiberProduct",
-return_type := [ "morphism" ] ),                 
+return_type := "morphism" ),
 
-UniversalMorphismIntoExactFiberProduct:= rec( 
+UniversalMorphismIntoExactFiberProduct:= rec(
 
-installation_name := "UniversalMorphismIntoExactFiberProduct", 
-filter_list := [ IsList, IsList ],
+installation_name := "UniversalMorphismIntoExactFiberProduct",
+filter_list := [ "category", "morphism", "morphism", "morphism", "morphism" ],
 cache_name := "UniversalMorphismIntoExactFiberProduct",
+return_type := "morphism" ),
 
- pre_function:= function( D, tau )
-                local def,mor, is_equal_for_morphisms;
-                
-                if not IsDeflation( D[ 1 ] ) then 
-                
-                   return [ false, "The first entry of the first list should be a deflation" ];
-                   
-                fi;
-                
-                if not IsCapCategoryMorphism( D[ 2 ] ) then
-                  
-                   return [ false, "The second entry of the first list should be a morphism" ];
-                   
-                fi;
-                
-                if not IsCapCategoryMorphism( tau[ 1 ] ) or not IsCapCategoryMorphism( tau[ 2 ] ) then
-                
-                   return [ false, "The second list should be list of two morphisms" ];
-                   
-                fi;
-                
-                
-                def := D[ 1 ];
-                mor := D[ 2 ];
-                
-                is_equal_for_morphisms := IsCongruentForMorphisms( PreCompose( tau[ 1 ], def ), PreCompose( tau[ 2 ], mor ) );
-                
-                if is_equal_for_morphisms = fail then 
-                
-                    return [ false, "Cannot determine if the resulted diagram is commutative" ];
-                    
-                elif is_equal_for_morphisms = false then 
-                
-                    return [ false, "The resulted diagram by the inputs is not commutative" ];
-                    
-                else
-                
-                    return [ true ];
-                    
-                fi;
-                
-                end,
-return_type := "morphism" ),                 
+ExactPushout:= rec(
 
-ExactPushout:= rec( 
-
-installation_name := "ExactPushout", 
-filter_list := [ "morphism", "morphism" ],
+installation_name := "ExactPushout",
+filter_list := [ "category", "morphism", "morphism" ],
 cache_name := "ExactPushout",
 return_type := "object" ),
-            
 
-InjectionOfCofactorOfExactPushout := rec( 
 
-installation_name := "InjectionOfCofactorOfExactPushout", 
-filter_list := [ IsList, IsInt ],
+InjectionOfCofactorOfExactPushout := rec(
+
+installation_name := "InjectionOfCofactorOfExactPushout",
+filter_list := [ "category", "morphism", "morphism", IsInt ],
 cache_name := "InjectionOfCofactorOfExactPushout",
-return_type := [ "morphism" ] ),                 
+return_type := "morphism" ),
 
-UniversalMorphismFromExactPushout:= rec( 
+UniversalMorphismFromExactPushout:= rec(
 
-installation_name := "UniversalMorphismFromExactPushout", 
-filter_list := [ IsList, IsList ],
+installation_name := "UniversalMorphismFromExactPushout",
+filter_list := [ "category", "morphism", "morphism", "morphism", "morphism" ],
 cache_name := "UniversalMorphismFromExactPushout",
-return_type := "morphism" ),                 
+return_type := "morphism" ),
 
-FitIntoConflationUsingExactInjectiveObject := rec( 
+IsExactProjectiveObject := rec(
 
-installation_name := "FitIntoConflationUsingExactInjectiveObject", 
-filter_list := [ "object" ],
-cache_name := "FitIntoConflationUsingExactInjectiveObject",
-return_type := [ IsCapCategoryConflation ] ),
-
-FitIntoConflationUsingExactProjectiveObject := rec( 
-
-installation_name := "FitIntoConflationUsingExactProjectiveObject", 
-filter_list := [ "object" ],
-cache_name := "FitIntoConflationUsingExactProjectiveObject",
-return_type := [ IsCapCategoryConflation ] ),
-
-IsExactProjectiveObject := rec( 
-
-installation_name := "IsExactProjectiveObject", 
-filter_list := [ "object" ],
+installation_name := "IsExactProjectiveObject",
+filter_list := [ "category", "object" ],
 cache_name := "IsExactProjectiveObject",
-return_type := [ "bool" ] ),
+return_type := "bool" ),
 
-IsExactInjectiveObject := rec( 
+IsExactInjectiveObject := rec(
 
-installation_name := "IsExactInjectiveObject", 
-filter_list := [ "object" ],
+installation_name := "IsExactInjectiveObject",
+filter_list := [ "category", "object" ],
 cache_name := "IsExactInjectiveObject",
-return_type := [ "bool" ] ),
+return_type := "bool" ),
 
-DeflationFromSomeExactProjectiveObject := rec( 
+DeflationFromSomeExactProjectiveObject := rec(
 
-installation_name := "DeflationFromSomeExactProjectiveObject", 
-filter_list := [ "object" ],
+installation_name := "DeflationFromSomeExactProjectiveObject",
+filter_list := [ "category", "object" ],
 cache_name := "DeflationFromSomeExactProjectiveObject",
-return_type := [ "morphism" ] ),
+return_type := "morphism" ),
 
-InflationIntoSomeExactInjectiveObject := rec( 
+InflationIntoSomeExactInjectiveObject := rec(
 
-installation_name := "InflationIntoSomeExactInjectiveObject", 
-filter_list := [ "object" ],
+installation_name := "InflationIntoSomeExactInjectiveObject",
+filter_list := [ "category", "object" ],
 cache_name := "InflationIntoSomeExactInjectiveObject",
-return_type := [ "morphism" ] ),
+return_type := "morphism" ),
 
-ExactProjectiveLift := rec( 
+ExactProjectiveLift := rec(
 
-installation_name := "ExactProjectiveLift", 
-filter_list := [ "morphism", "morphism" ],
+installation_name := "ExactProjectiveLift",
+filter_list := [ "category", "morphism", "morphism" ],
 cache_name := "ExactProjectiveLift",
-return_type := [ "morphism" ] ),
+return_type := "morphism" ),
 
-ExactInjectiveColift := rec( 
+ExactInjectiveColift := rec(
 
-installation_name := "ExactInjectiveColift", 
-filter_list := [ "morphism", "morphism" ],
+installation_name := "ExactInjectiveColift",
+filter_list := [ "category", "morphism", "morphism" ],
 cache_name := "ExactInjectiveColift",
-return_type := [ "morphism" ] ),
+return_type := "morphism" ),
 
-CanBeFactoredThroughExactProjective := rec(
+IsColiftableAlongInflationIntoSomeExactInjectiveObject := rec(
 
-installation_name := "CanBeFactoredThroughExactProjective", 
-filter_list := [ "morphism" ],
-cache_name := "CanBeFactoredThroughExactProjective",
-return_type := [ "bool" ] ),
+installation_name := "IsColiftableAlongInflationIntoSomeExactInjectiveObject",
+filter_list := [ "category", "morphism" ],
+cache_name := "IsColiftableAlongInflationIntoSomeExactInjectiveObject",
+return_type := "bool" ),
 
-CanBeFactoredThroughExactInjective := rec(
+IsLiftableAlongDeflationFromSomeExactProjectiveObject := rec(
 
-installation_name := "CanBeFactoredThroughExactInjective", 
-filter_list := [ "morphism" ],
-cache_name := "CanBeFactoredThroughExactInjective",
-return_type := [ "bool" ] ),
-
-##
-FactorizationThroughExactInjective := rec(
-
-installation_name := "FactorizationThroughExactInjective", 
-filter_list := [ "morphism" ],
-cache_name := "FactorizationThroughExactInjective",
-pre_function := function( mor )
-                if not CanBeFactoredThroughExactInjective( mor ) then
-                    return [ fail ];
-                fi;
-                    return [ true ];
-                end,
-return_type := [ "morphism", "morphism" ],
-post_function :=    function( mor, return_value )
-                    if not IsExactInjectiveObject( Range( return_value[ 1 ] ) ) then
-                        return [ false, "The output of your method is not compatible" ];
-                    fi;
-                    
-                    if not IsCongruentForMorphisms( PreCompose( return_value[ 1 ], return_value[ 2 ] ), mor ) then
-                        return [ false, "The composition does not equal the input morphism" ];
-                    fi;
-                    return [ true ];
-                    end ),
+installation_name := "IsLiftableAlongDeflationFromSomeExactProjectiveObject",
+filter_list := [ "category", "morphism" ],
+cache_name := "IsLiftableAlongDeflationFromSomeExactProjectiveObject",
+return_type := "bool" ),
 
 ##
-FactorizationThroughExactProjective := rec(
+ColiftAlongInflationIntoSomeExactInjectiveObject := rec(
 
-installation_name := "FactorizationThroughExactProjective", 
-filter_list := [ "morphism" ],
-cache_name := "FactorizationThroughExactProjective",
-pre_function := function( mor )
-                if not CanBeFactoredThroughExactProjective( mor ) then
-                    return [ false, "The given morphism can be factored through an exact projective object" ];
-                fi;
-                return [ true ];
-                end,
-return_type := [ "morphism", "morphism" ],
+installation_name := "ColiftAlongInflationIntoSomeExactInjectiveObject",
+filter_list := [ "category", "morphism" ],
+cache_name := "ColiftAlongInflationIntoSomeExactInjectiveObject",
+return_type := "morphism" ),
 
-post_function :=    function( mor, return_value )
-                    if not IsExactProjectiveObject( Range( return_value[ 1 ] ) ) then
-                        return [ false, "The output of your method is not compatible" ];
-                    fi;
-                    
-                    if not IsCongruentForMorphisms( PreCompose( return_value[ 1 ], return_value[ 2 ] ), mor ) then
-                        return [ false, "The composition does not equal the input morphism" ];
-                    fi;
-                    return [ true ];
-                    end ),
+##
+LiftAlongDeflationFromSomeExactProjectiveObject := rec(
+
+installation_name := "LiftAlongDeflationFromSomeExactProjectiveObject",
+filter_list := [ "category", "morphism" ],
+cache_name := "LiftAlongDeflationFromSomeExactProjectiveObject",
+return_type := "morphism" )
 
 ) );
 
 CAP_INTERNAL_ENHANCE_NAME_RECORD( FROBENIUS_CATEGORIES_METHOD_NAME_RECORD );
 
 CAP_INTERNAL_INSTALL_ADDS_FROM_RECORD( FROBENIUS_CATEGORIES_METHOD_NAME_RECORD );
-  
+
 ########################################
 ##
 ## Properties logic
@@ -448,7 +234,7 @@ InstallTrueMethod( IsAdditiveCategory, IsExactCategory );
 
 ########################################
 ##
-##  Constructors 
+##  Constructors
 ##
 ########################################
 
@@ -458,79 +244,79 @@ InstallMethod( CategoryOfShortSequences,
   local name, cat;
 
   name := Concatenation( "Category of short sequences of the ", Name( category ) );
-  
+
   cat := CreateCapCategory( name );
 
   AddIsWellDefinedForObjects( cat,
 
   function( S )
   local alpha, beta;
-  
+
   alpha := S^0;
-  
+
   beta := S^1;
-  
-    if not IsZeroForMorphisms( PreCompose( alpha, beta ) ) then 
-    
+
+    if not IsZeroForMorphisms( PreCompose( alpha, beta ) ) then
+
       return false;
-      
+
     fi;
-    
+
   return true;
-  
+
   end );
 
   AddIsEqualForObjects( cat,
       function( S1, S2 )
-      return IsEqualForObjects( ObjectAt( S1, 0 ), ObjectAt( S2, 0 ) ) and 
+      return IsEqualForObjects( ObjectAt( S1, 0 ), ObjectAt( S2, 0 ) ) and
               IsEqualForObjects( ObjectAt( S1, 1 ), ObjectAt( S2, 1 ) ) and
                IsEqualForObjects( ObjectAt( S1, 2 ), ObjectAt( S2, 2 ) ) and
-                IsEqualForMorphisms( MorphismAt( S1, 0 ), MorphismAt( S2, 0 ) ) and 
+                IsEqualForMorphisms( MorphismAt( S1, 0 ), MorphismAt( S2, 0 ) ) and
                  IsEqualForMorphisms( MorphismAt( S1, 1 ), MorphismAt( S2, 1 ) );
       end );
 
   Finalize( cat );
-  
+
   return cat;
 
 end );
 
 InstallMethod( CreateShortSequence,
-               
-               [ IsCapCategoryMorphism, IsCapCategoryMorphism ], 
-               
+
+               [ IsCapCategoryMorphism, IsCapCategoryMorphism ],
+
    function( alpha, beta )
    local s;
-   
-   if not IsEqualForObjects( Range( alpha ), Source( beta ) ) then 
-   
+
+   if not IsEqualForObjects( Range( alpha ), Source( beta ) ) then
+
      Error( "Range of the first morphism should equal the Source of the second morphism" );
-     
+
    fi;
-   
-   s := rec( o0:= Source( alpha ), 
-             
+
+   s := rec( o0:= Source( alpha ),
+
              m0:= alpha,
-             
+
              o1 := Range( alpha ),
-             
+
              m1 := beta,
-             
+
              o2 := Range( beta ) );
-             
+
     ObjectifyWithAttributes( s, TheTypeCapCategoryShortSequence );
 
-    AddObject( CategoryOfShortSequences( CapCategory( alpha ) ), s );                         
+    AddObject( CategoryOfShortSequences( CapCategory( alpha ) ), s );
     return s;
-    
+
 end );
 
 
 
-InstallMethodWithCache( CreateShortExactSequence, 
-              
-              [ IsCapCategoryMorphism, IsCapCategoryMorphism ], 
-               
+InstallMethodWithCache( CreateShortExactSequence,
+
+              [ IsCapCategoryMorphism, IsCapCategoryMorphism ],
+
   function( alpha, beta )
   local s;
 
@@ -539,68 +325,21 @@ InstallMethodWithCache( CreateShortExactSequence,
   SetFilterObj( s, IsCapCategoryShortExactSequence );
 
   return s;
-    
+
 end );
 
-
 ##
-InstallMethod( IsShortExactSequence_, 
-            [ IsCapCategoryShortSequence ], 
-                
-  function( seq )
-  local alpha, beta, ker_beta, ker_lift, coker_alpha, coker_colift;
-  
-    alpha := seq^0;
-  
-    beta := seq^1;
-  
-    if not IsWellDefinedForObjects( seq ) then 
-  
-      return false;
-     
-    fi;
-      
-    ## alpha should be the kernel of beta ..
-
-    ker_beta := KernelEmbedding( beta );
-    
-    ker_lift := KernelLift( beta, alpha );
-    
-    if not IsIsomorphism( ker_lift ) then 
-    
-       return false;
-       
-    fi;
-    
-    ## beta should be the cokernel of alpha
-    
-    coker_alpha  := CokernelProjection( alpha );
-    
-    coker_colift := CokernelColift( alpha, beta );
-    
-    if not IsIsomorphism( coker_colift ) then 
-    
-       return false;
-       
-    fi;
-  
-  return true;
-  
-end );
-
-
-##
-InstallMethodWithCache( CreateConflation, 
+InstallMethodWithCache( CreateConflation,
                        [ IsCapCategoryMorphism, IsCapCategoryMorphism ],
     function( alpha, beta )
     local s;
-    
+
     s := CreateShortExactSequence( alpha, beta );
 
     SetFilterObj( s, IsCapCategoryConflation );
-    
+
     return s;
-    
+
 end );
 
 ##
@@ -645,28 +384,28 @@ end );
 ##
 ## View
 ##
-##############################   
-    
+##############################
+
 InstallMethod( ViewObj,
-               
-               [ IsCapCategoryShortSequence ], 
-               
+
+               [ IsCapCategoryShortSequence ],
+
   function( seq )
-  
-    if IsCapCategoryConflation( seq ) then 
-    
+
+    if IsCapCategoryConflation( seq ) then
+
        Print( "<A Conflation in ", CapCategory( seq ), ">" );
-    
-    elif IsCapCategoryShortExactSequence( seq ) then 
-    
+
+    elif IsCapCategoryShortExactSequence( seq ) then
+
        Print( "<A short exact sequence in ", CapCategory( seq ), ">" );
-   
-    else 
-   
+
+    else
+
        Print( "<A short sequence in ", CapCategory( seq ), ">" );
-   
+
     fi;
-    
+
 end );
 
 #################################
@@ -675,29 +414,29 @@ end );
 ##
 #################################
 
-InstallMethod( Display, 
-              
-              [ IsCapCategoryShortSequence ], 
-              
+InstallMethod( Display,
+
+              [ IsCapCategoryShortSequence ],
+
     function( seq )
-   
-    if IsCapCategoryConflation( seq ) then 
-    
+
+    if IsCapCategoryConflation( seq ) then
+
        Print( "A Conflation in ", CapCategory( seq ), " given by:\n" );
-    
-    elif IsCapCategoryShortExactSequence( seq ) then 
-    
+
+    elif IsCapCategoryShortExactSequence( seq ) then
+
        Print( "A short exact sequence in ", CapCategory( seq ), " given by:\n" );
-   
-    else 
-   
+
+    else
+
        Print( "A short sequence in ", CapCategory( seq ), " given by :\n" );
-   
+
     fi;
 
     Print( "\n     m0          m1     " );
     Print( "\no0 ------> o1 ------> o2\n\n" );
-   
+
     Print( "\no0 is\n\n" ); Display( seq[ 0 ] );
     Print( "\n------------------------------------\n" );
     Print( "\nm0 is\n\n" ); Display( seq^0 );
@@ -707,7 +446,7 @@ InstallMethod( Display,
     Print( "\nm1 is\n\n" ); Display( seq^1 );
     Print( "\n------------------------------------\n" );
     Print( "\no2 is\n\n" ); Display( seq[ 2 ] );
-   
+
 end );
 
 #####################################
@@ -716,7 +455,7 @@ end );
 ##
 #####################################
 
-#           f1        g1 
+#           f1        g1
 #        A ----> I1 -----> B1
 #
 #
@@ -727,204 +466,144 @@ end );
 # In the stable category,  B1 ------> I2 𐌈 B1 -------> I1 𐌈 B2 -------> B2 is also supposed to be isomorphism.
 
 ##
-InstallMethodWithCache( SchanuelsIsomorphism, 
-            [ IsCapCategoryConflation, IsCapCategoryConflation, IsString ], 
-    
-    function( conf1, conf2, string )
-    local f1, I1, g1, B1, f2, I2, g2, B2, phi1, phi2, h1, h2, inverse_phi_1, inverse_phi_2, alpha, beta;
-    
-    if not string = "left" then
-      TryNextMethod();
-    fi;
-    
-    if not IsEqualForObjects( conf1[ 0 ], conf2[ 0 ] ) then 
-    
-       Error( "Both conflations should begin by the same object" );
-       
-    fi;
-    
-    f1 := conf1^0;
-    
-    I1 := Range( f1 );
-    
-    g1 := conf1^1;
-    
-    B1 := Range( g1 );
-    
-    f2 := conf2^0;
-    
-    I2 := Range( f2 );
-    
-    g2 := conf2^1;
-    
-    B2 := Range( g2 );
+InstallMethodWithCache( SchanuelsIsomorphism,
+            [ IsCapCategoryMorphism, IsCapCategoryMorphism, IsCapCategoryMorphism, IsCapCategoryMorphism, IsString ],
 
-    phi1 := InjectionOfCofactorOfExactPushout( [ f1, f2 ], 1 );
-    
-    phi2 := InjectionOfCofactorOfExactPushout( [ f1, f2 ], 2 );
+    function( inf_1, def_1, inf_2, def_2, string )
+      local I1, B1, I2, B2, phi_1, phi_2, h1, h2, i_phi_1, i_phi_2, alpha, beta;
 
-    h1 := UniversalMorphismFromExactPushout( [ f1, f2 ], [ g1, ZeroMorphism( I2, Range( g1 )  ) ] );
-    
-    h2 := UniversalMorphismFromExactPushout( [ f1, f2 ], [ ZeroMorphism( I1, Range( g2 )  ), g2 ] );
-    
-    inverse_phi_1 := ExactInjectiveColift( phi1, IdentityMorphism( I1 ) );
-    
-    inverse_phi_2 := ExactInjectiveColift( phi2, IdentityMorphism( I2 ) );
-    
-    # Let P denotes the exact pushout object
-    #
-    # from P to I2 𐌈 B1
-    alpha := MorphismBetweenDirectSums( 
-      [ # from P to I2 , from P to B1
-        [ inverse_phi_2, h1  ]  
-      ] );
+      if not string = "left" then
+        TryNextMethod();
+      fi;
+      
+      I1 := Source( def_1 );
 
-    # from P to I1 𐌈 B2
-    beta := MorphismBetweenDirectSums( 
-      [ # from P to I1 , from P to B2
-        [ inverse_phi_1, h2  ]  
-      ] );
+      B1 := Range( def_1 );
 
-    return PreCompose( Inverse( alpha ), beta );
-    end );
-    
-    
-#           f1        g1 
-#        A1 ----> P1 -----> B
+      I2 := Source( def_2 );
+
+      B2 := Range( def_2 );
+
+      phi_1 := InjectionOfCofactorOfExactPushout( inf_1, inf_2, 1 );
+
+      phi_2 := InjectionOfCofactorOfExactPushout( inf_1, inf_2, 2 );
+
+      h1 := UniversalMorphismFromExactPushout( inf_1, inf_2, def_1, ZeroMorphism( I2, B1  ) );
+
+      h2 := UniversalMorphismFromExactPushout( inf_1, inf_2, ZeroMorphism( I1, B2  ), def_2 );
+
+      i_phi_1 := ExactInjectiveColift( phi_1, IdentityMorphism( I1 ) );
+
+      i_phi_2 := ExactInjectiveColift( phi_2, IdentityMorphism( I2 ) );
+
+      alpha := MorphismBetweenDirectSums(
+        [
+          [ i_phi_2, h1  ]
+        ] );
+
+      beta := MorphismBetweenDirectSums(
+        [
+          [ i_phi_1, h2  ]
+        ] );
+
+      return PreCompose( InverseForMorphisms( alpha ), beta );
+
+end );
+
+
+#           inf_1        def_1
+#        A1 ------> P1 ------------> B
 #
 #
-#        A2 ----> P2 -----> B
-#           f2        g2
+#        A2 ------> P2 ------------> B
+#           inf_2        def_2
 #
 #        SchanuelsIsomorphism : A1 𐌈 P2 ----> A2 𐌈 P1
 # In the stable category,  A1 ------> A1 𐌈 P2 ----> A2 𐌈 P1 -------> A2 is also supposed to be isomorphism.
 
-InstallMethodWithCache( SchanuelsIsomorphism, 
-            [ IsCapCategoryConflation, IsCapCategoryConflation, IsString ], 
-    
-    function( conf1, conf2, string )
-    local f1, P1, g1, A1, f2, P2, g2, A2, phi1, phi2, h1, h2, inverse_phi_1, inverse_phi_2, alpha, beta;
-    
-    if not string = "right" then
-      TryNextMethod();
-    fi;
+InstallMethod( SchanuelsIsomorphism,
+          [ IsCapCategoryMorphism, IsCapCategoryMorphism, IsCapCategoryMorphism, IsCapCategoryMorphism, IsString ],
 
-    if not IsEqualForObjects( conf1[ 2 ], conf2[ 2 ] ) then 
-    
-       Error( "Both conflations should end by the same object" );
-       
-    fi;
-    
-    f1 := conf1^0;
-    
-    g1 := conf1^1;
-    
-    A1 := Source( f1 );
-    
-    P1 := Range( f1 );
-    
-    f2 := conf2^0;
-    
-    g2 := conf2^1;
-    
-    A2 := Source( f2 );
+    function( inf_1, def_1, inf_2, def_2, string )
+      local A1, P1, A2, P2, phi_1, phi_2, h1, h2, i_phi_1, i_phi_2, alpha, beta;
 
-    P2 := Range( f2 );
-        
-    phi1 := ProjectionInFactorOfExactFiberProduct( [ g1, g2 ], 1 );
-    
-    phi2 := ProjectionInFactorOfExactFiberProduct( [ g1, g2 ], 2 );
+      if not string = "right" then
+        TryNextMethod();
+      fi;
+      
+      A1 := Source( inf_1 );
 
-    h1 := UniversalMorphismIntoExactFiberProduct( [ g1, g2 ], [ f1, ZeroMorphism( A1, P2  ) ] );
-    
-    h2 := UniversalMorphismIntoExactFiberProduct( [ g1, g2 ], [ ZeroMorphism( A2, P1 ), f2 ] );
-    
-    inverse_phi_1 := ExactProjectiveLift( IdentityMorphism( P1 ), phi1 );
-    
-    inverse_phi_2 := ExactProjectiveLift( IdentityMorphism( P2 ), phi2 );
-    
-    # Let P denotes the exact pullback object
-    #
-    # from A1 𐌈 P2 to P
-    alpha := MorphismBetweenDirectSums( 
-      [ # from from A1 to P, P2 to P 
-        [ h1 ],
-        [ inverse_phi_2 ]  
-      ] );
+      P1 := Range( inf_1 );
 
-    # from A2 𐌈 P1 to P
-    beta := MorphismBetweenDirectSums( 
-      [ # from from A2 to P, P1 to P 
-        [ h2 ],
-        [ inverse_phi_1 ]  
-      ] );
+      A2 := Source( inf_2 );
 
-    return PreCompose( alpha, Inverse( beta ) );
+      P2 := Range( inf_2 );
+
+      phi_1 := ProjectionInFactorOfExactFiberProduct( def_1, def_2, 1 );
+
+      phi_2 := ProjectionInFactorOfExactFiberProduct( def_1, def_2, 2 );
+
+      h1 := UniversalMorphismIntoExactFiberProduct( def_1, def_2, inf_1, ZeroMorphism( A1, P2  ) );
+
+      h2 := UniversalMorphismIntoExactFiberProduct( def_1, def_2, ZeroMorphism( A2, P1 ), inf_2 );
+
+      i_phi_1 := ExactProjectiveLift( IdentityMorphism( P1 ), phi_1 );
+
+      i_phi_2 := ExactProjectiveLift( IdentityMorphism( P2 ), phi_2 );
+
+      alpha := MorphismBetweenDirectSums(
+        [
+          [ h1 ],
+          [ i_phi_2 ]
+        ] );
+
+      beta := MorphismBetweenDirectSums(
+        [
+          [ h2 ],
+          [ i_phi_1 ]
+        ] );
+
+      return PreCompose( alpha, InverseForMorphisms( beta ) );
 end );
 
 
 
 #####################################
 ##
-## Immediate Methods and Attributes 
+## Immediate Methods and Attributes
 ##
 #####################################
 
 InstallImmediateMethod( INSTALL_LOGICAL_IMPLICATIONS_FOR_EXACT_CATEGORY,
-               IsCapCategory and IsExactCategory, 
+               IsCapCategory and IsExactCategory,
                0,
-               
+
    function( category )
-   
+
    AddPredicateImplicationFileToCategory( category,
       Filename(
         DirectoriesPackageLibrary( "FrobeniusCategories", "LogicForExactAndFrobeniusCategories" ),
         "PredicateImplicationsForExactCategories.tex" ) );
-        
+
    TryNextMethod( );
-     
+
 end );
 
 InstallImmediateMethod( INSTALL_LOGICAL_IMPLICATIONS_FOR_FROBENIUS_CATEGORY,
-               IsCapCategory and IsFrobeniusCategory, 
+               IsCapCategory and IsFrobeniusCategory,
                0,
-               
+
    function( category )
-   
+
    SetIsExactCategory( category, true );
    SetIsExactCategoryWithEnoughExactProjectives( category, true );
    SetIsExactCategoryWithEnoughExactInjectives( category, true );
-   
+
    AddPredicateImplicationFileToCategory( category,
       Filename(
         DirectoriesPackageLibrary( "FrobeniusCategories", "LogicForExactAndFrobeniusCategories" ),
         "PredicateImplicationsForFrobeniusCategories.tex" ) );
-        
-   TryNextMethod( );
-     
-end );
 
-InstallImmediateMethod( SetFilterOnInflations,
-               IsCapCategoryMorphism and IsInflation, 
-               0,
-   function( mor )
-   SetFilterObj( mor, IsCapCategoryInflation );     
    TryNextMethod( );
-end );
 
-
-InstallImmediateMethod( SetFilterOnDeflations,
-               IsCapCategoryMorphism and IsDeflation, 
-               0,
-   function( mor )
-   SetFilterObj( mor, IsCapCategoryDeflation );     
-   TryNextMethod( );
-end );
-
-InstallImmediateMethod( SetFilterOnConflations,
-               IsCapCategoryShortSequence and IsConflation, 
-               0,
-   function( mor )
-   SetFilterObj( mor, IsCapCategoryConflation );     
-   TryNextMethod( );
 end );

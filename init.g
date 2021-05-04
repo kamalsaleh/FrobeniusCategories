@@ -5,5 +5,4 @@
 #
 
 ReadPackage( "FrobeniusCategories", "gap/FrobeniusCategories.gd");
-#ReadPackage( "FrobeniusCategories", "gap/FrobeniusToTriangulatedStableCategories.gd");
-ReadPackage( "FrobeniusCategories", "gap/AbelianToExactCategories.gd");
+#ReadPackage( "FrobeniusCategories", "gap/StableCategories.gd");

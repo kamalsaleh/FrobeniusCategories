@@ -4,6 +4,5 @@
 # Reading the implementation part of the package.
 #
 ReadPackage( "FrobeniusCategories", "gap/FrobeniusCategories.gi" );
-ReadPackage( "FrobeniusCategories", "gap/FrobeniusCategoriesDerivedMethods.gi");
-ReadPackage( "FrobeniusCategories", "gap/AbelianToExactCategories.gi" );
-#ReadPackage( "FrobeniusCategories", "gap/FrobeniusToTriangulatedStableCategories.gi");
+ReadPackage( "FrobeniusCategories", "gap/DerivedMethods.gi");
+#ReadPackage( "FrobeniusCategories", "gap/StableCategories.gi");
